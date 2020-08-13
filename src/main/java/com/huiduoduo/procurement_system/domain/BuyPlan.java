@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @author TanJifeng
- * @Description BuyPlan
+ * @Description BuyPlan 采购经理的单品订单分配方案
  * @date 2020/8/13 13:14
  */
 public class BuyPlan implements Serializable {

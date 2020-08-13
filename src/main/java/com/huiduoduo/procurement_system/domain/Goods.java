@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * @author TanJifeng
- * @Description Goods
+ * @Description Goods 货品信息
  * @date 2020/8/13 13:19
  */
 public class Goods implements Serializable {
