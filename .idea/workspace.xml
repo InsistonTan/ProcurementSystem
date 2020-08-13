@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a72cd5bc-6c37-4f60-99ee-9c0c9f35c403" name="Default Changelist" comment="">
+    <list default="true" id="a72cd5bc-6c37-4f60-99ee-9c0c9f35c403" name="Default Changelist" comment="first commit">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/procurement_system_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/procurement_system_war_exploded.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/BuyPlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/BuyPlan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/BuyPlanBuyer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/BuyPlanBuyer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Goods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Goods.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/GoodsType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/GoodsType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Shop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Shop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Supplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Supplier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/procurement_system.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ProcurementSystem.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/ProcurementSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/ProcurementSystemApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/ServletInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/ServletInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/controller/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/BuyPlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/BuyPlan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/BuyPlanBuyer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/BuyPlanBuyer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Goods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/Goods.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/GoodsOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/GoodsOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/GoodsType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/GoodsType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Shop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/Shop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/ShopOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/ShopOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/ShopOrderPlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/ShopOrderPlan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/ShopOrderPlanGoods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/ShopOrderPlanGoods.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/SingleGoodsOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/SingleGoodsOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Supplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/Supplier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/huiduoduo/procurement_system/ProcurementSystemApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/huiduoduo/ProcurementSystem/ProcurementSystemApplicationTests.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -77,8 +90,8 @@
   </component>
   <component name="RunManager" selected="Smart Tomcat.ProcurementSystem">
     <configuration name="ProcurementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="procurement_system" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.huiduoduo.procurement_system.ProcurementSystemApplication" />
+      <module name="ProcurementSystem" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.huiduoduo.ProcurementSystem.ProcurementSystemApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -86,9 +99,11 @@
     <configuration name="ProcurementSystem" type="com.poratu.idea.plugins.tomcat" factoryName="SMART_TOMCAT_FACTORY" show_console_on_std_err="false" show_console_on_std_out="false">
       <option name="adminPort" value="8005" />
       <option name="allowRunningInParallel" value="false" />
-      <option name="contextPath" value="/" />
-      <option name="docBase" value="C:\Users\insistonTan\Desktop\IdeaProjects\procurement_system\src\main\webapp" />
-      <option name="envOptions" />
+      <option name="contextPath" value="/ProcurementSystem" />
+      <option name="docBase" value="C:\Users\insistonTan\Desktop\IdeaProjects\ProcurementSystem\src\main\webapp" />
+      <option name="envOptions">
+        <map />
+      </option>
       <option name="moduleName" />
       <option name="passParentEnvironmentVariables" value="true" />
       <option name="port" value="8080" />
@@ -130,7 +145,8 @@
       <workItem from="1595314165802" duration="2837000" />
       <workItem from="1595389959389" duration="20000" />
       <workItem from="1595392186755" duration="1232000" />
-      <workItem from="1597294981614" duration="5525000" />
+      <workItem from="1597294981614" duration="5793000" />
+      <workItem from="1597301078297" duration="195000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1594187248953</created>
@@ -188,7 +204,14 @@
       <option name="project" value="LOCAL" />
       <updated>1597300593214</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="添加domain">
+      <created>1597300787128</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1597300787128</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

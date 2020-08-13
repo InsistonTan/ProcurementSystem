@@ -1,4 +1,4 @@
-package com.huiduoduo.procurement_system.domain;
+package com.huiduoduo.ProcurementSystem.domain;
 
 import java.io.Serializable;
 import java.util.List;
