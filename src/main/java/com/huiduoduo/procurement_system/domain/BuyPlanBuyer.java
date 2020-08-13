@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * @author TanJifeng
- * @Description BuyPlanBuyer
+ * @Description BuyPlanBuyer 采购经理的单品分配方案的具体分配
  * @date 2020/8/13 13:16
  */
 public class BuyPlanBuyer implements Serializable {
