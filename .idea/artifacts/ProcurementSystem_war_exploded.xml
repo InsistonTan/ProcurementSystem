@@ -1,10 +1,10 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="procurement_system:war exploded">
+  <artifact type="exploded-war" name="ProcurementSystem:war exploded">
     <output-path>$PROJECT_DIR$/target/procurement_system-0.0.1-SNAPSHOT</output-path>
     <properties id="maven-jee-properties">
       <options>
         <exploded>true</exploded>
-        <module>procurement_system</module>
+        <module>ProcurementSystem</module>
         <packaging>war</packaging>
       </options>
     </properties>

@@ -1,4 +1,4 @@
-package com.huiduoduo.procurement_system;
+package com.huiduoduo.ProcurementSystem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

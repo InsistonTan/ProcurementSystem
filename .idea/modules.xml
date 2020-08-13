@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/procurement_system.iml" filepath="$PROJECT_DIR$/procurement_system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ProcurementSystem.iml" filepath="$PROJECT_DIR$/ProcurementSystem.iml" />
     </modules>
   </component>
 </project>
