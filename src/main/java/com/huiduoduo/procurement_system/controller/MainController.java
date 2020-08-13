@@ -21,6 +21,6 @@ public class MainController {
     public void index(HttpServletRequest request,HttpServletResponse response)
             throws ServletException, IOException
     {
-        request.getRequestDispatcher("/index.html").forward(request,response);
+        request.getRequestDispatcher("/demo.html").forward(request,response);
     }
 }

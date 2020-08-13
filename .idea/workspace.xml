@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a72cd5bc-6c37-4f60-99ee-9c0c9f35c403" name="Default Changelist" comment="first commit">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="a72cd5bc-6c37-4f60-99ee-9c0c9f35c403" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/controller/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,8 +16,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="spring-beans.schema" />
-        <option value="Class" />
         <option value="Jsp File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -42,17 +44,17 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/static" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/webapp" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.28275862" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\insistonTan\Desktop\IdeaProjects\procurement_system\src\main\webapp" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\insistonTan\Desktop\IdeaProjects\procurement_system\src\main\webapp" />
       <recent name="C:\Users\insistonTan\Desktop\IdeaProjects\procurement_system\src\main\resources\static" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\insistonTan\Desktop\IdeaProjects\procurement_system\src\main\webapp" />
     </key>
   </component>
@@ -79,7 +81,7 @@
     <configuration name="ProcurementSystem" type="com.poratu.idea.plugins.tomcat" factoryName="SMART_TOMCAT_FACTORY" show_console_on_std_err="false" show_console_on_std_out="false">
       <option name="adminPort" value="8005" />
       <option name="allowRunningInParallel" value="false" />
-      <option name="contextPath" value="/procurement_system" />
+      <option name="contextPath" value="/" />
       <option name="docBase" value="C:\Users\insistonTan\Desktop\IdeaProjects\procurement_system\src\main\webapp" />
       <option name="envOptions" />
       <option name="moduleName" />
@@ -115,7 +117,15 @@
       <updated>1594177972996</updated>
       <workItem from="1594177978930" duration="3336000" />
       <workItem from="1594181329822" duration="7116000" />
-      <workItem from="1594202842183" duration="1730000" />
+      <workItem from="1594202842183" duration="2767000" />
+      <workItem from="1594464778524" duration="68000" />
+      <workItem from="1594464935303" duration="5000" />
+      <workItem from="1594471747067" duration="731000" />
+      <workItem from="1594695066970" duration="17000" />
+      <workItem from="1595314165802" duration="2837000" />
+      <workItem from="1595389959389" duration="20000" />
+      <workItem from="1595392186755" duration="1232000" />
+      <workItem from="1597294981614" duration="5243000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1594187248953</created>
@@ -159,7 +169,14 @@
       <option name="project" value="LOCAL" />
       <updated>1594203961618</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="first commit">
+      <created>1594204616589</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1594204616589</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
