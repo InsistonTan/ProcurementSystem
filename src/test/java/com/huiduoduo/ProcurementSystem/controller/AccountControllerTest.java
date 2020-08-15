@@ -19,7 +19,5 @@ public class AccountControllerTest {
 
     @Test
     void getAll() {
-        List<Account> res=accountController.getAll();
-        System.out.println(res);
     }
 }
