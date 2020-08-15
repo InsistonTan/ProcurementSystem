@@ -1,28 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a72cd5bc-6c37-4f60-99ee-9c0c9f35c403" name="Default Changelist" comment="first commit">
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/procurement_system_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/procurement_system_war_exploded.xml" afterDir="false" />
+    <list default="true" id="a72cd5bc-6c37-4f60-99ee-9c0c9f35c403" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/ProcurementSystem_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/ProcurementSystem_war_exploded.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_attoparser_attoparser_2_0_5_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_thymeleaf_2_3_1_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_extras_thymeleaf_extras_java8time_3_0_4_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_thymeleaf_3_0_11_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_thymeleaf_spring5_3_0_11_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_unbescape_unbescape_1_1_6_RELEASE.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/procurement_system.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ProcurementSystem.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/ProcurementSystemApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/ProcurementSystemApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/ServletInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/ServletInitializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/BuyPlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/BuyPlan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/BuyPlanBuyer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/BuyPlanBuyer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Goods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/Goods.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/GoodsOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/GoodsOrder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/GoodsType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/GoodsType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Shop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/Shop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/ShopOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/ShopOrder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/ShopOrderPlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/ShopOrderPlan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/ShopOrderPlanGoods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/ShopOrderPlanGoods.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/SingleGoodsOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/SingleGoodsOrder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/procurement_system/domain/Supplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/domain/Supplier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/huiduoduo/procurement_system/ProcurementSystemApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/huiduoduo/ProcurementSystem/ProcurementSystemApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProcurementSystem.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ProcurementSystem.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/huiduoduo/ProcurementSystem/ProcurementSystemApplication.java" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,6 +25,7 @@
       <list>
         <option value="spring-beans.schema" />
         <option value="Jsp File" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -66,6 +57,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.28275862" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -88,10 +80,49 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Smart Tomcat.ProcurementSystem">
+  <component name="RunManager" selected="JUnit.AccountControllerTest.getAll">
+    <configuration name="AccountControllerTest.getAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ProcurementSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.huiduoduo.ProcurementSystem.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.huiduoduo.ProcurementSystem.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.huiduoduo.ProcurementSystem.controller.AccountControllerTest" />
+      <option name="METHOD_NAME" value="getAll" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountControllerTests.getAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ProcurementSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.huiduoduo.ProcurementSystem.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.huiduoduo.ProcurementSystem.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.huiduoduo.ProcurementSystem.controller.AccountControllerTests" />
+      <option name="METHOD_NAME" value="getAll" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ProcurementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="ProcurementSystem" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.huiduoduo.ProcurementSystem.ProcurementSystemApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServletInitializer" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="ProcurementSystem" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.huiduoduo.ProcurementSystem.ServletInitializer" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -101,9 +132,7 @@
       <option name="allowRunningInParallel" value="false" />
       <option name="contextPath" value="/ProcurementSystem" />
       <option name="docBase" value="C:\Users\insistonTan\Desktop\IdeaProjects\ProcurementSystem\src\main\webapp" />
-      <option name="envOptions">
-        <map />
-      </option>
+      <option name="envOptions" />
       <option name="moduleName" />
       <option name="passParentEnvironmentVariables" value="true" />
       <option name="port" value="8080" />
@@ -121,9 +150,18 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="JUnit.AccountControllerTests.getAll" />
+      <item itemvalue="JUnit.AccountControllerTest.getAll" />
       <item itemvalue="Smart Tomcat.ProcurementSystem" />
       <item itemvalue="Spring Boot.ProcurementSystemApplication" />
+      <item itemvalue="Spring Boot.ServletInitializer" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.AccountControllerTest.getAll" />
+        <item itemvalue="JUnit.AccountControllerTests.getAll" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -146,7 +184,10 @@
       <workItem from="1595389959389" duration="20000" />
       <workItem from="1595392186755" duration="1232000" />
       <workItem from="1597294981614" duration="5793000" />
-      <workItem from="1597301078297" duration="195000" />
+      <workItem from="1597301078297" duration="1617000" />
+      <workItem from="1597372768027" duration="3351000" />
+      <workItem from="1597467440720" duration="7158000" />
+      <workItem from="1597480366748" duration="371000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1594187248953</created>
@@ -211,7 +252,21 @@
       <option name="project" value="LOCAL" />
       <updated>1597300787128</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="first commit">
+      <created>1597301355947</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1597301355947</updated>
+    </task>
+    <task id="LOCAL-00011" summary="修改配置文件中，mapper包的路径">
+      <created>1597372975247</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1597372975247</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -220,6 +275,23 @@
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="range">
+                    <value>
+                      <list>
+                        <option value="HEAD..origin/Chony" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State>
@@ -229,10 +301,27 @@
         </entry>
       </map>
     </option>
+    <option name="OPEN_TABS">
+      <set>
+        <option value="1" />
+      </set>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="first commit" />
     <MESSAGE value="添加domain" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加domain" />
+    <MESSAGE value="first commit" />
+    <MESSAGE value="修改配置文件中，mapper包的路径" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改配置文件中，mapper包的路径" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/huiduoduo/ProcurementSystem/controller/AccountControllerTest.java</url>
+          <line>22</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
