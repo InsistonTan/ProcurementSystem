@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class SingleGoodsOrder implements Serializable {
     private String single_order_id;//单品采购单编号
-    private int goods_id;//货品编号
+    private Integer goods_id;//货品编号
     private String goods_name;//货品名称
     private float order_goods_num;//订购总数量
     private String manager_note;//采购经理备注
@@ -24,7 +24,7 @@ public class SingleGoodsOrder implements Serializable {
     private String manager;//处理该订单的采购经理姓名
     private String buyer_username;//负责该订单的采购员账号
     private String name;//采购员姓名
-    private int supplier_id;//供应商编号
+    private Integer supplier_id;//供应商编号
     private String supplier_name;//供应商名称
     private float total_money;//实际采购总金额
     private float buy_goods_num;//实际采购总数量

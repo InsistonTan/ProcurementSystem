@@ -11,9 +11,9 @@ import java.io.Serializable;
  */
 @Data
 public class Goods implements Serializable {
-    private int goods_id;//货品编号
-    private int goods_sort;//排序标志
-    private int goods_type_id;//货品类型编号
+    private Integer goods_id;//货品编号
+    private Integer goods_sort;//排序标志
+    private Integer goods_type_id;//货品类型编号
     private String type_name;//类型名称
     private String goods_name;//货品名称
     private String order_unit;//订购单位

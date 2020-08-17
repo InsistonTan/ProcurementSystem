@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 @Data
 public class Supplier implements Serializable {
-    private int id;//供应商编号
+    private Integer id;//供应商编号
     private String supplier_name;//名称
     private String supplier_phone;//电话
     private String note;//备注

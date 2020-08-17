@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 @Data
 public class Shop implements Serializable {
-    private int shop_id;//门店编号
+    private Integer shop_id;//门店编号
     private String shop_name;//名称
     private String shop_position;//地址
     private String shop_phone;//联系电话

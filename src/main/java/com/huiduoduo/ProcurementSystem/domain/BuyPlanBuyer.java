@@ -1,6 +1,7 @@
 package com.huiduoduo.ProcurementSystem.domain;
 
 import lombok.Data;
+import org.omg.PortableInterceptor.INACTIVE;
 
 import java.io.Serializable;
 
@@ -11,8 +12,8 @@ import java.io.Serializable;
  */
 @Data
 public class BuyPlanBuyer implements Serializable {
-    private int id;//主键id
-    private int buy_plan_id;//分配计划idprivate int goods_id;//货品id
+    private Integer id;//主键id
+    private Integer buy_plan_id;//分配计划idprivate int goods_id;//货品id
     private String goods_name;//货品名称
     private String buyer_username;//采购员账号
     private String name;//采购员名字

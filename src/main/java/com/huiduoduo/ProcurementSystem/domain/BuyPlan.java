@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Data
 public class BuyPlan implements Serializable {
-    private int id;//主键 id
+    private Integer id;//主键 id
     private String manager_username;//采购经理账号
     private String name;//经理名称
     private String plan_name;//方案名称

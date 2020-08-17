@@ -11,10 +11,10 @@ import java.io.Serializable;
  */
 @Data
 public class GoodsOrder implements Serializable {
-    private int id;
+    private Integer id;
     private String order_id;//所属分店订单编号
     private String single_order_id;//所属单品采购单编号
-    private int goods_id;//订购的货品编号
+    private Integer goods_id;//订购的货品编号
     private float order_num;//订购数量
     private float goods_price;//实际采购的单价
     private float buy_num;//实际采购数量

@@ -11,6 +11,6 @@ import java.io.Serializable;
  */
 @Data
 public class GoodsType implements Serializable {
-    private int id;//类型编号
+    private Integer id;//类型编号
     private String type_name;//类型名称
 }

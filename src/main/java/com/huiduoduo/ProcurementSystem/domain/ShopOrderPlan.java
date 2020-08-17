@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class ShopOrderPlan implements Serializable {
     private int id;//方案id
-    private int shop_id;//所属分店id
+    private Integer shop_id;//所属分店id
     private String shop_name;//所属分店名称
     private String plan_name;//方案名
     private List<ShopOrderPlanGoods> order_goods;//具体的货品订购数量
