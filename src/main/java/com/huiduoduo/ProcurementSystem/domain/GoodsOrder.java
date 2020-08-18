@@ -15,7 +15,9 @@ public class GoodsOrder implements Serializable {
     private String order_id;//所属分店订单编号
     private String single_order_id;//所属单品采购单编号
     private Integer goods_id;//订购的货品编号
+    private String goods_name;//订购的货品名称
     private float order_num;//订购数量
+    private String order_unit;//订购单位
     private float goods_price;//实际采购的单价
     private float buy_num;//实际采购数量
     private String buy_unit;//实际采购的单位
