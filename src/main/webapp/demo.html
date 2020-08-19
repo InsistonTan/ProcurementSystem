@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>地图domo</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
+    <style>
+        html, body, #container {
+            height: 100%;
+            width: 100%;
+        }
+
+        .amap-icon img,
+        .amap-marker-content img{
+            width: 25px;
+            height: 34px;
+        }
+
+        .marker {
+            position: absolute;
+            top: -20px;
+            right: -118px;
+            color: #fff;
+            padding: 4px 10px;
+            box-shadow: 1px 1px 1px rgba(10, 10, 10, .2);
+            white-space: nowrap;
+            font-size: 12px;
+            font-family: "";
+            background-color: #25A5F7;
+            border-radius: 3px;
+        }
+
+        .input-card{
+            width: 18rem;
+            z-index: 170;
+        }
+
+        .input-card .btn{
+            margin-right: .8rem;
+        }
+
+        .input-card .btn:last-child{
+            margin-right: 0;
+        }
+    </style>
+	<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=9d4e4d5f11490c765cf75d380b3f2a8f"></script>
+</head>
+<body>
+	<div id="container"></div>
+</body>
+<script>
+	// backbone
+	//实例化一个地图
+	var map=new AMap.Map("container",{
+		resizeEnable:true, //可缩放
+		center: [116.397428, 39.90923],//中心点
+		zoom:5 //缩放层级
+	});
+	//添加定位标点
+	function addMarker(pos_x,pos_y){
+		var tempMarker=new AMap.Marker({
+			icon: "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+			position: [pos_x,pos_y],
+			offset: new AMap.Pixel(-13, -30)
+		});
+		tempMarker.setMap(map);
+	}
+	//addMarker(116.406315,39.908775);
+
+	//获取定位
+	function getGeolocation(){
+		AMap.plugin('AMap.Geolocation', function() {
+        var geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+            timeout: 10000,          //超过10秒后停止定位，默认：5s
+            //buttonPosition:'RB',    //定位按钮的停靠位置
+            //buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            //zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+
+        });
+        //map.addControl(geolocation);
+		//获取定位
+        geolocation.getCurrentPosition(function(status,result){
+            if(status=='complete'){
+                onComplete(result);
+            }else{
+                onError(result);
+            }
+        });
+    });
+	}
+	function onComplete(data){
+		alert("定位位置："+data.position);
+		//在地图标点
+		addMarker(data.position.getLng(),data.position.getLat());
+		map.setCenter(data.position);//设置地图中心
+	}
+	function onError(data){
+		alert("错误："+data.message);
+	}
+	getGeolocation();
+	
+	//获取gps坐标
+	function getLocation(){
+		if(navigator.geolocation){
+			alert("正在获取gps");
+			navigator.geolocation.getCurrentPosition(getPosition,showError);
+		}
+		else{
+			alert("浏览器不支持定位");
+		}
+	}
+	function getPosition(position){
+		console.log("gps:"+position);
+		//
+		var lag = position.coords.longitude; //经度
+		var lat = position.coords.latitude; //纬度 
+   		var gps=[lag,lat];//gps经纬度
+   		alert("gps:"+gps);
+   		//请求高德api将gps位置转化成高德位置
+   		AMap.convertFrom(gps, 'gps', function (status, result) {
+   			console.log(result);
+   			alert(result);
+  			if (result.info === 'ok') {
+    			var lnglats = result.locations; // Array.<LngLat>
+    			alert(lnglats);
+  			}
+		});
+	}
+	function showError(error){ 
+  		switch(error.code) { 
+    	case error.PERMISSION_DENIED: 
+      		alert("定位失败,用户拒绝请求地理定位"); 
+      		break; 
+    	case error.POSITION_UNAVAILABLE: 
+      		alert("定位失败,位置信息是不可用"); 
+      		break; 
+    	case error.TIMEOUT: 
+      		alert("定位失败,请求获取用户位置超时"); 
+      		break; 
+    	case error.UNKNOWN_ERROR: 
+      		alert("定位失败,定位系统失效"); 
+      		break; 
+  		} 
+	}
+	//getLocation();
+
+</script>
+</html>
