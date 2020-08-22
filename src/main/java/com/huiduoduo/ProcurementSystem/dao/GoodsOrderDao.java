@@ -39,6 +39,14 @@ public interface GoodsOrderDao {
             "where `id`=#{id}")
     boolean addSingleOrderID(GoodsOrder goodsOrder);
 
+    //删除某个分店订单的所有订货信息
+    @Delete("delete from goods_order where order_id=#{order_id}")
+    boolean deleteByShopOrderID(@Param("order_id") String order_id);
+
+    //删除某个单品采购单的所有订货信息
+    @Delete("delete from goods_order where single_order_id=#{single_order_id}")
+    boolean deleteBySingleOrderID(@Param("single_order_id") String order_id);
+
     //删除
     @Delete("delete from goods_order where `id`=#{id}")
     boolean delete(GoodsOrder goodsOrder);
