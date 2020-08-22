@@ -3,6 +3,10 @@ package com.huiduoduo.ProcurementSystem.utils;
 import org.apache.ibatis.annotations.Insert;
 import org.springframework.util.DigestUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 /**
  * @author TanJifeng
  * @Description 加密、验证工具类
@@ -22,10 +26,5 @@ public class EncryptionUtil {
     public static void main(String[] args){
         String a="admin";
         String encrypt="21232f297a57a5a743894a0e4a801fc3";
-        //System.out.println(encryptText(a));
-        //System.out.println(verify(a,encrypt));
-        Insert n = null;
-        System.out.println(n);
-
     }
 }
