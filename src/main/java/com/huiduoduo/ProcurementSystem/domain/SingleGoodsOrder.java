@@ -23,7 +23,7 @@ public class SingleGoodsOrder implements Serializable {
     private String end_time;//结束时间
     private String manager;//处理该订单的采购经理姓名
     private String buyer_username;//负责该订单的采购员账号
-    private String name;//采购员姓名
+    private String name;//负责该订单的采购员姓名
     private Integer supplier_id;//供应商编号
     private String supplier_name;//供应商名称
     private float total_money;//实际采购总金额

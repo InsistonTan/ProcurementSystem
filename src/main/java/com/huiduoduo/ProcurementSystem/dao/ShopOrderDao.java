@@ -24,7 +24,7 @@ public interface ShopOrderDao {
     //选择某个门店的历史订单
     @Select("select shop_order.*,shop.shop_name " +
             "from shop_order,shop " +
-            "where shop_order.`shop_id`=#{id} and start_time!=NULL and end_time!=NULL " +
+            "where shop_order.`shop_id`=#{id} and start_time IS NOT NULL and end_time IS NOT NULL " +
             "and shop.shop_id=shop_order.shop_id " +
             "order by end_time desc")
     List<ShopOrder> selectHistoryByShopID(@Param("id") int shop_id);
@@ -32,14 +32,14 @@ public interface ShopOrderDao {
     //选择所有门店的历史订单
     @Select("select shop_order.*,shop.shop_name " +
             "from shop_order,shop " +
-            "where start_time!=NULL and end_time!=NULL and shop.shop_id=shop_order.shop_id " +
+            "where start_time IS NOT NULL and end_time IS NOT NULL and shop.shop_id=shop_order.shop_id " +
             "order by end_time desc")
     List<ShopOrder> selectAllHistory();
 
     //选择某个门店的正在进行的订单
     @Select("select shop_order.*,shop.shop_name " +
             "from shop_order,shop " +
-            "where shop_order.`shop_id`=#{id} and start_time!=NULL and end_time=NULL " +
+            "where shop_order.`shop_id`=#{id} and start_time IS NOT NULL and end_time IS NULL " +
             "and shop.shop_id=shop_order.shop_id " +
             "order by start_time desc")
     List<ShopOrder> selectOnGoingByShopID(@Param("id") int shop_id);
@@ -47,23 +47,23 @@ public interface ShopOrderDao {
     //选择所有门店的正在进行的订单
     @Select("select shop_order.*,shop.shop_name " +
             "from shop_order,shop " +
-            "where and start_time!=NULL and end_time=NULL and shop.shop_id=shop_order.shop_id " +
+            "where and start_time IS NOT NULL and end_time IS NULL and shop.shop_id=shop_order.shop_id " +
             "order by start_time desc")
     List<ShopOrder> selectAllOnGoing();
 
     //（分店）修改订单信息
-    @Update("update shop_order set shop_note=#{shop_note}" +
+    @Update("update shop_order set shop_note=#{shop_note} " +
             "where order_id=#{order_id}")
     boolean updateOrderByShop(ShopOrder shopOrder);
 
     //（采购经理）修改订单信息
     @Update("update shop_order set " +
-            "approved=#{approved},manager_note=#{manager_note},manager=#{manager},end_time=#{end_time}" +
+            "approved=#{approved},manager_note=#{manager_note},manager=#{manager},end_time=#{end_time},order_status=#{order_status} " +
             "where order_id=#{order_id}")
     boolean updateOrderByManager(ShopOrder shopOrder);
 
     //（分店）确认完成订单
-    @Update("update shop_order set order_status=#{order_status},end_time=#{end_time}" +
+    @Update("update shop_order set order_status=#{order_status},end_time=#{end_time} " +
             "where order_id=#{order_id}")
     boolean confirmOrder(ShopOrder shopOrder);
 

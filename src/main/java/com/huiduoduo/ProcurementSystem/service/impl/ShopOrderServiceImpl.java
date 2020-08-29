@@ -81,6 +81,9 @@ public class ShopOrderServiceImpl implements ShopOrderService {
 
         //循环处理该订单的具体订货信息
         List<GoodsOrder> goodsOrders=shopOrder.getGoods_order();
+        if(goodsOrders==null||goodsOrders.size()==0)
+            return ResultUtil.getErrorRes("订单创建失败:具体的供货信息为空");
+        //
         for(GoodsOrder goodsOrder:goodsOrders){
             //设置所属分店订单编号
             goodsOrder.setOrder_id(order_id);
@@ -102,6 +105,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
     @Override
     public Map approved(List<ShopOrder> shopOrders) {
         Map result=new HashMap();
+
         //检查登陆者权限
         //从session取出登陆者信息
         Account login_info=(Account)request.getSession().getAttribute("info");
@@ -113,13 +117,21 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             //检查该订单是否存在
             if(shopOrder.getOrder_id()==null||shopOrderDao.selectOneByID(shopOrder.getOrder_id())==null)
                 return ResultUtil.getErrorRes("更新失败：订单"+shopOrder.getOrder_id()+"不存在");
+
             //检查审批结果
-            if(shopOrder.getApproved()!=0&&shopOrder.getApproved()!=-1)
+            if(shopOrder.getApproved()!=null&&shopOrder.getApproved().intValue()!=0&&shopOrder.getApproved().intValue()!=-1)
                 return ResultUtil.getErrorRes("更新失败：审批数据错误");
-            if(shopOrder.getApproved()==-1){
+            //拒绝
+            if(shopOrder.getApproved()!=null&&shopOrder.getApproved().intValue()==-1){
                 String end_time=TimeUtil.getTime("yyyy-MM-dd HH:mm:ss");
                 shopOrder.setEnd_time(end_time);
+                shopOrder.setOrder_status("订单未被批准");
             }
+            //同意
+            else if(shopOrder.getApproved()!=null&&shopOrder.getApproved().intValue()==0){
+                shopOrder.setOrder_status("订单已被批准");
+            }
+
             //设置审批的经理名
             shopOrder.setManager(login_info.getName());
             //更新
@@ -139,6 +151,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         Account login_info=(Account)request.getSession().getAttribute("info");
         if(login_info==null)
             return ResultUtil.getErrorRes("更新失败：登录信息缺失");
+
         //检查目标订单是否存在
         ShopOrder tempShopOrder=shopOrderDao.selectOneByID(shopOrder.getOrder_id());
         if(tempShopOrder==null)
@@ -161,7 +174,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                 //检查具体的订货信息是否要修改
                 List<GoodsOrder> goodsOrders=shopOrder.getGoods_order();
                 //不为空，需要更新具体的订货信息
-                if(goodsOrders.size()>0){
+                if(goodsOrders!=null&&goodsOrders.size()>0){
                     //删除原有的具体订货信息
                     if(goodsOrderDao.deleteByShopOrderID(shopOrder.getOrder_id())){
                         //循环添加
@@ -181,7 +194,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         //采购经理权限
         else if("manager".equalsIgnoreCase(role)){
             //如果该订单已经生成单品订单，则无法修改审批结果，也无法修改具体定货信息，只能修改 manager_note
-            if(tempShopOrder.getApproved()==1){
+            if(tempShopOrder.getApproved()!=null&&tempShopOrder.getApproved().intValue()==1){
                 tempShopOrder.setManager_note(shopOrder.getManager_note());
                 //失败
                 if(!shopOrderDao.updateOrderByManager(tempShopOrder))
@@ -193,17 +206,33 @@ public class ShopOrderServiceImpl implements ShopOrderService {
 
             //检查经理审批结果
             Integer approved=shopOrder.getApproved();
-            if(approved!=0&&approved!=-1)//只有为 0或-1才是合理的
+            if(approved!=null&&approved.intValue()!=0&&approved.intValue()!=-1)//只有为 0或-1才是合理的
                 return ResultUtil.getErrorRes("更新失败：审批数据错误");
             //审批结果发生改变
             if(tempShopOrder.getApproved()!=shopOrder.getApproved()){
                 shopOrder.setManager(login_info.getName());
-                //当 approved为-1，代表该分店订单被经理拒绝，订单结素
-                if(approved==-1){
-                    String end_time= TimeUtil.getTime("yyyy-MM-dd HH:mm:ss");
-                    shopOrder.setEnd_time(end_time);
+                if(approved!=null){
+                    //当 approved为-1，代表该分店订单被经理拒绝，订单结素
+                    if(approved.intValue()==-1){
+                        String end_time= TimeUtil.getTime("yyyy-MM-dd HH:mm:ss");
+                        shopOrder.setEnd_time(end_time);
+                        shopOrder.setOrder_status("订单未被批准");
+                    }
+                    //订单approved改为 0
+                    else if(approved.intValue()==0){
+                        shopOrder.setOrder_status("订单已被批准");
+                    }
+                }
+                //订单approved改为 null
+                else {
+                    shopOrder.setOrder_status("订单已创建");
                 }
             }
+            //审批结果未发生改变
+            else {
+                shopOrder.setOrder_status(tempShopOrder.getOrder_status());
+            }
+
             //在数据库更新订单
             if(!shopOrderDao.updateOrderByManager(shopOrder))
                 return ResultUtil.getErrorRes("更新失败：更新数据库失败");
@@ -211,7 +240,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             //检查具体的订货信息是否要修改
             List<GoodsOrder> goodsOrders=shopOrder.getGoods_order();
             //不为空，需要更新具体的订货信息
-            if(goodsOrders.size()>0){
+            if(goodsOrders!=null&&goodsOrders.size()>0){
                 //删除原有的具体订货信息
                 if(goodsOrderDao.deleteByShopOrderID(shopOrder.getOrder_id())){
                     //循环添加
@@ -223,11 +252,12 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                 }
                 else return ResultUtil.getErrorRes("更新失败：更新原有的订货信息失败");
             }
+            //返回结果
+            result.put("status","success");
+            return result;
         }
         //其他权限
         else return ResultUtil.getErrorRes("更新失败：没有权限进行此操作");
-
-        return result;
     }
 
     //删除分店订单
@@ -245,7 +275,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             return ResultUtil.getErrorRes("删除失败：该订单不存在");
 
         //判断该订单是否可以被删除（如果该订单已生成单品采购单，则不能被删除）
-        if(temp_order.getApproved()==1)
+        if(temp_order.getApproved()!=null&&temp_order.getApproved().intValue()==1)
             return ResultUtil.getErrorRes("删除失败：该订单已生成单品采购单，不能删除");
 
         //判断权限

@@ -57,6 +57,7 @@ public class ShopOrderController {
     @RequestMapping("/update")
     @ResponseBody
     public Map getHistory(@RequestBody ShopOrder shopOrder){
+        System.out.println("Update:"+shopOrder);
         Object obj=request.getSession().getAttribute("username");
         if(obj==null)
             return ResultUtil.getErrorRes("操作失败：你还未登陆");
