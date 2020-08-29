@@ -33,14 +33,14 @@ public interface BuyPlanBuyerDao {
     //以id查询
     @Select("select buy_plan_buyer.*,goods.goods_name,account.name " +
             "from buy_plan_buyer,goods,account " +
-            "where `id`=#{id} and goods.goods_id=buy_plan_buyer.goods_id " +
+            "where `id`=#{id} and goods.`goods_id`=buy_plan_buyer.`goods_id` " +
             "and account.username=buy_plan_buyer.buyer_username")
     BuyPlanBuyer selectOneById(@Param("id") int id);
 
     //以方案id查询
     @Select("select buy_plan_buyer.*,goods.goods_name,account.name " +
             "from buy_plan_buyer,goods,account " +
-            "where `buy_plan_id`=#{plan_id} and goods.goods_id=buy_plan_buyer.goods_id " +
+            "where `buy_plan_id`=#{plan_id} and goods.`goods_id`=buy_plan_buyer.`goods_id` " +
             "and account.username=buy_plan_buyer.buyer_username")
     List<BuyPlanBuyer> selectByPlanId(@Param("plan_id") int plan_id);
 }

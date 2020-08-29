@@ -22,7 +22,7 @@ public interface BuyPlanDao {
     boolean delete(@Param("id") int id);
 
     //查询该分店目前最大id
-    @Select("select MAX(id) from shop_order_plan where manager_username=#{username}")
+    @Select("select MAX(id) from buy_plan where manager_username=#{username}")
     int getMaxId(@Param("username") String managerName);
 
     //以id查询

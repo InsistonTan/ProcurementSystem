@@ -18,7 +18,7 @@ import java.util.Map;
  * @date 2020/8/29 21:48
  */
 @Controller
-@RequestMapping("buy_plan")
+@RequestMapping("/buy_plan")
 public class BuyPlanController {
     @Autowired
     private BuyPlanService buyPlanService;

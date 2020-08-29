@@ -28,13 +28,13 @@ public interface ShopOrderPlanDao {
     //以分店编号查询
     @Select("select shop_order_plan.*,shop.shop_name " +
             "from shop_order_plan,shop " +
-            "where `shop_id`=#{shop_id} and shop.shop_id=#{shop_id}")
+            "where shop_order_plan.`shop_id`=#{shop_id} and shop.`shop_id`=#{shop_id}")
     List<ShopOrderPlan> selectByShopID(@Param("shop_id") int shop_id);
 
     //以方案id查询
     @Select("select shop_order_plan.*,shop.shop_name " +
             "from shop_order_plan,shop " +
-            "where `id`=#{id} and shop.shop_id=shop_order_plan.shop_id")
+            "where `id`=#{id} and shop.`shop_id`=shop_order_plan.`shop_id`")
     ShopOrderPlan selectByID(@Param("id") int id);
 
     //修改
