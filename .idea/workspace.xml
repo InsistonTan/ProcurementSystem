@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a72cd5bc-6c37-4f60-99ee-9c0c9f35c403" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/huiduoduo/ProcurementSystem/controller/AccountControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/huiduoduo/ProcurementSystem/controller/AccountControllerTest.java" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="spring-beans.schema" />
+        <option value="Jsp File" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1eO1l2YQJlqMAKdTKfGU8UD3EUY" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/webapp" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.28275862" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\insistonTan\Desktop\IdeaProjects\procurement_system\src\main\webapp" />
+      <recent name="C:\Users\insistonTan\Desktop\IdeaProjects\procurement_system\src\main\resources\static" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\insistonTan\Desktop\IdeaProjects\procurement_system\src\main\webapp" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.AccountControllerTest.getAll">
+    <configuration name="AccountControllerTest.getAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ProcurementSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.huiduoduo.ProcurementSystem.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.huiduoduo.ProcurementSystem.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.huiduoduo.ProcurementSystem.controller.AccountControllerTest" />
+      <option name="METHOD_NAME" value="getAll" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountControllerTests.getAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ProcurementSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.huiduoduo.ProcurementSystem.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.huiduoduo.ProcurementSystem.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.huiduoduo.ProcurementSystem.controller.AccountControllerTests" />
+      <option name="METHOD_NAME" value="getAll" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProcurementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="ProcurementSystem" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.huiduoduo.ProcurementSystem.ProcurementSystemApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServletInitializer" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="ProcurementSystem" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.huiduoduo.ProcurementSystem.ServletInitializer" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProcurementSystem" type="com.poratu.idea.plugins.tomcat" factoryName="SMART_TOMCAT_FACTORY" show_console_on_std_err="false" show_console_on_std_out="false">
+      <option name="adminPort" value="8005" />
+      <option name="allowRunningInParallel" value="false" />
+      <option name="contextPath" value="/ProcurementSystem" />
+      <option name="docBase" value="C:\Users\insistonTan\Desktop\IdeaProjects\ProcurementSystem\src\main\webapp" />
+      <option name="envOptions" />
+      <option name="moduleName" />
+      <option name="passParentEnvironmentVariables" value="true" />
+      <option name="port" value="8080" />
+      <option name="tomcatInfo">
+        <TomcatInfo>
+          <option name="name" value="Apache Tomcat 9.0.26" />
+          <option name="number" value="0" />
+          <option name="path" value="D:\Tomcat9" />
+          <option name="version" value="9.0.26.0" />
+        </TomcatInfo>
+      </option>
+      <option name="vmOptions" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.AccountControllerTests.getAll" />
+      <item itemvalue="JUnit.AccountControllerTest.getAll" />
+      <item itemvalue="Smart Tomcat.ProcurementSystem" />
+      <item itemvalue="Spring Boot.ProcurementSystemApplication" />
+      <item itemvalue="Spring Boot.ServletInitializer" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.AccountControllerTest.getAll" />
+        <item itemvalue="JUnit.AccountControllerTests.getAll" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a72cd5bc-6c37-4f60-99ee-9c0c9f35c403" name="Default Changelist" comment="" />
+      <created>1594177972996</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1594177972996</updated>
+      <workItem from="1594177978930" duration="3336000" />
+      <workItem from="1594181329822" duration="7116000" />
+      <workItem from="1594202842183" duration="2767000" />
+      <workItem from="1594464778524" duration="68000" />
+      <workItem from="1594464935303" duration="5000" />
+      <workItem from="1594471747067" duration="731000" />
+      <workItem from="1594695066970" duration="17000" />
+      <workItem from="1595314165802" duration="2837000" />
+      <workItem from="1595389959389" duration="20000" />
+      <workItem from="1595392186755" duration="1232000" />
+      <workItem from="1597294981614" duration="5793000" />
+      <workItem from="1597301078297" duration="1617000" />
+      <workItem from="1597372768027" duration="3351000" />
+      <workItem from="1597467440720" duration="7158000" />
+      <workItem from="1597480366748" duration="506000" />
+    </task>
+    <task id="LOCAL-00001" summary="first commit">
+      <created>1594187248953</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1594187248953</updated>
+    </task>
+    <task id="LOCAL-00002" summary="first commit">
+      <created>1594187818720</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1594187818720</updated>
+    </task>
+    <task id="LOCAL-00003" summary="first commit">
+      <created>1594187996189</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1594187996189</updated>
+    </task>
+    <task id="LOCAL-00004" summary="first commit">
+      <created>1594188610900</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1594188610900</updated>
+    </task>
+    <task id="LOCAL-00005" summary="first commit">
+      <created>1594203908868</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1594203908868</updated>
+    </task>
+    <task id="LOCAL-00006" summary="first commit">
+      <created>1594203961618</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1594203961618</updated>
+    </task>
+    <task id="LOCAL-00007" summary="first commit">
+      <created>1594204616589</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1594204616589</updated>
+    </task>
+    <task id="LOCAL-00008" summary="添加domain">
+      <created>1597300593214</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1597300593214</updated>
+    </task>
+    <task id="LOCAL-00009" summary="添加domain">
+      <created>1597300787128</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1597300787128</updated>
+    </task>
+    <task id="LOCAL-00010" summary="first commit">
+      <created>1597301355947</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1597301355947</updated>
+    </task>
+    <task id="LOCAL-00011" summary="修改配置文件中，mapper包的路径">
+      <created>1597372975247</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1597372975247</updated>
+    </task>
+    <task id="LOCAL-00012" summary="合并Chony分支">
+      <created>1597480846344</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1597480846344</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="range">
+                    <value>
+                      <list>
+                        <option value="HEAD..origin/Chony" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="OPEN_TABS">
+      <set>
+        <option value="1" />
+      </set>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="添加domain" />
+    <MESSAGE value="first commit" />
+    <MESSAGE value="修改配置文件中，mapper包的路径" />
+    <MESSAGE value="合并Chony分支" />
+    <option name="LAST_COMMIT_MESSAGE" value="合并Chony分支" />
+  </component>
+</project>

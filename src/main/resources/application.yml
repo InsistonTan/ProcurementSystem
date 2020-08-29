@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Tan1763344790
+    url: jdbc:mysql://121.199.76.157:3306/procurement_system?useSSL=false&serverTimezone=Asia/Shanghai
