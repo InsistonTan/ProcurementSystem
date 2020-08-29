@@ -11,12 +11,13 @@ import java.util.Map;
  */
 public class ResultUtil {
     //获取操作失败时的result
-    public static Map getErrorRes(String msg){
-        Map result=new HashMap();
-        result.put("status","failed");
-        result.put("msg",msg);
+    public static Map getErrorRes(String msg) {
+        Map result = new HashMap();
+        result.put("status", "failed");
+        result.put("msg", msg);
         return result;
     }
+
     //获取无返回数据的操作成功时的result
     public static Map getSuccessRes() {
         Map result = new HashMap();
@@ -32,3 +33,5 @@ public class ResultUtil {
         return result;
     }
 }
+
+
