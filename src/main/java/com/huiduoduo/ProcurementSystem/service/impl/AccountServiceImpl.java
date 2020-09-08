@@ -33,20 +33,15 @@ public class AccountServiceImpl implements AccountService {
         if(temp==null)
             return ResultUtil.getErrorRes("用户不存在");
         //用户存在
-        //角色匹配
-        if(account.getRole().equals(temp.getRole())){
-            //验证密码正确
-            if(EncryptionUtil.verify(account.getPassword(),temp.getPassword())){
-                temp.setPassword(null);
-                result.put("status","success");
-                result.put("user",temp);
-                return result;
-            }
-            //密码错误
-            else return ResultUtil.getErrorRes("密码错误");
+        //验证密码正确
+        if(EncryptionUtil.verify(account.getPassword(),temp.getPassword())){
+            temp.setPassword(null);
+            result.put("status","success");
+            result.put("user",temp);
+            return result;
         }
-        //角色不匹配
-        else return ResultUtil.getErrorRes("登陆的账号类型不匹配");
+        //密码错误
+        else return ResultUtil.getErrorRes("密码错误");
     }
 
     @Override

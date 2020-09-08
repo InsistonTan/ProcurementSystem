@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +38,8 @@ public class AccountController {
         Map result;
         //检查登录信息
         System.out.println(account);
-        if(account==null||account.getUsername()==null||account.getPassword()==null||account.getRole()==null)
-            return ResultUtil.getErrorRes("登陆信息中存在空信息");
+        if(account==null||account.getUsername()==null||account.getPassword()==null)
+            return ResultUtil.getErrorRes("登陆失败：登陆信息中存在空信息");
         //登陆
         result=accountService.login(account);
         //获取登陆结果状态
@@ -51,6 +54,23 @@ public class AccountController {
             request.getSession().setAttribute("info",info);
         }
         return result;
+    }
+
+    //退出登录
+    @RequestMapping("/logout")
+    @ResponseBody
+    public Map logout(){
+        //检查登陆状态
+        Object user_obj=request.getSession().getAttribute("username");
+        if(user_obj==null)
+            return ResultUtil.getErrorRes("操作失败：你还未登陆");
+        //注销登陆信息
+        request.getSession().removeAttribute("username");
+        request.getSession().removeAttribute("name");
+        request.getSession().removeAttribute("role");
+        request.getSession().removeAttribute("info");
+        //
+        return ResultUtil.getSuccessRes();
     }
 
     //（管理员）获取所有用户信息
