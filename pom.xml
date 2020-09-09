@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>com.Huiduoduo</groupId>
-    <artifactId>procurement_system</artifactId>
+    <artifactId>ProcurementSystem</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>procurement_system</name>
