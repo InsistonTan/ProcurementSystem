@@ -14,11 +14,14 @@ import java.util.List;
 public interface AccountDao {
 
     //选择所有用户的所有信息(管理员查看)
-    @Select("select * from account")
+    @Select("select account.*,shop.shop_name from " +
+            "(account left join shop on account.shop_id=shop.shop_id)")
     List<Account> selectAll();
 
     //通过账号选择该用户所有信息
-    @Select("select * from account where username=#{username}")
+    @Select("select account.*,shop.shop_name from " +
+            "(account left join shop on account.shop_id=shop.shop_id) " +
+            "where username=#{username}")
     Account selectOneByUsername(@Param("username")String username);
 
     //增加用户

@@ -15,6 +15,7 @@ public class Account implements Serializable {
     private String password;//密码
     private String role;//职务
     private Integer shop_id;//所属分店id
+    private String shop_name;//所属分店名
     private String gender;//性别
     private String name;//真实姓名
     private String phone;//电话
