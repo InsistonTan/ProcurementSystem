@@ -1,14 +1,18 @@
 package com.huiduoduo.ProcurementSystem.service.impl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.huiduoduo.ProcurementSystem.dao.ShopOrderPlanDao;
 import com.huiduoduo.ProcurementSystem.dao.ShopOrderPlanGoodsDao;
 import com.huiduoduo.ProcurementSystem.domain.Account;
 import com.huiduoduo.ProcurementSystem.domain.ShopOrderPlan;
 import com.huiduoduo.ProcurementSystem.domain.ShopOrderPlanGoods;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.Page;
 import com.huiduoduo.ProcurementSystem.service.ShopOrderPlanService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -92,12 +96,21 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
     }
 
     @Override
-    public Map getShopOrderPlans() {
+    public Map getShopOrderPlans(Page page) {
         //检查权限
         Account login_info=getLoginInfo();
         //不是分店用户
         if(!"shop".equals(login_info.getRole()))
             return ResultUtil.getErrorRes("操作失败：没有权限");
+
+        //检查参数
+        if(page.getPage()==0)
+            page.setPage(1);
+        if(page.getLimit()==0)
+            page.setLimit(20);
+
+        //开始分页
+        PageHelper.startPage(page.getPage(),page.getLimit());
 
         //查询
         List<ShopOrderPlan> shopOrderPlans=shopOrderPlanDao.selectByShopID(login_info.getShop_id());
@@ -109,7 +122,15 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
             shopOrderPlans.get(i).setOrder_goods(shopOrderPlanGoods);
         }
 
-        return ResultUtil.getSuccessRes(shopOrderPlans);
+        //生成PageInfo
+        PageInfo<ShopOrderPlan> pageInfo=new PageInfo<>(shopOrderPlans);
+
+        //返回结果
+        Map result=new HashMap();
+        result.put("status","success");
+        result.put("data",shopOrderPlans);
+        result.put("total",pageInfo.getTotal());
+        return result;
     }
 
     @Override

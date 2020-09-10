@@ -1,6 +1,7 @@
 package com.huiduoduo.ProcurementSystem.service;
 
 import com.huiduoduo.ProcurementSystem.domain.ShopOrderPlan;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.Page;
 
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public interface ShopOrderPlanService {
     //删除
     Map delete(ShopOrderPlan orderPlan);
     //查询
-    Map getShopOrderPlans();
+    Map getShopOrderPlans(Page page);
     //修改
     Map update(ShopOrderPlan orderPlan);
 }

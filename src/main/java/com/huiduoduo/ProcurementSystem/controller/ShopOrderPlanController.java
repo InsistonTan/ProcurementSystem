@@ -1,6 +1,7 @@
 package com.huiduoduo.ProcurementSystem.controller;
 
 import com.huiduoduo.ProcurementSystem.domain.ShopOrderPlan;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.Page;
 import com.huiduoduo.ProcurementSystem.service.ShopOrderPlanService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +38,12 @@ public class ShopOrderPlanController {
     //查询
     @RequestMapping("/get")
     @ResponseBody
-    public Map get(){
+    public Map get(@RequestBody Page page){
         if(!checkLogin())
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
         try{
-            return shopOrderPlanService.getShopOrderPlans();
+            return shopOrderPlanService.getShopOrderPlans(page);
         }catch (Exception e){
             e.printStackTrace();
             return ResultUtil.getErrorRes("数据库操作失败");
