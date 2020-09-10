@@ -1,6 +1,7 @@
 package com.huiduoduo.ProcurementSystem.controller;
 
 import com.huiduoduo.ProcurementSystem.domain.BuyPlan;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.Page;
 import com.huiduoduo.ProcurementSystem.service.BuyPlanService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +37,12 @@ public class BuyPlanController {
     //查询
     @RequestMapping("/getAll")
     @ResponseBody
-    public Map getAll(){
+    public Map getAll(@RequestBody Page page){
         if(!checkLogin())
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
         try {
-            return buyPlanService.getBuyPlans();
+            return buyPlanService.getBuyPlans(page);
         }catch (Exception e){
             e.printStackTrace();
             return ResultUtil.getErrorRes("数据库操作失败");

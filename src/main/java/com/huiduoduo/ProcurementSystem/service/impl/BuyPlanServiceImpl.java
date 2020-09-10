@@ -1,17 +1,21 @@
 package com.huiduoduo.ProcurementSystem.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.huiduoduo.ProcurementSystem.dao.AccountDao;
 import com.huiduoduo.ProcurementSystem.dao.BuyPlanBuyerDao;
 import com.huiduoduo.ProcurementSystem.dao.BuyPlanDao;
 import com.huiduoduo.ProcurementSystem.domain.Account;
 import com.huiduoduo.ProcurementSystem.domain.BuyPlan;
 import com.huiduoduo.ProcurementSystem.domain.BuyPlanBuyer;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.Page;
 import com.huiduoduo.ProcurementSystem.service.BuyPlanService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -100,11 +104,20 @@ public class BuyPlanServiceImpl implements BuyPlanService {
     }
 
     @Override
-    public Map getBuyPlans() {
+    public Map getBuyPlans(Page page) {
         //检查权限
         Account login_info=getLoginInfo();
         if(!"manager".equals(login_info.getRole()))
             return ResultUtil.getErrorRes("操作失败：没有权限进行此操作");
+
+        //检查参数
+        if(page.getPage()==0)
+            page.setPage(1);
+        if(page.getLimit()==0)
+            page.setLimit(20);
+
+        //开始分页
+        PageHelper.startPage(page.getPage(),page.getLimit());
 
         //获取方案信息
         List<BuyPlan> buyPlans=buyPlanDao.selectByMangerName(login_info.getUsername());
@@ -116,7 +129,15 @@ public class BuyPlanServiceImpl implements BuyPlanService {
                 buyPlans.get(i).setBuy_plan_buyer(buyPlanBuyers);
             }
 
-        return ResultUtil.getSuccessRes(buyPlans);
+        //生成PageInfo
+        PageInfo<BuyPlan> pageInfo=new PageInfo<>(buyPlans);
+
+        //返回结果
+        Map result=new HashMap();
+        result.put("status","success");
+        result.put("data",buyPlans);
+        result.put("total",pageInfo.getTotal());
+        return result;
     }
 
     @Override
