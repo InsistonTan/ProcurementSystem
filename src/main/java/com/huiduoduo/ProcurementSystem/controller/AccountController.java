@@ -41,7 +41,13 @@ public class AccountController {
         if(account==null||account.getUsername()==null||account.getPassword()==null)
             return ResultUtil.getErrorRes("登陆失败：登陆信息中存在空信息");
         //登陆
-        result=accountService.login(account);
+        try {
+            result=accountService.login(account);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("登录失败：数据库操作失败");
+        }
+
         //获取登陆结果状态
         String status=(String) result.get("status");
         //登陆成功
@@ -89,6 +95,7 @@ public class AccountController {
             result.put("data",data);
             return result;
         }catch (Exception e){
+            e.printStackTrace();
             return ResultUtil.getErrorRes("查询数据库失败");
         }
 
@@ -112,6 +119,7 @@ public class AccountController {
             result.put("data",pageInfo);
             return result;
         }catch (Exception e){
+            e.printStackTrace();
             return ResultUtil.getErrorRes("查询数据库失败");
         }
 
@@ -130,7 +138,13 @@ public class AccountController {
             return ResultUtil.getErrorRes("没有权限进行此操作");
 
         //是管理员
-        result=accountService.addAccount(account);
+        try {
+            result=accountService.addAccount(account);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
         return result;
     }
 
@@ -146,7 +160,12 @@ public class AccountController {
             return ResultUtil.getErrorRes("没有权限进行此操作");
 
         //是管理员
-        result=accountService.deleteAccount(account);
+        try {
+            result=accountService.deleteAccount(account);
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
         //返回结果
         return result;
     }
@@ -161,7 +180,13 @@ public class AccountController {
         if(obj_username==null)
             return ResultUtil.getErrorRes("你还没有登陆");
         //
-        result=accountService.updateAccount(account);
+        try {
+            result=accountService.updateAccount(account);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
         return result;
     }
 }

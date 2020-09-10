@@ -13,10 +13,26 @@ import java.util.List;
 @Mapper
 public interface AccountDao {
 
-    //选择所有用户的所有信息(管理员查看)
+    //选择所有用户的所有信息(管理员查看),按照中文排序
     @Select("select account.*,shop.shop_name from " +
-            "(account left join shop on account.shop_id=shop.shop_id)")
+            "(account left join shop on account.shop_id=shop.shop_id) " +
+            "order by convert(name USING gbk)")
     List<Account> selectAll();
+
+    //名字模糊选择用户的所有信息(管理员查看),按照中文排序
+    @Select("select account.*,shop.shop_name from " +
+            "(account left join shop on account.shop_id=shop.shop_id) " +
+            "where name like '%${name}%' " +
+            "order by convert(name USING gbk)")
+    List<Account> selectAllByName(@Param("name") String name);
+
+    //按角色选择用户的所有信息(管理员查看),按照中文排序
+    @Select("select account.*,shop.shop_name from " +
+            "(account left join shop on account.shop_id=shop.shop_id) " +
+            "where role=#{role} " +
+            "order by convert(name USING gbk)")
+    List<Account> selectAllByRole(@Param("role") String role);
+
 
     //通过账号选择该用户所有信息
     @Select("select account.*,shop.shop_name from " +

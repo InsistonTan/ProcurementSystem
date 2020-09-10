@@ -118,8 +118,17 @@ public class AccountServiceImpl implements AccountService {
     //分页查询
     @Override
     public PageInfo<Account> selectAllByPage(Account input) {
+        //开始分页
         PageHelper.startPage(input.getPageNum(),input.getPageSize());
-        List<Account> data=accountDao.selectAll();
+        List<Account> data=null;
+        //检查参数
+        if(input.getName()!=null&&!"".equals(input.getName()))
+            data=accountDao.selectAllByName(input.getName());
+        else if(input.getRole()!=null&&!"".equals(input.getRole()))
+            data=accountDao.selectAllByRole(input.getRole());
+        else
+            data=accountDao.selectAll();
+        //
         PageInfo<Account> pageInfo=new PageInfo<>(data);
         return pageInfo;
     }
