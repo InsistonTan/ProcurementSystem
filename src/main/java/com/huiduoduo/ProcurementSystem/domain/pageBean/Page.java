@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 @Data
 public class Page implements Serializable {
-    protected int pageNum;//当前页码
-    protected int pageSize;//页的大小
+    protected int page;//当前页码
+    protected int limit;//页的大小
     protected String sort;//升序或降序，"+id"为升序
 }
