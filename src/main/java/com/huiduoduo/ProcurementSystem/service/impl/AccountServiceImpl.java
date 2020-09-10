@@ -48,7 +48,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<Account> selectAll() {
-        return accountDao.selectAll();
+        return accountDao.selectAll("asc");
     }
 
     @Override
@@ -118,16 +118,27 @@ public class AccountServiceImpl implements AccountService {
     //分页查询
     @Override
     public PageInfo<Account> selectAllByPage(Account input) {
+        //检查参数
+        if(input.getPage()==0)
+            input.setPage(1);
+        if(input.getLimit()==0)
+            input.setLimit(20);
+        //检查排序
+        if("-name".equals(input.getSort()))
+            input.setSort("desc");//倒序
+        else
+            input.setSort("asc");//正序
+
         //开始分页
-        PageHelper.startPage(input.getPageNum(),input.getPageSize());
-        List<Account> data=null;
+        PageHelper.startPage(input.getPage(),input.getLimit());
+        List<Account> data;
         //检查参数
         if(input.getName()!=null&&!"".equals(input.getName()))
-            data=accountDao.selectAllByName(input.getName());
+            data=accountDao.selectAllByName(input.getName(),input.getSort());
         else if(input.getRole()!=null&&!"".equals(input.getRole()))
-            data=accountDao.selectAllByRole(input.getRole());
+            data=accountDao.selectAllByRole(input.getRole(),input.getSort());
         else
-            data=accountDao.selectAll();
+            data=accountDao.selectAll(input.getSort());
         //
         PageInfo<Account> pageInfo=new PageInfo<>(data);
         return pageInfo;

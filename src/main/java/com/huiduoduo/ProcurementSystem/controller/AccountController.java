@@ -80,7 +80,7 @@ public class AccountController {
     }
 
     //（管理员）获取所有用户信息
-    @RequestMapping("/getAllUser")
+    /*@RequestMapping("/getAllUser")
     @ResponseBody
     public Map getAllUser(){
         Map result=new HashMap();
@@ -100,12 +100,12 @@ public class AccountController {
         }
 
         //System.out.println(res);
-    }
+    }*/
 
     //分页（管理员）获取所有用户信息
-    @RequestMapping("/getAllUserByPage")
+    @RequestMapping("/getAllUser")
     @ResponseBody
-    public Map getAllUserByPage(@RequestBody Account input){
+    public Map getAllUser(@RequestBody Account input){
         //
         Map result=new HashMap();
         //检查权限
@@ -114,9 +114,10 @@ public class AccountController {
             return ResultUtil.getErrorRes("没有权限进行此操作");
         //
         try{
-            PageInfo pageInfo=accountService.selectAllByPage(input);
+            PageInfo<Account> pageInfo=accountService.selectAllByPage(input);
             result.put("status","success");
-            result.put("data",pageInfo);
+            result.put("data",pageInfo.getList());
+            result.put("total",pageInfo.getTotal());
             return result;
         }catch (Exception e){
             e.printStackTrace();
