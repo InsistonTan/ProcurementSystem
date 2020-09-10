@@ -1,5 +1,5 @@
 package com.huiduoduo.ProcurementSystem.domain;
-
+import com.huiduoduo.ProcurementSystem.domain.pageBean.Page;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @date 2020/8/13 13:10
  */
 @Data
-public class Account implements Serializable {
+public class Account extends Page implements Serializable {
     private String username;//账号
     private String password;//密码
     private String role;//职务
