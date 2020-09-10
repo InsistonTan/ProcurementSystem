@@ -1,6 +1,7 @@
 package com.huiduoduo.ProcurementSystem.controller;
 
 import com.huiduoduo.ProcurementSystem.domain.ShopOrder;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.ShopOrderPage;
 import com.huiduoduo.ProcurementSystem.service.ShopOrderService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,35 +25,22 @@ public class ShopOrderController {
     @Autowired
     private HttpServletRequest request;
 
-    @RequestMapping("/history")
+    @RequestMapping("/getAll")
     @ResponseBody
-    public Map getHistory(){
+    public Map getHistory(@RequestBody ShopOrderPage page){
         Object obj=request.getSession().getAttribute("username");
         if(obj==null)
             return ResultUtil.getErrorRes("操作失败：你还未登陆");
         //
         try {
-            return shopOrderService.getHistory();
+            if(page.isHistory())
+                return shopOrderService.getHistory(page);
+            else
+                return shopOrderService.getOngoing(page);
         }catch (Exception e){
             e.printStackTrace();
             return ResultUtil.getErrorRes("数据库操作失败");
         }
-    }
-
-    @RequestMapping("/ongoing")
-    @ResponseBody
-    public Map getOngoing(){
-        Object obj=request.getSession().getAttribute("username");
-        if(obj==null)
-            return ResultUtil.getErrorRes("操作失败：你还未登陆");
-        //
-        try {
-            return shopOrderService.getOngoing();
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResultUtil.getErrorRes("数据库操作失败");
-        }
-
     }
 
     @RequestMapping("/create")

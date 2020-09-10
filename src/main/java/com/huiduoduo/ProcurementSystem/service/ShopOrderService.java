@@ -1,6 +1,8 @@
 package com.huiduoduo.ProcurementSystem.service;
 
+import com.github.pagehelper.PageInfo;
 import com.huiduoduo.ProcurementSystem.domain.ShopOrder;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.ShopOrderPage;
 
 import java.util.List;
 import java.util.Map;
@@ -20,9 +22,9 @@ public interface ShopOrderService {
     //删除
     Map deleteShopOrder(ShopOrder shopOrder);
     //查看历史订单
-    Map getHistory();
+    Map getHistory(ShopOrderPage page);
     //查看正在进行的订单
-    Map getOngoing();
+    Map getOngoing(ShopOrderPage page);
     //确认完成订单
     Map confirmShopOrder(ShopOrder shopOrder);
 }

@@ -1,10 +1,13 @@
 package com.huiduoduo.ProcurementSystem.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.huiduoduo.ProcurementSystem.dao.GoodsOrderDao;
 import com.huiduoduo.ProcurementSystem.dao.ShopOrderDao;
 import com.huiduoduo.ProcurementSystem.domain.Account;
 import com.huiduoduo.ProcurementSystem.domain.GoodsOrder;
 import com.huiduoduo.ProcurementSystem.domain.ShopOrder;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.ShopOrderPage;
 import com.huiduoduo.ProcurementSystem.service.ShopOrderService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
 import com.huiduoduo.ProcurementSystem.utils.TimeUtil;
@@ -293,21 +296,55 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             return ResultUtil.getErrorRes("删除失败：更新数据库失败");
     }
 
+    //对分页查询进行参数预处理
+    public ShopOrderPage doPage(ShopOrderPage page){
+        //处理输入参数
+        if(page.getPage()==0)
+            page.setPage(1);
+        if(page.getLimit()==0)
+            page.setLimit(20);
+        if(page.getSearch()==null||"".equals(page.getSearch()))
+            page.setSearch("");
+        if("-id".equals(page.getSort()))
+            page.setSort("desc");
+        else
+            page.setSort("asc");
+        //处理时间条件
+        String condition ="";//时间条件
+        Date startDate=page.getTimeBegin();
+        Date endDate=page.getTimeEnd();
+        if(startDate!=null){
+            condition+=" and start_time>'"+TimeUtil.getTime(startDate,"yyyy-MM-dd HH:mm:ss")+"'";
+        }
+        if(endDate!=null){
+            condition+=" and end_time<'"+TimeUtil.getTime(endDate,"yyyy-MM-dd HH:mm:ss")+"'";
+        }
+        page.setTimeCondition(condition);
+
+        return page;
+    }
     //获取历史分店订单
     @Override
-    public Map getHistory() {
+    public Map getHistory(ShopOrderPage page) {
         //登陆信息
         Account login_info=(Account) request.getSession().getAttribute("info");
         String role=login_info.getRole();
 
+        //对输入参数进行预处理
+        page=doPage(page);
+
+        //开始分页处理
+        PageHelper.startPage(page.getPage(),page.getLimit());
         //获取历史订单
         List<ShopOrder> shopOrders;
         //采购经理
-        if(role.equals("manager"))
-            shopOrders=shopOrderDao.selectAllHistory();
+        if(role.equals("manager")){
+            shopOrders=shopOrderDao.selectAllHistory(page.getTimeCondition(),page.getSearch(),page.getSort());
+        }
         //分店
-        else if(role.equals("shop"))
-            shopOrders=shopOrderDao.selectHistoryByShopID(login_info.getShop_id());
+        else if(role.equals("shop")){
+            shopOrders=shopOrderDao.selectHistoryByShopID(login_info.getShop_id(),page.getTimeCondition(),page.getSearch(),page.getSort());
+        }
         //
         else return ResultUtil.getErrorRes("获取失败：权限不足");
 
@@ -320,26 +357,41 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                 shopOrders.get(i).setGoods_order(goodsOrders);
             }
         }
+
+        //生成PageInfo
+        PageInfo<ShopOrder> pageInfo=new PageInfo<>(shopOrders);
+
         //返回结果
-        return ResultUtil.getSuccessRes(shopOrders);
+        Map result=new HashMap();
+        result.put("status","success");
+        result.put("data",shopOrders);
+        result.put("total",pageInfo.getTotal());
+        return result;
     }
 
     //获取正在进行的订单
     @Override
-    public Map getOngoing() {
+    public Map getOngoing(ShopOrderPage page) {
         //登陆信息
         Account login_info=(Account) request.getSession().getAttribute("info");
         String role=login_info.getRole();
 
-        //获取正在进行的分店订单
+        //对输入参数进行预处理
+        page=doPage(page);
+
+        //开始分页处理
+        PageHelper.startPage(page.getPage(),page.getLimit());
+        //获取历史订单
         List<ShopOrder> shopOrders;
         //采购经理
-        if(role.equals("manager"))
-            shopOrders=shopOrderDao.selectAllOnGoing();
-            //分店
-        else if(role.equals("shop"))
-            shopOrders=shopOrderDao.selectOnGoingByShopID(login_info.getShop_id());
-            //
+        if(role.equals("manager")){
+            shopOrders=shopOrderDao.selectAllOnGoing(page.getSearch(),page.getSort());
+        }
+        //分店
+        else if(role.equals("shop")){
+            shopOrders=shopOrderDao.selectOnGoingByShopID(login_info.getShop_id(),page.getSearch(),page.getSort());
+        }
+        //
         else return ResultUtil.getErrorRes("获取失败：权限不足");
 
         //获取订单的具体订货信息
@@ -351,8 +403,16 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                 shopOrders.get(i).setGoods_order(goodsOrders);
             }
         }
+
+        //生成PageInfo
+        PageInfo<ShopOrder> pageInfo=new PageInfo<>(shopOrders);
+
         //返回结果
-        return ResultUtil.getSuccessRes(shopOrders);
+        Map result=new HashMap();
+        result.put("status","success");
+        result.put("data",shopOrders);
+        result.put("total",pageInfo.getTotal());
+        return result;
     }
 
     //分店确认完成订单

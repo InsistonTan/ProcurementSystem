@@ -24,32 +24,42 @@ public interface ShopOrderDao {
     //选择某个门店的历史订单
     @Select("select shop_order.*,shop.shop_name " +
             "from shop_order,shop " +
-            "where shop_order.`shop_id`=#{id} and start_time IS NOT NULL and end_time IS NOT NULL " +
+            "where end_time IS NOT NULL and shop_order.`shop_id`=#{id} " +
+            "and order_id like '%${key}%' " + //模糊搜索 order_id
+            "${condition} " + //condition为筛选的时间条件
             "and shop.shop_id=shop_order.shop_id " +
-            "order by end_time desc")
-    List<ShopOrder> selectHistoryByShopID(@Param("id") int shop_id);
+            "order by order_id ${sort}")
+    List<ShopOrder> selectHistoryByShopID(@Param("id") int shop_id,@Param("condition")String condition,@Param("key") String key,@Param("sort") String sort);
 
     //选择所有门店的历史订单
     @Select("select shop_order.*,shop.shop_name " +
             "from shop_order,shop " +
-            "where start_time IS NOT NULL and end_time IS NOT NULL and shop.shop_id=shop_order.shop_id " +
-            "order by end_time desc")
-    List<ShopOrder> selectAllHistory();
+            "where end_time IS NOT NULL " +
+            "and (order_id like '%${key}%' " +//模糊搜索 order_id
+            "or (shop.shop_name like '%${key}%' and shop_order.shop_id=shop.shop_id)) " + //模糊搜索 shop_name
+            "${condition} " + //condition为筛选的时间条件
+            "and shop.shop_id=shop_order.shop_id " +
+            "order by order_id ${sort}") //sort为排序
+    List<ShopOrder> selectAllHistory(@Param("condition")String condition,@Param("key") String key,@Param("sort") String sort);
 
     //选择某个门店的正在进行的订单
     @Select("select shop_order.*,shop.shop_name " +
             "from shop_order,shop " +
-            "where shop_order.`shop_id`=#{id} and start_time IS NOT NULL and end_time IS NULL " +
+            "where end_time IS NULL and shop_order.`shop_id`=#{id} " +
+            "and order_id like '%${key}%' " + //模糊搜索 order_id
             "and shop.shop_id=shop_order.shop_id " +
-            "order by start_time desc")
-    List<ShopOrder> selectOnGoingByShopID(@Param("id") int shop_id);
+            "order by order_id ${sort}")
+    List<ShopOrder> selectOnGoingByShopID(@Param("id") int shop_id,@Param("key") String key,@Param("sort") String sort);
 
     //选择所有门店的正在进行的订单
     @Select("select shop_order.*,shop.shop_name " +
             "from shop_order,shop " +
-            "where and start_time IS NOT NULL and end_time IS NULL and shop.shop_id=shop_order.shop_id " +
-            "order by start_time desc")
-    List<ShopOrder> selectAllOnGoing();
+            "where end_time IS NULL " +
+            "and (order_id like '%${key}%' " +//模糊搜索 order_id
+            "or (shop.shop_name like '%${key}%' and shop_order.shop_id=shop.shop_id)) " + //模糊搜索 shop_name
+            "and shop.shop_id=shop_order.shop_id " +
+            "order by order_id ${sort}")
+    List<ShopOrder> selectAllOnGoing(@Param("key") String key,@Param("sort") String sort);
 
     //（分店）修改订单信息
     @Update("update shop_order set shop_note=#{shop_note} " +
