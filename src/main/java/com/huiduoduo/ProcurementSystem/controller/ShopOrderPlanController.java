@@ -41,7 +41,13 @@ public class ShopOrderPlanController {
         if(!checkLogin())
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return shopOrderPlanService.getShopOrderPlans();
+        try{
+            return shopOrderPlanService.getShopOrderPlans();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
     //添加
@@ -51,7 +57,13 @@ public class ShopOrderPlanController {
         if(!checkLogin())
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return shopOrderPlanService.add(shopOrderPlan);
+        try {
+            return shopOrderPlanService.add(shopOrderPlan);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
     //修改
@@ -61,7 +73,13 @@ public class ShopOrderPlanController {
         if(!checkLogin())
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return shopOrderPlanService.update(shopOrderPlan);
+        try {
+            return shopOrderPlanService.update(shopOrderPlan);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
     //删除
@@ -71,7 +89,13 @@ public class ShopOrderPlanController {
         if(!checkLogin())
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return shopOrderPlanService.delete(shopOrderPlan);
+        try {
+            return shopOrderPlanService.delete(shopOrderPlan);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
 }

@@ -31,7 +31,12 @@ public class ShopOrderController {
         if(obj==null)
             return ResultUtil.getErrorRes("操作失败：你还未登陆");
         //
-        return shopOrderService.getHistory();
+        try {
+            return shopOrderService.getHistory();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
     }
 
     @RequestMapping("/ongoing")
@@ -41,7 +46,13 @@ public class ShopOrderController {
         if(obj==null)
             return ResultUtil.getErrorRes("操作失败：你还未登陆");
         //
-        return shopOrderService.getOngoing();
+        try {
+            return shopOrderService.getOngoing();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
     @RequestMapping("/create")
@@ -51,7 +62,13 @@ public class ShopOrderController {
         if(obj==null)
             return ResultUtil.getErrorRes("操作失败：你还未登陆");
         //
-        return shopOrderService.addShopOrder(shopOrder);
+        try{
+            return shopOrderService.addShopOrder(shopOrder);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
     @RequestMapping("/update")
@@ -62,7 +79,13 @@ public class ShopOrderController {
         if(obj==null)
             return ResultUtil.getErrorRes("操作失败：你还未登陆");
         //
-        return shopOrderService.updateShopOrder(shopOrder);
+        try {
+            return shopOrderService.updateShopOrder(shopOrder);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
     @RequestMapping("/delete")
@@ -72,7 +95,13 @@ public class ShopOrderController {
         if(obj==null)
             return ResultUtil.getErrorRes("操作失败：你还未登陆");
         //
-        return shopOrderService.deleteShopOrder(shopOrder);
+        try{
+            return shopOrderService.deleteShopOrder(shopOrder);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
     @RequestMapping("/confirm")
@@ -82,7 +111,12 @@ public class ShopOrderController {
         if(obj==null)
             return ResultUtil.getErrorRes("操作失败：你还未登陆");
         //
-        return shopOrderService.confirmShopOrder(shopOrder);
+        try{
+            return shopOrderService.confirmShopOrder(shopOrder);
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
     }
 
     @RequestMapping("/approve")
@@ -92,7 +126,13 @@ public class ShopOrderController {
         if(obj==null)
             return ResultUtil.getErrorRes("操作失败：你还未登陆");
         //
-        return shopOrderService.approved(shop_order);
+        try {
+            return shopOrderService.approved(shop_order);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
 }

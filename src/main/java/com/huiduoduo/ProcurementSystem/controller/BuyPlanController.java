@@ -40,7 +40,12 @@ public class BuyPlanController {
         if(!checkLogin())
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return buyPlanService.getBuyPlans();
+        try {
+            return buyPlanService.getBuyPlans();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
     }
 
     //添加
@@ -50,7 +55,12 @@ public class BuyPlanController {
         if(!checkLogin())
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return buyPlanService.add(buyPlan);
+        try {
+            return buyPlanService.add(buyPlan);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
     }
 
     //修改
@@ -60,7 +70,12 @@ public class BuyPlanController {
         if(!checkLogin())
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return buyPlanService.update(buyPlan);
+        try{
+            return buyPlanService.update(buyPlan);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
     }
 
     //删除
@@ -70,6 +85,11 @@ public class BuyPlanController {
         if(!checkLogin())
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return buyPlanService.delete(buyPlan);
+        try {
+            return buyPlanService.delete(buyPlan);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
     }
 }

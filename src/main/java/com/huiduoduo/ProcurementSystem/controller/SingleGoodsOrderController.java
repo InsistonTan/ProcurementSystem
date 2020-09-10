@@ -42,7 +42,13 @@ public class SingleGoodsOrderController {
         if(checkLogin()==false)
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return singleGoodsOrderService.addSingleOrder(shopOrders);
+        try{
+            return singleGoodsOrderService.addSingleOrder(shopOrders);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
     //为单品采购单分配采购员
@@ -53,7 +59,13 @@ public class SingleGoodsOrderController {
         if(checkLogin()==false)
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return singleGoodsOrderService.distribute(orders);
+        try {
+            return singleGoodsOrderService.distribute(orders);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
     //为单品采购单分配采购员
@@ -64,7 +76,13 @@ public class SingleGoodsOrderController {
         if(checkLogin()==false)
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return singleGoodsOrderService.delete(order);
+        try {
+            return singleGoodsOrderService.delete(order);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
     //查询历史
@@ -75,7 +93,13 @@ public class SingleGoodsOrderController {
         if(checkLogin()==false)
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return singleGoodsOrderService.selectHistory();
+        try {
+            return singleGoodsOrderService.selectHistory();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
     //正在进行的
@@ -86,7 +110,13 @@ public class SingleGoodsOrderController {
         if(checkLogin()==false)
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return singleGoodsOrderService.selectOngoing();
+        try {
+            return singleGoodsOrderService.selectOngoing();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
     //采购员确认实际收货信息
@@ -97,7 +127,13 @@ public class SingleGoodsOrderController {
         if(checkLogin()==false)
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return singleGoodsOrderService.updateBuyRes(order);
+        try {
+            return singleGoodsOrderService.updateBuyRes(order);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 
     //更新采购状态（进度）
@@ -108,6 +144,12 @@ public class SingleGoodsOrderController {
         if(checkLogin()==false)
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
-        return singleGoodsOrderService.updateStatus(order);
+        try {
+            return singleGoodsOrderService.updateStatus(order);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("数据库操作失败");
+        }
+
     }
 }
