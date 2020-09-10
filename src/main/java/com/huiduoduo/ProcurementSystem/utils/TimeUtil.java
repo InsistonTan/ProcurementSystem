@@ -18,4 +18,11 @@ public class TimeUtil {
         dateFormat.setTimeZone(timeZone);
         return dateFormat.format(new Date());
     }
+
+    //转换输入的 date的时间模式
+    public static String getTime(Date date,String pattern){
+        SimpleDateFormat dateFormat=new SimpleDateFormat(pattern);
+        dateFormat.setTimeZone(timeZone);
+        return dateFormat.format(date);
+    }
 }
