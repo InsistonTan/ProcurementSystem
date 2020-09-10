@@ -1,4 +1,5 @@
 package com.huiduoduo.ProcurementSystem.service;
+import com.github.pagehelper.PageInfo;
 import com.huiduoduo.ProcurementSystem.domain.Account;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ public interface AccountService {
 
     //选择所有用户的所有信息(管理员查看)
     List<Account> selectAll();
+    //分页查询所有用户的所有信息(管理员查看)
+    PageInfo<Account> selectAllByPage(Account input);
 
     //增加用户
     Map addAccount(Account account);

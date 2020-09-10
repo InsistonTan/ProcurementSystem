@@ -1,12 +1,12 @@
 package com.huiduoduo.ProcurementSystem.controller;
+import com.github.pagehelper.PageInfo;
 import com.huiduoduo.ProcurementSystem.domain.Account;
 import com.huiduoduo.ProcurementSystem.service.AccountService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -89,7 +89,30 @@ public class AccountController {
             result.put("data",data);
             return result;
         }catch (Exception e){
-            return ResultUtil.getErrorRes("添加进数据库失败");
+            return ResultUtil.getErrorRes("查询数据库失败");
+        }
+
+        //System.out.println(res);
+    }
+
+    //分页（管理员）获取所有用户信息
+    @RequestMapping("/getAllUserByPage")
+    @ResponseBody
+    public Map getAllUserByPage(@RequestBody Account input){
+        //
+        Map result=new HashMap();
+        //检查权限
+        String login_role=(String) request.getSession().getAttribute("role");
+        if(!"admin".equalsIgnoreCase(login_role))
+            return ResultUtil.getErrorRes("没有权限进行此操作");
+        //
+        try{
+            PageInfo pageInfo=accountService.selectAllByPage(input);
+            result.put("status","success");
+            result.put("data",pageInfo);
+            return result;
+        }catch (Exception e){
+            return ResultUtil.getErrorRes("查询数据库失败");
         }
 
         //System.out.println(res);

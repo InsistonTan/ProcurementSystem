@@ -1,4 +1,6 @@
 package com.huiduoduo.ProcurementSystem.service.impl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.huiduoduo.ProcurementSystem.domain.Account;
 import com.huiduoduo.ProcurementSystem.dao.AccountDao;
 import com.huiduoduo.ProcurementSystem.service.AccountService;
@@ -112,7 +114,17 @@ public class AccountServiceImpl implements AccountService {
         else
             return ResultUtil.getErrorRes("更新失败:数据库修改失败");
     }
-    private Account getUpdatedAccount(String role,Account oldAccount,Account newAccount){
+
+    //分页查询
+    @Override
+    public PageInfo<Account> selectAllByPage(Account input) {
+        PageHelper.startPage(input.getPageNum(),input.getPageSize());
+        List<Account> data=accountDao.selectAll();
+        PageInfo<Account> pageInfo=new PageInfo<>(data);
+        return pageInfo;
+    }
+
+    private Account getUpdatedAccount(String role, Account oldAccount, Account newAccount){
         String newPass=newAccount.getPassword();
         //如果新密码为空，则保留之前的密码
         if(newPass==null||"".equals(newPass)){
