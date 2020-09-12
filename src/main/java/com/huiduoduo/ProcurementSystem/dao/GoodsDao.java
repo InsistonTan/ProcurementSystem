@@ -13,8 +13,16 @@ import java.util.List;
 @Mapper
 public interface GoodsDao {
     //查询所有货品
-    @Select("SELECT * FROM goods")
-    List<Goods> selectAll();
+    @Select("SELECT goods.*,type_name FROM goods LEFT JOIN goods_type ON goods_type_id=type_id " +
+            "WHERE goods_id=#{search} OR goods_name LIKE CONCAT('%',#{search},'%')")
+    List<Goods> selectAll(String search);
+
+    //按货物类型分类查询
+    @Select("SELECT goods.*,type_name FROM goods LEFT JOIN goods_type ON goods_type_id=type_id " +
+            "WHERE (goods_id=#{search} OR goods_name LIKE CONCAT('%',#{search},'%')) " +
+            "AND goods_type_id LIKE CONCAT(#{goods_type_id},'%')")
+    List<Goods> selectAllByType(String search,Integer goods_type_id);
+
 
     @Select("SELECT * FROM goods WHERE goods_name=#{goods_name}")
     Goods selectByName(String goods_name);

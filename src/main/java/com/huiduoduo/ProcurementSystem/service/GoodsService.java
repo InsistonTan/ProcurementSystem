@@ -1,6 +1,7 @@
 package com.huiduoduo.ProcurementSystem.service;
 
 import com.huiduoduo.ProcurementSystem.domain.Goods;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.GoodsPage;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.Map;
  */
 public interface GoodsService {
     //查看所有货品
-    List<Goods> getAllGoods();
+    Map getAllGoods(GoodsPage goodsPage);
 
     //增加货品
     Map addGoods(Goods goods);

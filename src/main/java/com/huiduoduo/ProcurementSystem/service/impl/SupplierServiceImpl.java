@@ -1,13 +1,18 @@
 package com.huiduoduo.ProcurementSystem.service.impl;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.huiduoduo.ProcurementSystem.dao.SupplierDao;
 import com.huiduoduo.ProcurementSystem.domain.Supplier;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.SearchPage;
 import com.huiduoduo.ProcurementSystem.service.SupplierService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
+import com.huiduoduo.ProcurementSystem.utils.SortStringUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +27,46 @@ public class SupplierServiceImpl implements SupplierService {
 
 
     @Override
-    public List<Supplier> getAllSupplier() {
+    public Map getAllSupplier(SearchPage searchPage) {
 
-        return supplierDao.selectAll();
+        //检查参数
+
+        if(searchPage.getPage() == null || searchPage.getPage() == 0)
+            searchPage.setPage(1);
+        if(searchPage.getLimit() == null || searchPage.getLimit() == 0)
+            searchPage.setLimit(20);
+
+        //判断搜索内容
+        if(searchPage.getSearch() == null)
+            searchPage.setSearch("");
+
+        String sort = searchPage.getSort();
+        //判断是否是默认排序
+        if (sort == null || sort.length() == 0)
+            sort="+id";
+
+        //处理排序语句
+        try {
+            sort = SortStringUtil.replace(sort);
+        }   catch (Exception e) {
+            return ResultUtil.getErrorRes("错误的排序表达式");
+        }
+
+        //开始分页
+        PageHelper.startPage(searchPage.getPage(),searchPage.getLimit(),sort);
+
+        List data = supplierDao.selectAll(searchPage.getSearch());
+
+
+        //生成PageInfo
+        PageInfo pageInfo=new PageInfo<>(data);
+        //返回结果
+        Map result=new HashMap();
+        result.put("status","success");
+        result.put("data",data);
+        result.put("total",pageInfo.getTotal());
+
+        return result;
     }
 
     @Override

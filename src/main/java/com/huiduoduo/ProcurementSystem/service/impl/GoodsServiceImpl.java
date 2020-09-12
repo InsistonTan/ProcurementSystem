@@ -1,15 +1,21 @@
 package com.huiduoduo.ProcurementSystem.service.impl;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.huiduoduo.ProcurementSystem.dao.GoodsDao;
 import com.huiduoduo.ProcurementSystem.dao.GoodsTypeDao;
 import com.huiduoduo.ProcurementSystem.domain.Goods;
+import com.huiduoduo.ProcurementSystem.domain.ShopOrder;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.GoodsPage;
 import com.huiduoduo.ProcurementSystem.service.GoodsService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
+import com.huiduoduo.ProcurementSystem.utils.SortStringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +29,50 @@ public class GoodsServiceImpl implements GoodsService {
     private GoodsDao goodsDao;
     
     @Override
-    public List<Goods> getAllGoods() {
-        return goodsDao.selectAll();
+    public Map getAllGoods(GoodsPage goodsPage) {
+        //检查参数
+        if(goodsPage.getPage() == null || goodsPage.getPage() == 0)
+            goodsPage.setPage(1);
+        if(goodsPage.getLimit() == null || goodsPage.getLimit() == 0)
+            goodsPage.setLimit(20);
+
+        //判断搜索内容
+        if(goodsPage.getSearch() == null)
+            goodsPage.setSearch("");
+
+        String sort = goodsPage.getSort();
+        //判断是否是默认排序
+        if (sort == null || sort.length() == 0)
+            sort="+goods_id";
+
+        //处理排序语句
+        try {
+            sort = SortStringUtil.replace(sort);
+        }   catch (Exception e) {
+            return ResultUtil.getErrorRes("错误的排序表达式");
+        }
+
+        //开始分页
+        PageHelper.startPage(goodsPage.getPage(),goodsPage.getLimit(),sort);
+
+        List goods = null;
+
+        //判断是否要按货物类型分类查询
+        if(goodsPage.getGoods_type_id()!=null && goodsPage.getGoods_type_id()>=0) {
+            goods = goodsDao.selectAllByType(goodsPage.getSearch(),goodsPage.getGoods_type_id());
+        }else{
+            goods = goodsDao.selectAll(goodsPage.getSearch());
+        }
+
+        //生成PageInfo
+        PageInfo pageInfo=new PageInfo<>(goods);
+        //返回结果
+        Map result=new HashMap();
+        result.put("status","success");
+        result.put("data",goods);
+        result.put("total",pageInfo.getTotal());
+
+        return result;
     }
 
     @Override
