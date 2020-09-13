@@ -150,7 +150,7 @@ public class AccountController {
     }
 
     //（管理员）删除用户
-    @RequestMapping("/deleteUser")
+    @RequestMapping("/delUser")
     @ResponseBody
     public Map deleteUser(@RequestBody Account account){
         Map result;

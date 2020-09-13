@@ -140,6 +140,9 @@ public class AccountServiceImpl implements AccountService {
         else
             data=accountDao.selectAll(input.getSort());
         //
+        for(Account account:data)
+            account.setPassword(null);
+        //
         PageInfo<Account> pageInfo=new PageInfo<>(data);
         return pageInfo;
     }
@@ -154,10 +157,16 @@ public class AccountServiceImpl implements AccountService {
             //密码加密
             newAccount.setPassword(EncryptionUtil.encryptText(newPass));
         }
+
         //如果新的真实姓名为空，则也保留之前的
         String newName=newAccount.getName();
         if(newName==null||"".equals(newName))
             newAccount.setName(oldAccount.getName());
+
+        //如果新的role为空或者不符合要求，则保留以前的
+        String newRole=newAccount.getRole();
+        if(newRole==null||(!newRole.equals("admin")&&!newRole.equals("manager")&&!newRole.equals("shop")&&!newRole.equals("buyer")))
+            newAccount.setRole(oldAccount.getRole());
 
         //管理员
         if(role.equalsIgnoreCase("admin")){
