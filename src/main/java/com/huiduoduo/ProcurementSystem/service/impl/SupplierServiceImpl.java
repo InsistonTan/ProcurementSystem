@@ -71,8 +71,6 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Map addSupplier(Supplier supplier) {
-        if(supplier.getId() == null || supplier.getId() <= 0)
-            return ResultUtil.getErrorRes("添加失败:请输入正确的id");
 
         if(supplierDao.selectByName(supplier.getSupplier_name()) != null)
             return ResultUtil.getErrorRes("添加失败:名字不能重复");
