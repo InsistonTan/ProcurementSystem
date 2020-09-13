@@ -12,8 +12,8 @@ import java.util.List;
 @Mapper
 public interface SupplierDao {
     //查询所有供应商
-    @Select("SELECT * FROM supplier")
-    List<Supplier> selectAll();
+    @Select("SELECT * FROM supplier WHERE id=#{search} OR supplier_name LIKE CONCAT('%',#{search},'%')")
+    List<Supplier> selectAll(String search);
 
     @Select("SELECT * FROM supplier WHERE supplier_name=#{supplier_name}")
     Supplier selectByName(String supplier_name);

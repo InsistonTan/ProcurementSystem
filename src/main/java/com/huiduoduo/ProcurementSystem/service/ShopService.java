@@ -1,6 +1,7 @@
 package com.huiduoduo.ProcurementSystem.service;
 
 import com.huiduoduo.ProcurementSystem.domain.Shop;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.SearchPage;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.Map;
  */
 public interface ShopService {
     //查看所有商店
-    List getAllShop();
+    Map getAllShop(SearchPage searchPage);
 
     //增加商店
     Map addShop(Shop shop);

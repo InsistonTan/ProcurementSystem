@@ -15,8 +15,8 @@ import java.util.List;
 public interface ShopDao {
 
     //查询所有门店
-    @Select("SELECT * FROM shop")
-    List<Shop> selectAll();
+    @Select("SELECT * FROM shop WHERE shop_id=#{search} OR shop_name LIKE CONCAT('%',#{search},'%')")
+    List<Shop> selectAll(String search);
 
     @Select("SELECT * FROM shop WHERE shop_name=#{shop_name}")
     Shop selectByName(String shop_name);
