@@ -13,8 +13,8 @@ import java.util.List;
 @Mapper
 public interface BuyPlanDao {
     //添加
-    @Insert("insert into buy_plan(manager_username,plan_name) " +
-            "values(#{manager_username},#{plan_name})")
+    @Insert("insert into buy_plan(manager_username,plan_name,description) " +
+            "values(#{manager_username},#{plan_name},#{description})")
     boolean add(BuyPlan buyPlan);
 
     //删除
@@ -36,7 +36,7 @@ public interface BuyPlanDao {
     List<BuyPlan> selectByMangerName(@Param("username") String managerName);
 
     //修改
-    @Update("update buy_plan set plan_name=#{plan_name} " +
+    @Update("update buy_plan set plan_name=#{plan_name},description=#{description} " +
             "where `id`=#{id}")
     boolean update(BuyPlan buyPlan);
 }

@@ -16,6 +16,7 @@ public class BuyPlan implements Serializable {
     private String manager_username;//采购经理账号
     private String name;//经理名称
     private String plan_name;//方案名称
+    private String description;//方案描述
     private List<BuyPlanBuyer> buy_plan_buyer;//具体的分配列表
 
 }
