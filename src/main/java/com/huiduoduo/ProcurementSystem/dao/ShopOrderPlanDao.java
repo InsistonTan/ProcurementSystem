@@ -38,6 +38,6 @@ public interface ShopOrderPlanDao {
     ShopOrderPlan selectByID(@Param("id") int id);
 
     //修改
-    @Update("update shop_order_plan set plan_name=#{plan_name}")
+    @Update("update shop_order_plan set plan_name=#{plan_name} where `id`=#{id}")
     boolean update(ShopOrderPlan plan);
 }
