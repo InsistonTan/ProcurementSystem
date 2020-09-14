@@ -13,8 +13,8 @@ import java.util.List;
 @Mapper
 public interface ShopOrderPlanDao {
     //添加
-    @Insert("insert into shop_order_plan(shop_id,plan_name) " +
-            "values(#{shop_id},#{plan_name})")
+    @Insert("insert into shop_order_plan(shop_id,plan_name,description) " +
+            "values(#{shop_id},#{plan_name},#{description})")
     boolean add(ShopOrderPlan plan);
 
     //删除
@@ -38,6 +38,8 @@ public interface ShopOrderPlanDao {
     ShopOrderPlan selectByID(@Param("id") int id);
 
     //修改
-    @Update("update shop_order_plan set plan_name=#{plan_name} where `id`=#{id}")
+    @Update("update shop_order_plan " +
+            "set plan_name=#{plan_name},description=#{description} " +
+            "where `id`=#{id}")
     boolean update(ShopOrderPlan plan);
 }
