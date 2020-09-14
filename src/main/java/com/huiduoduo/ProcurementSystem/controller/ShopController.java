@@ -44,6 +44,9 @@ public class ShopController {
     @RequestMapping("/getAllShop")
     public Map getAllShop(@RequestBody SearchPage searchPage){
 
+        if(!checkLogin())
+            return ResultUtil.getErrorRes("操作失败：你还没有登陆");
+
         //开始查询
         try{
             Map data = shopService.getAllShop(searchPage);
@@ -60,8 +63,8 @@ public class ShopController {
         if(!checkLogin())
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
 
-        if(!"admin".equals(getLoginInfo().getRole()) )
-            return ResultUtil.getErrorRes("操作失败：只有管理员才能进行此操作");
+        if(!"admin".equals(getLoginInfo().getRole()) && !"manager".equals(getLoginInfo().getRole()))
+            return ResultUtil.getErrorRes("操作失败：只有经理才能进行此操作");
 
         //开始添加
         try{
@@ -80,8 +83,8 @@ public class ShopController {
         if(!checkLogin())
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
 
-        if(!"admin".equals(getLoginInfo().getRole()) )
-            return ResultUtil.getErrorRes("操作失败：只有管理员才能进行此操作");
+        if(!"admin".equals(getLoginInfo().getRole()) && !"manager".equals(getLoginInfo().getRole()))
+            return ResultUtil.getErrorRes("操作失败：只有经理才能进行此操作");
 
         //开始修改
         try{
@@ -99,8 +102,8 @@ public class ShopController {
         if(!checkLogin())
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
 
-        if(!"admin".equals(getLoginInfo().getRole()) )
-            return ResultUtil.getErrorRes("操作失败：只有管理员才能进行此操作");
+        if(!"admin".equals(getLoginInfo().getRole()) && !"manager".equals(getLoginInfo().getRole()))
+            return ResultUtil.getErrorRes("操作失败：只有经理才能进行此操作");
 
         //开始删除
         try{
