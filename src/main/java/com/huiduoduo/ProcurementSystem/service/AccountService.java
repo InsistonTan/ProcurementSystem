@@ -19,6 +19,9 @@ public interface AccountService {
     //分页查询所有用户的所有信息(管理员查看)
     PageInfo<Account> selectAllByPage(Account input);
 
+    //采购经理获取采购员信息
+    Map selectBuyersByManager();
+
     //增加用户
     Map addAccount(Account account);
 

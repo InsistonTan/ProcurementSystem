@@ -79,28 +79,24 @@ public class AccountController {
         return ResultUtil.getSuccessRes();
     }
 
-    //（管理员）获取所有用户信息
-    /*@RequestMapping("/getAllUser")
+    //（采购经理）获取所有采购员信息
+    @RequestMapping("/getAllBuyer")
     @ResponseBody
-    public Map getAllUser(){
-        Map result=new HashMap();
+    public Map getAllBuyer(){
         //检查权限
         String role=(String) request.getSession().getAttribute("role");
-        if(!"admin".equalsIgnoreCase(role))
-            return ResultUtil.getErrorRes("没有权限进行此操作");
+        if(!"manager".equalsIgnoreCase(role))
+            return ResultUtil.getErrorRes("操作失败：没有权限进行此操作");
         //
         try{
-            List<Account> data=accountService.selectAll();
-            result.put("status","success");
-            result.put("data",data);
-            return result;
+            return accountService.selectBuyersByManager();
         }catch (Exception e){
             e.printStackTrace();
             return ResultUtil.getErrorRes("查询数据库失败");
         }
 
         //System.out.println(res);
-    }*/
+    }
 
     //分页（管理员）获取所有用户信息
     @RequestMapping("/getAllUser")

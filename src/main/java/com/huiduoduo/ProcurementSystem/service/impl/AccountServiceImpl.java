@@ -3,6 +3,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.huiduoduo.ProcurementSystem.domain.Account;
 import com.huiduoduo.ProcurementSystem.dao.AccountDao;
+import com.huiduoduo.ProcurementSystem.domain.vo.AccountVO;
 import com.huiduoduo.ProcurementSystem.service.AccountService;
 import com.huiduoduo.ProcurementSystem.utils.EncryptionUtil;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
@@ -113,6 +114,13 @@ public class AccountServiceImpl implements AccountService {
         }
         else
             return ResultUtil.getErrorRes("更新失败:数据库修改失败");
+    }
+
+    @Override
+    public Map selectBuyersByManager() {
+        //查询
+        List<AccountVO> data=accountDao.selectAllUsernameAndNameByRole("buyer","asc");
+        return ResultUtil.getSuccessRes(data);
     }
 
     //分页查询
