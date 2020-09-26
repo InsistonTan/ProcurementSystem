@@ -11,6 +11,8 @@ import com.huiduoduo.ProcurementSystem.domain.pageBean.ShopOrderPage;
 import com.huiduoduo.ProcurementSystem.service.ShopOrderService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
 import com.huiduoduo.ProcurementSystem.utils.TimeUtil;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -442,5 +444,162 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             return ResultUtil.getSuccessRes();
         else
             return ResultUtil.getErrorRes("操作失败：数据库更新失败");
+    }
+
+    @Override
+    public HSSFWorkbook printOne(ShopOrder shopOrder) {
+        //检查权限
+        Account login_info=(Account) request.getSession().getAttribute("info");
+        String role=login_info.getRole();
+        if(!role.equals("shop")&&!"manager".equals(role))
+            return null;
+
+        //判断目标订单是否存在
+        ShopOrder temp_order=shopOrderDao.selectOneByID(shopOrder.getOrder_id());
+        if(temp_order==null)
+            return null;
+
+        //判断该订单是否属于登陆的分店
+        if(role.equals("shop")&&temp_order.getShop_id()!=login_info.getShop_id())
+            return null;
+
+        //获取订单的具体订货信息
+        temp_order.setGoods_order(goodsOrderDao.selectByShopOrderID(temp_order.getOrder_id()));
+
+        //表格的标题
+        String title=temp_order.getOrder_id()+" "+temp_order.getShop_name()+"订购清单  订货日期："+temp_order.getStart_time()
+                +"   制单人："+temp_order.getPrincipal();
+
+        //创建excel文件
+        //声明一个工作簿
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        //生成一个表格，设置表格名称
+        HSSFSheet sheet = workbook.createSheet("分店订购表");
+        //设置表格列宽度为10个字节
+        sheet.setDefaultColumnWidth(10);
+        //创建标题，合并单元格区域
+        CellRangeAddress cra=new CellRangeAddress(0, 0, 0, 9);
+        //在sheet里增加合并单元格
+        sheet.addMergedRegion(cra);
+        //设置标题
+        HSSFRow titleRow=sheet.createRow(0);
+        HSSFCell titleCell=titleRow.createCell(0);
+        titleCell.setCellValue(new HSSFRichTextString(title));
+        //添加数据
+        Map result=print(workbook,"分店订购表",1,temp_order.getGoods_order());
+        HSSFWorkbook hssfWorkbook=(HSSFWorkbook)result.get("workbook");
+        //
+        return hssfWorkbook;
+    }
+
+    @Override
+    public HSSFWorkbook printHistory(ShopOrderPage page) {
+        //检查权限
+        Account login_info=(Account) request.getSession().getAttribute("info");
+        String role=login_info.getRole();
+        if(!role.equals("shop")&&!"manager".equals(role))
+            return null;
+
+        //
+        List<ShopOrder> shopOrderList =null;
+        //获取所有历史订单
+        if(page.isHistory()==true){
+            if("shop".equals(login_info.getRole()))
+                shopOrderList=shopOrderDao.selectHistoryByShopID(login_info.getShop_id(),"","","desc");
+            else if("manager".equals(login_info.getRole()))
+                shopOrderList=shopOrderDao.selectAllHistory("","","desc");
+        }
+        //获取所有正在进行的订单
+        else {
+            if("shop".equals(login_info.getRole()))
+                shopOrderList=shopOrderDao.selectOnGoingByShopID(login_info.getShop_id(),"","desc");
+            else if("manager".equals(login_info.getRole()))
+                shopOrderList=shopOrderDao.selectAllOnGoing("","desc");
+        }
+        //循环获取订单的订货信息
+        if(shopOrderList.size()>0)
+        for(ShopOrder order:shopOrderList)
+            order.setGoods_order(goodsOrderDao.selectByShopOrderID(order.getOrder_id()));
+
+        //创建excel文件
+        //声明一个工作簿
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        //生成一个表格，设置表格名称
+        HSSFSheet sheet = workbook.createSheet("分店订购表");
+        //设置表格列宽度为10个字节
+        sheet.setDefaultColumnWidth(10);
+        int startRow=0;//开始行号
+        //循环处理
+        for(int i=0;i<shopOrderList.size();i++){
+            ShopOrder temp_order=shopOrderList.get(i);
+            //表格的标题
+            String title=temp_order.getOrder_id()+" "+temp_order.getShop_name()
+                    +"订购清单  订货日期："+temp_order.getStart_time()
+                    +"   制单人："+temp_order.getPrincipal();
+            //创建标题，合并单元格区域
+            CellRangeAddress cra=new CellRangeAddress(startRow, startRow, 0, 9);
+            //在sheet里增加合并单元格
+            workbook.getSheet("分店订购表").addMergedRegion(cra);
+            //设置标题
+            HSSFRow titleRow=sheet.createRow(startRow++);
+            HSSFCell titleCell=titleRow.createCell(0);
+            titleCell.setCellValue(new HSSFRichTextString(title));
+
+            //添加货品信息
+            Map res=print(workbook,"分店订购表",startRow,temp_order.getGoods_order());
+            startRow=(int)res.get("maxRow")+2;
+            workbook=(HSSFWorkbook)res.get("workbook");
+        }
+
+
+        return workbook;
+    }
+
+    @Override
+    public Map print(HSSFWorkbook workbook,String sheetName, int startRow, List<GoodsOrder> goodsOrderList) {
+        HSSFSheet sheet=workbook.getSheet(sheetName);
+        //设置表头
+        String[] heads={"货号","品名","订购单位","门店数量","采购数量","采购单位","备注"};
+        HSSFRow headRow=sheet.createRow(startRow++);
+        //循环添加表头
+        for(int i=0;i<heads.length;i++){
+            HSSFCell headCell=headRow.createCell(i);
+            headCell.setCellValue(new HSSFRichTextString(heads[i]));
+        }
+        //循环添加货品信息
+        for(int i=0;i<goodsOrderList.size();i++){
+
+            GoodsOrder order=goodsOrderList.get(i);
+            //创建行
+            HSSFRow row=sheet.createRow(startRow++);
+
+            //货号
+            HSSFCell cell=row.createCell(0);
+            cell.setCellValue(new HSSFRichTextString(String.valueOf(order.getGoods_id())));
+            //品名
+            cell=row.createCell(1);
+            cell.setCellValue(new HSSFRichTextString(order.getGoods_name()));
+            //单位
+            cell=row.createCell(2);
+            cell.setCellValue(new HSSFRichTextString(order.getOrder_unit()));
+            //门店数量
+            cell=row.createCell(3);
+            cell.setCellValue(new HSSFRichTextString(String.valueOf(order.getOrder_num())));
+            //采购数量
+            cell=row.createCell(4);
+            cell.setCellValue(new HSSFRichTextString(String.valueOf(order.getBuy_num())));
+            //采购单位
+            cell=row.createCell(5);
+            cell.setCellValue(new HSSFRichTextString(order.getBuy_unit()));
+            //备注
+            cell=row.createCell(6);
+            cell.setCellValue(new HSSFRichTextString(order.getGoods_note()));
+        }
+
+        //
+        Map res=new HashMap();
+        res.put("maxRow",startRow);
+        res.put("workbook",workbook);
+        return res;
     }
 }

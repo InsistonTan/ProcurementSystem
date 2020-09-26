@@ -2,9 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Document</title>
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-    <h1>hello world!</h1>
+<h1>啦啦啦啦啦啦啦啦啦啦啦啦啦啦</h1>
+<button onclick="login()">登录</button>
+<button onclick="test()">功能测试</button>
 </body>
+<script>
+    function login(){
+        $.ajax({
+            url:"http://localhost:8080/user/login",
+            type:"post",
+            contentType:"application/json;charset=utf-8",
+            data:JSON.stringify({"username":"manager2","password":"admin"}),
+            dataType:"json",
+            success:function(res){
+                console.log(res);
+            },
+            error:function(res){
+                console.log(res);
+            }
+        });
+    }
+    function test(){
+        //window.location.href="http://localhost:8080/shop_order/printOne?order_id=2020082411";
+        window.location.href="http://localhost:8080/shop_order/printAll?history=true";
+        /*$.ajax({
+            url:"http://localhost:8080/shop_order/printAll",
+            type:"post",
+            contentType:"application/json;charset=utf-8",
+            data:JSON.stringify({}),
+            dataType:"json",
+            success:function(res){
+                console.log(res);
+            },
+            error:function(res){
+                console.log(res);
+            }
+        });*/
+    }
+
+</script>
 </html>

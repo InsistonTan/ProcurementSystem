@@ -18,7 +18,8 @@ public interface ShopOrderDao {
     boolean addOrder(ShopOrder shopOrder);
 
     //以订单 id选择一个订单
-    @Select("select * from shop_order where order_id=#{id}")
+    @Select("select shop_order.*,shop.shop_name from shop_order,shop " +
+            "where order_id=#{id} and shop.shop_id=shop_order.shop_id")
     ShopOrder selectOneByID(@Param("id") String id);
 
     //选择某个门店的历史订单
