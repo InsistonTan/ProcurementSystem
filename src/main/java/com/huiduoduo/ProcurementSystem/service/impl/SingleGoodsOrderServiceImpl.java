@@ -128,7 +128,7 @@ public class SingleGoodsOrderServiceImpl implements SingleGoodsOrderService {
         for(ShopOrder shopOrder:shopOrders){
             ShopOrder order=shopOrderDao.selectOneByID(shopOrder.getOrder_id());
             order.setApproved(1);//1代表已生成单品采购单
-            order.setOrder_status("订单已生成单品采购单");
+            order.setOrder_status("订单已生成采购单，等待采购");
             //更新到数据库
             shopOrderDao.updateOrderByManager(order);
         }
