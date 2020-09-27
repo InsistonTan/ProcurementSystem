@@ -81,4 +81,8 @@ public interface ShopOrderDao {
     //删除订单
     @Delete("delete from shop_order where order_id=#{order_id}")
     boolean deleteOrder(ShopOrder shopOrder);
+
+    //选择所有批准但未生成单品采购单的分店订单号（approved=0则代表同意但未生成单品采购单，1代表生成了单品采购单，-1为拒绝）
+    @Select("select order_id from shop_order where approved=0")
+    List<ShopOrder> selectApproved();
 }

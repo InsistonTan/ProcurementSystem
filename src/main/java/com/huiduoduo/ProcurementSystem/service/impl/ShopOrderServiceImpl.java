@@ -318,10 +318,10 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         Date startDate=page.getTimeBegin();
         Date endDate=page.getTimeEnd();
         if(startDate!=null){
-            condition+=" and start_time>'"+TimeUtil.getTime(startDate,"yyyy-MM-dd HH:mm:ss")+"'";
+            condition+=" and start_time>='"+TimeUtil.getTime(startDate,"yyyy-MM-dd HH:mm:ss")+"'";
         }
         if(endDate!=null){
-            condition+=" and end_time<'"+TimeUtil.getTime(endDate,"yyyy-MM-dd HH:mm:ss")+"'";
+            condition+=" and end_time<='"+TimeUtil.getTime(endDate,"yyyy-MM-dd HH:mm:ss")+"'";
         }
         page.setTimeCondition(condition);
 
