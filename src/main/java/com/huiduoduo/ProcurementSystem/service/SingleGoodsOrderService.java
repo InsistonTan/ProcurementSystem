@@ -2,6 +2,7 @@ package com.huiduoduo.ProcurementSystem.service;
 
 import com.huiduoduo.ProcurementSystem.domain.ShopOrder;
 import com.huiduoduo.ProcurementSystem.domain.SingleGoodsOrder;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.SingleOrderPage;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.Map;
  */
 public interface SingleGoodsOrderService {
     //添加
-    Map addSingleOrder(List<ShopOrder> shopOrders);
+    Map addSingleOrder();
 
     //（采购经理）修改单品采购单-分配采购单给采购员
     Map distribute(List<SingleGoodsOrder> orders);
@@ -28,8 +29,8 @@ public interface SingleGoodsOrderService {
     Map delete(SingleGoodsOrder order);
 
     //查询历史单品采购单
-    Map selectHistory();
+    Map selectHistory(SingleOrderPage page);
 
     //（采购经理）查询正在进行的单品采购单
-    Map selectOngoing();
+    Map selectOngoing(SingleOrderPage page);
 }

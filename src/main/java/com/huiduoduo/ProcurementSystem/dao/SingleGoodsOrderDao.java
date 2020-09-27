@@ -52,9 +52,18 @@ public interface SingleGoodsOrderDao {
             "left join account on single_goods_order.buyer_username=account.username)" +
             ",goods " +
             "where start_time IS NOT NULL and end_time IS NOT NULL " +
+            //模糊搜索
+            "and (single_order_id like '%${key}%' " +
+            "      or (goods.goods_name like '%${key}%' and single_goods_order.goods_id=goods.goods_id) " +
+            "      or single_goods_order.manager like '%${key}%' " +
+            "      or buyer_username like '%${key}%'" +
+            "     ) " +
+            //condition包括时间条件，供应商条件
+            "${condition} " +
             "and goods.goods_id=single_goods_order.goods_id " +
-            "order by end_time desc")
-    List<SingleGoodsOrder> selectHistoryManager();
+            //
+            "order by single_order_id ${sort}")
+    List<SingleGoodsOrder> selectHistoryManager(@Param("condition")String condition,@Param("key") String key,@Param("sort")String sort);
 
     //（采购员）查询历史单品采购单
     @Select("select single_goods_order.*,goods.goods_name,supplier.supplier_name,account.name " +
@@ -63,10 +72,19 @@ public interface SingleGoodsOrderDao {
             "left join account on single_goods_order.buyer_username=account.username)" +
             ",goods " +
             "where buyer_username=#{buyer_username} " +
-            "start_time IS NOT NULL and end_time IS NOT NULL " +
+            " and start_time IS NOT NULL and end_time IS NOT NULL " +
+            //模糊搜索
+            "and (single_order_id like '%${key}%' " +
+            "      or (goods.goods_name like '%${key}%' and single_goods_order.goods_id=goods.goods_id) " +
+            "      or single_goods_order.manager like '%${key}%' " +
+            "      or buyer_username like '%${key}%'" +
+            "     ) " +
+            //condition包括时间条件，供应商条件
+            "${condition} " +
             "and goods.goods_id=single_goods_order.goods_id " +
-            "order by end_time desc")
-    List<SingleGoodsOrder> selectHistoryBuyer(@Param("buyer_username") String buyer_username);
+            //
+            "order by single_order_id ${sort}")
+    List<SingleGoodsOrder> selectHistoryBuyer(@Param("buyer_username") String buyer_username,@Param("condition")String condition,@Param("key") String key,@Param("sort")String sort);
 
     //（采购经理）查询正在进行的单品采购单
     @Select("select single_goods_order.*,goods.goods_name,supplier.supplier_name,account.name " +
@@ -75,9 +93,15 @@ public interface SingleGoodsOrderDao {
             "left join account on single_goods_order.buyer_username=account.username)" +
             ",goods " +
             "where start_time IS NOT NULL and end_time IS NULL " +
+            //模糊搜索
+            "and (single_order_id like '%${key}%' " +
+            "      or (goods.goods_name like '%${key}%' and single_goods_order.goods_id=goods.goods_id) " +
+            "      or single_goods_order.manager like '%${key}%' " +
+            "      or buyer_username like '%${key}%'" +
+            "     ) " +
             "and goods.goods_id=single_goods_order.goods_id " +
-            "order by start_time desc")
-    List<SingleGoodsOrder> selectOngoingManager();
+            "order by single_order_id ${sort}")
+    List<SingleGoodsOrder> selectOngoingManager(@Param("key") String key,@Param("sort")String sort);
 
     //（采购员）查询正在进行的单品采购单
     @Select("select single_goods_order.*,goods.goods_name,supplier.supplier_name,account.name " +
@@ -86,8 +110,14 @@ public interface SingleGoodsOrderDao {
             "left join account on single_goods_order.buyer_username=account.username)" +
             ",goods " +
             "where buyer_username=#{buyer_username} " +
-            "start_time IS NOT NULL and end_time IS NULL " +
+            "and start_time IS NOT NULL and end_time IS NULL " +
+            //模糊搜索
+            "and (single_order_id like '%${key}%' " +
+            "      or (goods.goods_name like '%${key}%' and single_goods_order.goods_id=goods.goods_id) " +
+            "      or single_goods_order.manager like '%${key}%' " +
+            "      or buyer_username like '%${key}%'" +
+            "     ) " +
             "and goods.goods_id=single_goods_order.goods_id " +
-            "order by start_time desc")
-    List<SingleGoodsOrder> selectOngoingBuyer(@Param("buyer_username") String buyer_username);
+            "order by single_order_id ${sort}")
+    List<SingleGoodsOrder> selectOngoingBuyer(@Param("buyer_username") String buyer_username,@Param("key") String key,@Param("sort")String sort);
 }

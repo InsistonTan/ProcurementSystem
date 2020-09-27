@@ -1,6 +1,7 @@
 package com.huiduoduo.ProcurementSystem.controller;
 import com.huiduoduo.ProcurementSystem.domain.ShopOrder;
 import com.huiduoduo.ProcurementSystem.domain.SingleGoodsOrder;
+import com.huiduoduo.ProcurementSystem.domain.pageBean.SingleOrderPage;
 import com.huiduoduo.ProcurementSystem.service.SingleGoodsOrderService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,13 @@ public class SingleGoodsOrderController {
     //生成单品采购单
     @RequestMapping("/create")
     @ResponseBody
-    public Map creatSingleOrder(@RequestBody List<ShopOrder> shopOrders){
+    public Map creatSingleOrder(){
         //检查登陆
         if(checkLogin()==false)
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
         try{
-            return singleGoodsOrderService.addSingleOrder(shopOrders);
+            return singleGoodsOrderService.addSingleOrder();
         }catch (Exception e){
             e.printStackTrace();
             return ResultUtil.getErrorRes("数据库操作失败");
@@ -85,33 +86,19 @@ public class SingleGoodsOrderController {
 
     }
 
-    //查询历史
-    @RequestMapping("/history")
+    //查询
+    @RequestMapping("/getAll")
     @ResponseBody
-    public Map history(){
+    public Map getAll(@RequestBody SingleOrderPage page){
         //检查登陆
         if(checkLogin()==false)
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
         try {
-            return singleGoodsOrderService.selectHistory();
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResultUtil.getErrorRes("数据库操作失败");
-        }
-
-    }
-
-    //正在进行的
-    @RequestMapping("/ongoing")
-    @ResponseBody
-    public Map ongoing(){
-        //检查登陆
-        if(checkLogin()==false)
-            return ResultUtil.getErrorRes("操作失败：你还没有登陆");
-        //
-        try {
-            return singleGoodsOrderService.selectOngoing();
+            if(page.isHistory()==true)
+                return singleGoodsOrderService.selectHistory(page);
+            else
+                return singleGoodsOrderService.selectOngoing(page);
         }catch (Exception e){
             e.printStackTrace();
             return ResultUtil.getErrorRes("数据库操作失败");
