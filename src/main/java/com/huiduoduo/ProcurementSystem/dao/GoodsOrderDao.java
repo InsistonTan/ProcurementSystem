@@ -18,15 +18,16 @@ public interface GoodsOrderDao {
     boolean addGoodsOrder(GoodsOrder goodsOrder);
 
     //按照分店订单id查询
-    @Select("select goods_order.*,goods.goods_name,goods.order_unit " +
+    @Select("select goods_order.*,goods.goods_name,goods.order_unit,goods.rec_unit" +
             "from goods_order,goods " +
             "where order_id=#{order_id} and goods.goods_id=goods_order.goods_id")
     List<GoodsOrder> selectByShopOrderID(@Param("order_id") String shopOrderID);
 
     //按照单品订单id查询
-    @Select("select goods_order.*,goods.goods_name,goods.order_unit " +
-            "from goods_order,goods " +
-            "where single_order_id=#{order_id} and goods.goods_id=goods_order.goods_id")
+    @Select("select goods_order.*,goods.goods_name,goods.order_unit,goods.rec_unit,shop.shop_name,shop.shop_id " +
+            "from goods_order,goods,shop_order,shop " +
+            "where single_order_id=#{order_id} and goods.goods_id=goods_order.goods_id " +
+            "  and shop_order.order_id=goods_order.order_id and shop.`shop_id`=shop_order.shop_id ")
     List<GoodsOrder> selectBySingleOrderID(@Param("order_id") String singleOrderID);
 
     //修改订购货品、数量
