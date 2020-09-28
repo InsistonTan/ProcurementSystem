@@ -107,7 +107,7 @@ public class SingleGoodsOrderController {
     }
 
     //采购员确认实际收货信息
-    @RequestMapping("/buyer_confirm")
+    @RequestMapping("/update")
     @ResponseBody
     public Map confirm(@RequestBody SingleGoodsOrder order){
         //检查登陆

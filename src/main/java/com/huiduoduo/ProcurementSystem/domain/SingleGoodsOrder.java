@@ -16,6 +16,7 @@ public class SingleGoodsOrder implements Serializable {
     private Integer goods_id;//货品编号
     private String goods_name;//货品名称
     private float order_goods_num;//订购总数量
+    private String order_unit;//订购单位
     private String manager_note;//采购经理备注
     private String buyer_note;//采购员备注
     private String buy_status;//订单状态

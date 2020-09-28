@@ -23,9 +23,15 @@ public interface SingleGoodsOrderDao {
             "values(#{single_order_id},#{goods_id},#{order_goods_num},#{manager_note},#{buy_status},#{start_time},#{manager},#{supplier_id})")
     boolean addSingleOrder(SingleGoodsOrder singleGoodsOrder);
 
+    //（采购经理）修改经理备注
+    @Update("update single_goods_order set " +
+            "manager_note=#{manager_note} " +
+            "where single_order_id=#{single_order_id}")
+    boolean updateNote(SingleGoodsOrder singleGoodsOrder);
+
     //（采购经理）修改单品采购单-分配采购单给采购员
     @Update("update single_goods_order set " +
-            "manager_note=#{manager_note},buyer_username=#{buyer_username} " +
+            "manager_note=#{manager_note},buyer_username=#{buyer_username},buy_status=#{buy_status} " +
             "where single_order_id=#{single_order_id}")
     boolean updateDistribution(SingleGoodsOrder singleGoodsOrder);
 
@@ -46,7 +52,7 @@ public interface SingleGoodsOrderDao {
     boolean delete(SingleGoodsOrder singleGoodsOrder);
 
     //（采购经理）查询历史单品采购单
-    @Select("select single_goods_order.*,goods.goods_name,supplier.supplier_name,account.name " +
+    @Select("select single_goods_order.*,goods.goods_name,goods.order_unit,supplier.supplier_name,account.name " +
             "from (single_goods_order " +
             "left join supplier on single_goods_order.supplier_id=supplier.id " +
             "left join account on single_goods_order.buyer_username=account.username)" +
@@ -66,7 +72,7 @@ public interface SingleGoodsOrderDao {
     List<SingleGoodsOrder> selectHistoryManager(@Param("condition")String condition,@Param("key") String key,@Param("sort")String sort);
 
     //（采购员）查询历史单品采购单
-    @Select("select single_goods_order.*,goods.goods_name,supplier.supplier_name,account.name " +
+    @Select("select single_goods_order.*,goods.goods_name,goods.order_unit,supplier.supplier_name,account.name " +
             "from (single_goods_order " +
             "left join supplier on single_goods_order.supplier_id=supplier.id " +
             "left join account on single_goods_order.buyer_username=account.username)" +
@@ -87,7 +93,7 @@ public interface SingleGoodsOrderDao {
     List<SingleGoodsOrder> selectHistoryBuyer(@Param("buyer_username") String buyer_username,@Param("condition")String condition,@Param("key") String key,@Param("sort")String sort);
 
     //（采购经理）查询正在进行的单品采购单
-    @Select("select single_goods_order.*,goods.goods_name,supplier.supplier_name,account.name " +
+    @Select("select single_goods_order.*,goods.goods_name,goods.order_unit,supplier.supplier_name,account.name " +
             "from (single_goods_order " +
             "left join supplier on single_goods_order.supplier_id=supplier.id " +
             "left join account on single_goods_order.buyer_username=account.username)" +
@@ -104,7 +110,7 @@ public interface SingleGoodsOrderDao {
     List<SingleGoodsOrder> selectOngoingManager(@Param("key") String key,@Param("sort")String sort);
 
     //（采购员）查询正在进行的单品采购单
-    @Select("select single_goods_order.*,goods.goods_name,supplier.supplier_name,account.name " +
+    @Select("select single_goods_order.*,goods.goods_name,goods.order_unit,supplier.supplier_name,account.name " +
             "from (single_goods_order " +
             "left join supplier on single_goods_order.supplier_id=supplier.id " +
             "left join account on single_goods_order.buyer_username=account.username)" +
