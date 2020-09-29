@@ -11,7 +11,6 @@ import com.huiduoduo.ProcurementSystem.domain.pageBean.GoodsPage;
 import com.huiduoduo.ProcurementSystem.service.GoodsService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
 import com.huiduoduo.ProcurementSystem.utils.SortStringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,7 +20,7 @@ import java.util.Map;
 
 /**
  * @author WJQ
- * @since 2020-8-16 14:09
+ * @date 2020-8-16 14:09
  */
 @Service
 public class GoodsServiceImpl implements GoodsService {
@@ -51,6 +50,10 @@ public class GoodsServiceImpl implements GoodsService {
         }   catch (Exception e) {
             return ResultUtil.getErrorRes("错误的排序表达式");
         }
+
+        //将空内容排序到最后
+        sort ="IF(ISNULL(goods_sort),1,0)," + sort;
+
 
         //开始分页
         PageHelper.startPage(goodsPage.getPage(),goodsPage.getLimit(),sort);
