@@ -1,6 +1,7 @@
 package com.huiduoduo.ProcurementSystem.dao;
 
 import com.huiduoduo.ProcurementSystem.domain.Account;
+import com.huiduoduo.ProcurementSystem.domain.vo.AccountVO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -32,6 +33,12 @@ public interface AccountDao {
             "where role=#{role} " +
             "order by convert(name USING gbk) ${sort}")
     List<Account> selectAllByRole(@Param("role") String role,@Param("sort") String sort);
+
+    //按角色选择用户的姓名和用户名信息(采购经理查看),按照中文排序
+    @Select("select username,name from account " +
+            "where role=#{role} " +
+            "order by convert(name USING gbk) ${sort}")
+    List<AccountVO> selectAllUsernameAndNameByRole(@Param("role") String role, @Param("sort") String sort);
 
 
     //通过账号选择该用户所有信息

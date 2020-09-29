@@ -18,7 +18,8 @@ public interface ShopOrderDao {
     boolean addOrder(ShopOrder shopOrder);
 
     //以订单 id选择一个订单
-    @Select("select * from shop_order where order_id=#{id}")
+    @Select("select shop_order.*,shop.shop_name from shop_order,shop " +
+            "where order_id=#{id} and shop.shop_id=shop_order.shop_id")
     ShopOrder selectOneByID(@Param("id") String id);
 
     //选择某个门店的历史订单
@@ -80,4 +81,8 @@ public interface ShopOrderDao {
     //删除订单
     @Delete("delete from shop_order where order_id=#{order_id}")
     boolean deleteOrder(ShopOrder shopOrder);
+
+    //选择所有批准但未生成单品采购单的分店订单号（approved=0则代表同意但未生成单品采购单，1代表生成了单品采购单，-1为拒绝）
+    @Select("select order_id from shop_order where approved=0")
+    List<ShopOrder> selectApproved();
 }

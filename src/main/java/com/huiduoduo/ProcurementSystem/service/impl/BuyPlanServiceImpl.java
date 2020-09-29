@@ -172,7 +172,7 @@ public class BuyPlanServiceImpl implements BuyPlanService {
                 if(buyPlanBuyer.getGoods_id()==null||buyPlanBuyer.getBuyer_username()==null)
                     return ResultUtil.getErrorRes("操作失败：货品编号和分配的采购员都不能为空");
                 Account target=accountDao.selectOneByUsername(buyPlanBuyer.getBuyer_username());
-                if(!"buyer".equals(target.getRole()))
+                if(target==null||!"buyer".equals(target.getRole()))
                     return ResultUtil.getErrorRes("操作失败：账号"+buyPlanBuyer.getBuyer_username()+"不是采购员");
                 //添加新的
                 buyPlanBuyer.setBuy_plan_id(buyPlan.getId());

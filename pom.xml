@@ -65,6 +65,13 @@
             <version>1.2.10</version>
         </dependency>
 
+        <!--生成或读取excel插件-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.17</version>
+        </dependency>
+
         <!-- 支持 @ConfigurationProperties 注解 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
