@@ -96,6 +96,9 @@ public class SingleGoodsOrderServiceImpl implements SingleGoodsOrderService {
             }
             if(singleOrderId==null)
                 return ResultUtil.getErrorRes("操作失败：单品采购单编号生成失败");
+
+            //获取该货品的采购单位
+            Goods goods=goodsOrderDao.selectRec_unitById(goods_id);
             //目前货品的单品采购单
             SingleGoodsOrder order=new SingleGoodsOrder();
             order.setGoods_id(goods_id);
@@ -104,6 +107,7 @@ public class SingleGoodsOrderServiceImpl implements SingleGoodsOrderService {
             order.setManager(login_info.getName());
             order.setStart_time(start_time);
             order.setBuy_status("等待分配采购员");
+            order.setBuy_goods_unit(goods.getRec_unit());//设置默认采购单位
             //添加进数据库成功
             if(singleGoodsOrderDao.addSingleOrder(order)){
                 //添加进 singleOrdersMap
@@ -167,9 +171,9 @@ public class SingleGoodsOrderServiceImpl implements SingleGoodsOrderService {
         return ResultUtil.getSuccessRes();
     }
 
-    //更新采购状态
+    //采购员确认完成采购单
     @Override
-    public Map updateStatus(SingleGoodsOrder order) {
+    public Map finish(SingleGoodsOrder order) {
         //权限检查（只有采购员有权限）
         Account login_info=(Account)request.getSession().getAttribute("info");
         String role=login_info.getRole();
@@ -180,14 +184,33 @@ public class SingleGoodsOrderServiceImpl implements SingleGoodsOrderService {
         //
         if(order.getSingle_order_id()==null)
             return ResultUtil.getErrorRes("操作失败：采购单编号为空");
-        if(singleGoodsOrderDao.selectOrderById(order.getSingle_order_id())==null)
+        //
+        SingleGoodsOrder temp_order=singleGoodsOrderDao.selectOrderById(order.getSingle_order_id());
+        //
+        if(temp_order==null)
             return ResultUtil.getErrorRes("操作失败：采购单"+order.getSingle_order_id()+"不存在");
+        //检查该采购员是否可以更新该采购单
+        if(!temp_order.getBuyer_username().equals(login_info.getUsername()))
+            return ResultUtil.getErrorRes("操作失败：目标采购单所属采购员帐号与登陆帐号不一致");
+        if(temp_order.getEnd_time()!=null)
+            return ResultUtil.getErrorRes("操作失败：目标采购单已确认完成，无需再次操作");
+
+        //检查具体货品的采购结果
+        List<GoodsOrder> goodsOrders=goodsOrderDao.selectBySingleOrderID(order.getSingle_order_id());
+        //检查各分店数的和是否等于总数
+        int shop_all_num=0;
+        for (GoodsOrder goodsOrder:goodsOrders){
+            shop_all_num+=goodsOrder.getBuy_num();
+        }
+        if(shop_all_num!=temp_order.getBuy_goods_num())
+            return ResultUtil.getErrorRes("操作失败：各分店实际采购数之和与采购总数不相等，请检查");
 
         //更新
-        singleGoodsOrderDao.updateStatus(order);
+        order.setBuy_status("采购完成");
+        order.setEnd_time(TimeUtil.getTime("yyyy-MM-dd HH:mm:ss"));
+        singleGoodsOrderDao.finish(order);
 
-
-        return null;
+        return ResultUtil.getSuccessRes();
     }
 
     //更新实际采购货品结果
@@ -203,33 +226,35 @@ public class SingleGoodsOrderServiceImpl implements SingleGoodsOrderService {
         //数据判断
         if(order.getSingle_order_id()==null)
             return ResultUtil.getErrorRes("操作失败：采购单编号为空");
-        if(singleGoodsOrderDao.selectOrderById(order.getSingle_order_id())==null)
+        //
+        SingleGoodsOrder temp_order=singleGoodsOrderDao.selectOrderById(order.getSingle_order_id());
+        //
+        if(temp_order==null)
             return ResultUtil.getErrorRes("操作失败：采购单"+order.getSingle_order_id()+"不存在");
+        if(temp_order.getEnd_time()!=null)
+            return ResultUtil.getErrorRes("操作失败：目标采购单已结束，无法再进行修改");
 
         //采购员更新实际采购信息
         if("buyer".equals(role)){
+            //检查该采购员是否可以更新该采购单
+            if(!temp_order.getBuyer_username().equals(login_info.getUsername()))
+                return ResultUtil.getErrorRes("操作失败：目标采购单所属采购员帐号与登陆帐号不一致");
+
+            //更新单品采购单信息
+            //检查采购单位是否发生改变
+            if(order.getBuy_goods_unit()==null||order.getBuy_goods_unit().equals(""))
+                order.setBuy_goods_unit(temp_order.getBuy_goods_unit());
+            singleGoodsOrderDao.updateBuyRes(order);
+
             //更新具体货品的采购结果
             List<GoodsOrder> goodsOrders=order.getGoods_order();
-            if(goodsOrders==null||goodsOrders.size()==0)
-                return ResultUtil.getErrorRes("操作失败：具体的各分店实际采购数量信息为空");
-            //检查各分店数的和是否等于总数
-            int shop_all_num=0;
-            for (GoodsOrder goodsOrder:goodsOrders){
-                shop_all_num+=goodsOrder.getBuy_num();
-            }
-            if(shop_all_num!=order.getBuy_goods_num())
-                return ResultUtil.getErrorRes("操作失败：各分店实际采购数之和与采购总数不相等");
-            //循环更新
+            //循环更新具体各分店的实际采购信息
+            if(goodsOrders!=null&&goodsOrders.size()>0)
             for (GoodsOrder goodsOrder:goodsOrders){
                 goodsOrder.setBuy_unit(order.getBuy_goods_unit());
                 goodsOrder.setGoods_price(order.getBuy_goods_price());
                 goodsOrderDao.addBuyRes(goodsOrder);
             }
-
-            //更新采购单
-            order.setBuy_status("采购完成");
-            order.setEnd_time(TimeUtil.getTime("yyyy-MM-dd HH:mm:ss"));
-            singleGoodsOrderDao.updateBuyRes(order);
         }
         //采购经理修改manager_note
         else {

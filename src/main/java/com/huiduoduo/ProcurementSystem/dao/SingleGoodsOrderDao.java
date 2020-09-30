@@ -19,8 +19,8 @@ public interface SingleGoodsOrderDao {
 
     //添加单品采购单
     @Insert("insert into single_goods_order(single_order_id,goods_id,order_goods_num," +
-            "manager_note,buy_status,start_time,manager,supplier_id) " +
-            "values(#{single_order_id},#{goods_id},#{order_goods_num},#{manager_note},#{buy_status},#{start_time},#{manager},#{supplier_id})")
+            "manager_note,buy_status,start_time,manager,supplier_id,buy_goods_unit) " +
+            "values(#{single_order_id},#{goods_id},#{order_goods_num},#{manager_note},#{buy_status},#{start_time},#{manager},#{supplier_id},#{buy_goods_unit})")
     boolean addSingleOrder(SingleGoodsOrder singleGoodsOrder);
 
     //（采购经理）修改经理备注
@@ -43,9 +43,14 @@ public interface SingleGoodsOrderDao {
     //（采购员）修改实际的采购结果
     @Update("update single_goods_order set supplier_id=#{supplier_id},total_money=#{total_money}," +
             "buy_goods_num=#{buy_goods_num},buy_goods_price=#{buy_goods_price}," +
-            "buy_goods_unit=#{buy_goods_unit},buy_status=#{buy_status},end_time=#{end_time} " +
+            "buy_goods_unit=#{buy_goods_unit},buyer_note=#{buyer_note} " +
             "where single_order_id=#{single_order_id}")
     boolean updateBuyRes(SingleGoodsOrder singleGoodsOrder);
+
+    //采购员确认完成采购
+    @Update("update single_goods_order set buy_status=#{buy_status},end_time=#{end_time} " +
+            "where single_order_id=#{single_order_id}")
+    boolean finish(SingleGoodsOrder order);
 
     //删除
     @Delete("delete from single_goods_order where single_order_id=#{single_order_id}")

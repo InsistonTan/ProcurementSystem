@@ -1,5 +1,6 @@
 package com.huiduoduo.ProcurementSystem.dao;
 
+import com.huiduoduo.ProcurementSystem.domain.Goods;
 import com.huiduoduo.ProcurementSystem.domain.GoodsOrder;
 import org.apache.ibatis.annotations.*;
 
@@ -18,7 +19,7 @@ public interface GoodsOrderDao {
     boolean addGoodsOrder(GoodsOrder goodsOrder);
 
     //按照分店订单id查询
-    @Select("select goods_order.*,goods.goods_name,goods.order_unit,goods.rec_unit" +
+    @Select("select goods_order.*,goods.goods_name,goods.order_unit,goods.rec_unit " +
             "from goods_order,goods " +
             "where order_id=#{order_id} and goods.goods_id=goods_order.goods_id")
     List<GoodsOrder> selectByShopOrderID(@Param("order_id") String shopOrderID);
@@ -57,4 +58,8 @@ public interface GoodsOrderDao {
     //删除
     @Delete("delete from goods_order where `id`=#{id}")
     boolean delete(GoodsOrder goodsOrder);
+
+    //通过货品id，获取该货品的采购单位
+    @Select("SELECT rec_unit FROM goods WHERE `goods_id`=#{id}")
+    Goods selectRec_unitById(@Param("id") int id);
 }

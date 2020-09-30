@@ -19,8 +19,8 @@ public interface SingleGoodsOrderService {
     //（采购经理）修改单品采购单-分配采购单给采购员
     Map distribute(List<SingleGoodsOrder> orders);
 
-    //（采购员）修改订单状态
-    Map updateStatus(SingleGoodsOrder order);
+    //（采购员）确认完成采购单状
+    Map finish(SingleGoodsOrder order);
 
     //（采购员）更新实际的采购结果
     Map updateBuyRes(SingleGoodsOrder order);
