@@ -72,7 +72,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         //添加订单编号进 shopOrder
         shopOrder.setOrder_id(order_id);
         //添加订单状态进 shopOrder
-        shopOrder.setOrder_status("订单已创建，等待审批");
+        shopOrder.setOrder_status("等待审批");
         //添加创建时间进 shopOrder
         SimpleDateFormat dateFormat1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateFormat1.setTimeZone(timeZone);
@@ -130,11 +130,11 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             if(shopOrder.getApproved()!=null&&shopOrder.getApproved().intValue()==-1){
                 String end_time=TimeUtil.getTime("yyyy-MM-dd HH:mm:ss");
                 shopOrder.setEnd_time(end_time);
-                shopOrder.setOrder_status("订单已结束，审批未通过");
+                shopOrder.setOrder_status("审批未通过");
             }
             //同意
             else if(shopOrder.getApproved()!=null&&shopOrder.getApproved().intValue()==0){
-                shopOrder.setOrder_status("订单已审批，等待采购");
+                shopOrder.setOrder_status("通过审批");
             }
 
             //设置审批的经理名
@@ -438,7 +438,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             return ResultUtil.getErrorRes("操作失败：该订单不属于登陆的分店");
 
         //设置订单状态和结束时间
-        shopOrder.setOrder_status("订单已送达，订单完成");
+        shopOrder.setOrder_status("货品送达，订单完成");
         shopOrder.setEnd_time(TimeUtil.getTime("yyyy-MM-dd HH:mm:ss"));
 
         //确认完成
