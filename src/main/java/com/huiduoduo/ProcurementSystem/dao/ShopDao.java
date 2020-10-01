@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @author WJQ
- * @since 2020/8/16 17:44
+ * @date 2020/8/16 17:44
  */
 @Mapper
 public interface ShopDao {
@@ -22,8 +22,8 @@ public interface ShopDao {
     Shop selectByName(String shop_name);
 
     //增加门店
-    @Insert("INSERT INTO shop(shop_id,shop_name,shop_position,shop_phone) " +
-            "VALUES(#{shop_id},#{shop_name},#{shop_position},#{shop_phone})")
+    @Insert("INSERT INTO shop(shop_name,shop_position,shop_phone) " +
+            "VALUES(#{shop_name},#{shop_position},#{shop_phone})")
     boolean add(Shop shop);
 
     //(根据id)更新门店

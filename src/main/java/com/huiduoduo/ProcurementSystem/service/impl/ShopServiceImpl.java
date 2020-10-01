@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * @author WJQ
- * @since 2020-8-16 14:09
+ * @date 2020-8-16 14:09
  */
 @Service
 public class ShopServiceImpl implements ShopService {
@@ -71,8 +71,9 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public Map addShop(Shop shop) {
 
-        if(shop.getShop_id() == null || shop.getShop_id() <= 0)
-            return ResultUtil.getErrorRes("添加失败:请输入正确的id");
+
+        if(shop.getShop_name() == null || shop.getShop_name().length() == 0)
+            return  ResultUtil.getErrorRes("添加失败:请输入正确的名字");
 
         if(shopDao.selectByName(shop.getShop_name()) != null)
             return ResultUtil.getErrorRes("添加失败:名字不能重复");
