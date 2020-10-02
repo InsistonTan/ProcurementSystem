@@ -52,7 +52,10 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
         //将空内容排序到最后
-        sort ="IF(ISNULL(goods_sort),1,0)," + sort;
+        if(sort.indexOf("goods_sort") >= 0)
+            //若找到goods_sort字段在goods_sort字段前插入字符串使空的goods_sort排最后
+        sort = new StringBuffer(sort).insert(sort.indexOf("goods_sort"),"IF(ISNULL(goods_sort),1,0),").toString();
+
 
 
         //开始分页
