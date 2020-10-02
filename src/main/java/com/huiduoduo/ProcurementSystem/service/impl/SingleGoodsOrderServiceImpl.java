@@ -227,6 +227,16 @@ public class SingleGoodsOrderServiceImpl implements SingleGoodsOrderService {
         }
         if(shop_all_num!=temp_order.getBuy_goods_num())
             return ResultUtil.getErrorRes("操作失败：各分店实际采购数之和与采购总数不相等，请检查");
+        //检查供应商
+        if(temp_order.getSupplier_id()==null)
+            return ResultUtil.getErrorRes("操作失败：该采购单的供应商信息未填写，请检查");
+        if(temp_order.getBuy_goods_num()<0)
+            return ResultUtil.getErrorRes("操作失败：该采购单的采购总数应该大于等于0，请检查");
+        if(temp_order.getBuy_goods_price()<0)
+            return ResultUtil.getErrorRes("操作失败：该采购单的单价应该大于等于0，请检查");
+        //检查采购总金额（如果采购数大于0）
+        if(temp_order.getBuy_goods_num()>0&&temp_order.getTotal_money()<=0)
+            return ResultUtil.getErrorRes("操作失败：该采购单的采购总金额应该大于0，请检查");
 
         //更新
         order.setBuy_status("采购完成");
