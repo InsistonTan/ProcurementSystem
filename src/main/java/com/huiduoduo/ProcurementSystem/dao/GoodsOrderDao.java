@@ -14,8 +14,8 @@ import java.util.List;
 @Mapper
 public interface GoodsOrderDao {
     //新增
-    @Insert("insert into goods_order(order_id,goods_id,order_num,goods_note) " +
-            "values(#{order_id},#{goods_id},#{order_num},#{goods_note})")
+    @Insert("insert into goods_order(order_id,goods_id,order_num,goods_note,buy_unit) " +
+            "values(#{order_id},#{goods_id},#{order_num},#{goods_note},#{buy_unit})")
     boolean addGoodsOrder(GoodsOrder goodsOrder);
 
     //按照分店订单id查询

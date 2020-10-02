@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.huiduoduo.ProcurementSystem.dao.GoodsOrderDao;
 import com.huiduoduo.ProcurementSystem.dao.ShopOrderDao;
 import com.huiduoduo.ProcurementSystem.domain.Account;
+import com.huiduoduo.ProcurementSystem.domain.Goods;
 import com.huiduoduo.ProcurementSystem.domain.GoodsOrder;
 import com.huiduoduo.ProcurementSystem.domain.ShopOrder;
 import com.huiduoduo.ProcurementSystem.domain.pageBean.ShopOrderPage;
@@ -92,6 +93,9 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         for(GoodsOrder goodsOrder:goodsOrders){
             //设置所属分店订单编号
             goodsOrder.setOrder_id(order_id);
+            //设置默认采购单位
+            Goods temp=goodsOrderDao.selectRec_unitById(goodsOrder.getGoods_id());
+            goodsOrder.setBuy_unit(temp.getRec_unit());
             //添加进数据库
             //如果有一个货品的订购信息添加失败，整个订单失败，并删除所属分店订单
             if(!goodsOrderDao.addGoodsOrder(goodsOrder)){
