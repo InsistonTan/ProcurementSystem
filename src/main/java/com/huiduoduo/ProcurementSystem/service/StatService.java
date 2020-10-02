@@ -1,0 +1,17 @@
+package com.huiduoduo.ProcurementSystem.service;
+
+import java.util.Map;
+
+/**
+ * @author TanJifeng
+ * @Description 用于处理一些前端的要求
+ * @date 2020/10/1 14:06
+ */
+
+public interface StatService {
+    //获取最近7天的每天的金额（分店权限：分店订单的金额，采购经理：单品的金额）
+    Map getRecentMoney();
+
+    //获取待处理订单数
+    Map getToDoNum();
+}

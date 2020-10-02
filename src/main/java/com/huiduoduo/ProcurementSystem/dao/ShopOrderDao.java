@@ -85,4 +85,19 @@ public interface ShopOrderDao {
     //选择所有批准但未生成单品采购单的分店订单号（approved=0则代表同意但未生成单品采购单，1代表生成了单品采购单，-1为拒绝）
     @Select("select order_id from shop_order where approved=0")
     List<ShopOrder> selectApproved();
+
+    //选择某分店，某个日期的分店订单
+    @Select("select order_id from shop_order " +
+            "where shop_id=#{shop_id} and order_id like '${date}%'")
+    List<ShopOrder> selectOneDayOrder(@Param("shop_id") int shop_id,@Param("date") String date);
+
+    //统计待审批的分店订单数
+    @Select("select COUNT(order_id) from shop_order " +
+            "where approved IS NULL")
+    int getUnDoSum();
+
+    //统计没完成的某个分店的订单数
+    @Select("select COUNT(order_id) from shop_order " +
+            "where shop_id=#{shop_id} and end_time IS NULL")
+    int getOnGoingSum(@Param("shop_id")int shop_id);
 }

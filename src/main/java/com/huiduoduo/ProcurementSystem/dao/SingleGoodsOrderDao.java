@@ -2,7 +2,6 @@ package com.huiduoduo.ProcurementSystem.dao;
 
 import com.huiduoduo.ProcurementSystem.domain.SingleGoodsOrder;
 import org.apache.ibatis.annotations.*;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -131,4 +130,24 @@ public interface SingleGoodsOrderDao {
             "and goods.goods_id=single_goods_order.goods_id " +
             "order by single_order_id ${sort}")
     List<SingleGoodsOrder> selectOngoingBuyer(@Param("buyer_username") String buyer_username,@Param("key") String key,@Param("sort")String sort);
+
+    //查询某个日期的历史单品订单的采购金额
+    @Select("select total_money from single_goods_order " +
+            "where single_order_id like '${date}%'")
+    List<SingleGoodsOrder> selectOneDayHistory(@Param("date") String date);
+
+    //统计所有未完成的采购单数
+    @Select("select COUNT(single_order_id) from single_goods_order " +
+            "where end_time IS NULL")
+    int getAllOnGoingSum();
+
+    //统计所有未分配采购员的采购单数
+    @Select("select COUNT(single_order_id) from single_goods_order " +
+            "where end_time IS NULL and (buyer_username IS NULL or buyer_username='') ")
+    int getAllDontHaveBuyer();
+
+    //统计某个采购员未完成的采购单数
+    @Select("select COUNT(single_order_id) from single_goods_order " +
+            "where buyer_username=#{username} and end_time IS NULL ")
+    int getOneBuyerOnGoingSum(@Param("username") String username);
 }
