@@ -107,7 +107,7 @@ public class SingleGoodsOrderController {
     }
 
     //采购员确认实际收货信息
-    @RequestMapping("/buyer_confirm")
+    @RequestMapping("/update")
     @ResponseBody
     public Map confirm(@RequestBody SingleGoodsOrder order){
         //检查登陆
@@ -123,16 +123,16 @@ public class SingleGoodsOrderController {
 
     }
 
-    //更新采购状态（进度）
-    @RequestMapping("/buy_status")
+    //采购员确认完成
+    @RequestMapping("/finish")
     @ResponseBody
-    public Map buy_status(@RequestBody SingleGoodsOrder order){
+    public Map finish(@RequestBody SingleGoodsOrder order){
         //检查登陆
         if(checkLogin()==false)
             return ResultUtil.getErrorRes("操作失败：你还没有登陆");
         //
         try {
-            return singleGoodsOrderService.updateStatus(order);
+            return singleGoodsOrderService.finish(order);
         }catch (Exception e){
             e.printStackTrace();
             return ResultUtil.getErrorRes("数据库操作失败");
