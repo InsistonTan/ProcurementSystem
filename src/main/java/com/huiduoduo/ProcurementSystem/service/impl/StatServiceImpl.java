@@ -41,7 +41,7 @@ public class StatServiceImpl implements StatService {
         //存放返回的结果
         Map result=new HashMap();
         //存放每个分店的数据
-        List<Map> shops_data=new ArrayList<>();
+        Map shops_data=new HashMap();
         //采购经理
         if("manager".equals(role)){
             //首先查询各分店，最近7天的采购金额
@@ -53,10 +53,8 @@ public class StatServiceImpl implements StatService {
             else {
                 //循环对每个分店进行统计
                 for(Shop shop:shopList){
-                    Map oneShop=new HashMap();
                     float[] data=getOneShopMoney(shop.getShop_id());
-                    oneShop.put(shop.getShop_id(),data);
-                    shops_data.add(oneShop);
+                    shops_data.put(shop.getShop_id(),data);
                 }
                 result.put("shop_total",shops_data);
             }
@@ -67,10 +65,8 @@ public class StatServiceImpl implements StatService {
         }
         //分店
         else if("shop".equals(role)){
-            Map oneShop=new HashMap();
             float[] data=getOneShopMoney(login_info.getShop_id());
-            oneShop.put(login_info.getShop_id(),data);
-            shops_data.add(oneShop);
+            shops_data.put(login_info.getShop_id(),data);
             result.put("shop_total",shops_data);
         }
         else return ResultUtil.getErrorRes("操作失败：没有权限进行此操作");
