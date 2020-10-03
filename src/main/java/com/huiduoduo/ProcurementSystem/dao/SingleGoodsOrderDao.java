@@ -132,7 +132,7 @@ public interface SingleGoodsOrderDao {
     List<SingleGoodsOrder> selectOngoingBuyer(@Param("buyer_username") String buyer_username,@Param("key") String key,@Param("sort")String sort);
 
     //查询某个日期的历史单品订单的采购金额
-    @Select("select total_money from single_goods_order " +
+    @Select("select single_order_id,total_money from single_goods_order " +
             "where single_order_id like '${date}%'")
     List<SingleGoodsOrder> selectOneDayHistory(@Param("date") String date);
 
