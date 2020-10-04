@@ -44,7 +44,7 @@ public class StatController {
             return statService.getRecentMoney();
         }catch (Exception e){
             e.printStackTrace();
-            return ResultUtil.getErrorRes("数据库操作失败");
+            return ResultUtil.getErrorRes("服务器异常");
         }
     }
 
@@ -60,7 +60,71 @@ public class StatController {
             return statService.getToDoNum();
         }catch (Exception e){
             e.printStackTrace();
-            return ResultUtil.getErrorRes("数据库操作失败");
+            return ResultUtil.getErrorRes("服务器异常");
+        }
+    }
+
+    //获取分店店员数量
+    @RequestMapping("/shop_man_num")
+    @ResponseBody
+    public Map get_shoper_num(){
+        //检查登陆
+        if(checkLogin()==false)
+            return ResultUtil.getErrorRes("操作失败：你还没有登陆");
+        //
+        try{
+            return statService.getShoperNum();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("服务器异常");
+        }
+    }
+
+    //获取今日采购总数
+    @RequestMapping("/buy_total")
+    @ResponseBody
+    public Map get_buy_total(){
+        //检查登陆
+        if(checkLogin()==false)
+            return ResultUtil.getErrorRes("操作失败：你还没有登陆");
+        //
+        try{
+            return statService.getBuyTotal();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("服务器异常");
+        }
+    }
+
+    //获取正在采购的采购员数量
+    @RequestMapping("/buying_man_num")
+    @ResponseBody
+    public Map get_buying_man_num(){
+        //检查登陆
+        if(checkLogin()==false)
+            return ResultUtil.getErrorRes("操作失败：你还没有登陆");
+        //
+        try{
+            return statService.getBuying_man_num();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("服务器异常");
+        }
+    }
+
+    //获取等待送货的分店数量
+    @RequestMapping("/waiting_shop_num")
+    @ResponseBody
+    public Map get_waiting_shop_num(){
+        //检查登陆
+        if(checkLogin()==false)
+            return ResultUtil.getErrorRes("操作失败：你还没有登陆");
+        //
+        try{
+            return statService.getWaiting_shop_num();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("服务器异常");
         }
     }
 }

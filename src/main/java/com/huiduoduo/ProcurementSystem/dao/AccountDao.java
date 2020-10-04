@@ -61,4 +61,8 @@ public interface AccountDao {
     //删除用户
     @Delete("delete from account where username=#{username}")
     boolean deleteAccount(@Param("username")String username);
+
+    //获取指定分店员工数
+    @Select("select count(username) from account where shop_id=#{shop_id}")
+    int selectShoperNum(@Param("shop_id")int shop_id);
 }

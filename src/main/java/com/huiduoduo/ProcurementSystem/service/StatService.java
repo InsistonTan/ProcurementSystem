@@ -14,4 +14,16 @@ public interface StatService {
 
     //获取待处理订单数
     Map getToDoNum();
+
+    //获取分店员工数
+    Map getShoperNum();
+
+    //获取今日采购总数
+    Map getBuyTotal();
+
+    //获取正在采购的采购员数量
+    Map getBuying_man_num();
+
+    //获取等待送货的分店数
+    Map getWaiting_shop_num();
 }

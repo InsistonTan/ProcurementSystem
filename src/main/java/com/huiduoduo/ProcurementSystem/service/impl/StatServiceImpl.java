@@ -1,11 +1,9 @@
 package com.huiduoduo.ProcurementSystem.service.impl;
-import com.huiduoduo.ProcurementSystem.dao.GoodsOrderDao;
-import com.huiduoduo.ProcurementSystem.dao.ShopDao;
-import com.huiduoduo.ProcurementSystem.dao.ShopOrderDao;
-import com.huiduoduo.ProcurementSystem.dao.SingleGoodsOrderDao;
+import com.huiduoduo.ProcurementSystem.dao.*;
 import com.huiduoduo.ProcurementSystem.domain.*;
 import com.huiduoduo.ProcurementSystem.service.StatService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
+import com.huiduoduo.ProcurementSystem.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +19,8 @@ import java.util.*;
 public class StatServiceImpl implements StatService {
     @Autowired
     private HttpServletRequest request;
+    @Autowired(required = false)
+    private AccountDao accountDao;
     @Autowired(required = false)
     private ShopDao shopDao;
     @Autowired(required = false)
@@ -68,6 +68,17 @@ public class StatServiceImpl implements StatService {
             float[] data=getOneShopMoney(login_info.getShop_id());
             shops_data.put(login_info.getShop_id(),data);
             result.put("shop_total",shops_data);
+        }
+        else if("buyer".equals(role)){
+            String today=TimeUtil.getTime("yyyyMMdd");
+            List<SingleGoodsOrder> orders=singleGoodsOrderDao.selectOneDay_Buyer(login_info.getUsername(),today);
+            //
+            float[] sum={0};
+            if(orders!=null&&orders.size()>0){
+                for (SingleGoodsOrder order:orders)
+                    sum[0]+=order.getTotal_money();
+            }
+            result.put("total",sum);
         }
         else return ResultUtil.getErrorRes("操作失败：没有权限进行此操作");
 
@@ -179,6 +190,109 @@ public class StatServiceImpl implements StatService {
 
         //
         result.put("status","success");
+        return result;
+    }
+
+    //获取分店员工数
+    @Override
+    public Map getShoperNum() {
+        //权限检查（只有采购经理有权限）
+        Account login_info=(Account)request.getSession().getAttribute("info");
+        String role=login_info.getRole();
+        if(!"shop".equals(role))
+            return ResultUtil.getErrorRes("操作失败：没有权限进行此操作");
+
+        //存放返回的结果
+        Map result=new HashMap();
+        int num=accountDao.selectShoperNum(login_info.getShop_id());
+        result.put("status","success");
+        result.put("shop_man_num",num);
+        //
+        return result;
+    }
+
+    //获取今日采购总数
+    @Override
+    public Map getBuyTotal() {
+        //权限检查（只有采购经理有权限）
+        Account login_info=(Account)request.getSession().getAttribute("info");
+        String role=login_info.getRole();
+
+        //存放返回的结果
+        Map result=new HashMap();
+
+        //
+        String today= TimeUtil.getTime("yyyyMMdd");
+        float sum=0;
+        //
+        if("shop".equals(role)){
+            //
+            List<ShopOrder> shopOrders=shopOrderDao.selectOneDayOrder(login_info.getShop_id(),today);
+            //
+            if(shopOrders!=null&&shopOrders.size()>0)
+            for(ShopOrder shopOrder:shopOrders){
+                List<GoodsOrder> goodsOrders=goodsOrderDao.selectByShopOrderID(shopOrder.getOrder_id());
+                if(goodsOrders!=null&&goodsOrders.size()>0)
+                    for(GoodsOrder goodsOrder:goodsOrders)
+                        sum+=goodsOrder.getBuy_num();
+            }
+            //
+            result.put("buy_total",sum);
+        }
+        else if("buyer".equals(role)){
+            //
+            List<SingleGoodsOrder> singleGoodsOrders=singleGoodsOrderDao.selectOneDay_Buyer(login_info.getUsername(),today);
+            //
+            if(singleGoodsOrders!=null&&singleGoodsOrders.size()>0){
+                for(SingleGoodsOrder order:singleGoodsOrders){
+                    sum+=order.getBuy_goods_num();
+                }
+            }
+            //
+            result.put("buy_total",sum);
+        }
+        else return ResultUtil.getErrorRes("操作失败：没有权限进行此操作");
+
+        //
+        result.put("status","success");
+        return result;
+    }
+
+    @Override
+    public Map getBuying_man_num() {
+        //权限检查（只有采购经理有权限）
+        Account login_info=(Account)request.getSession().getAttribute("info");
+        String role=login_info.getRole();
+        //
+        if(!"manager".equals(role))
+            return ResultUtil.getErrorRes("操作失败：没有权限进行此操作");
+
+        //存放返回的结果
+        Map result=new HashMap();
+
+        //
+        result.put("status","success");
+        result.put("buying_man_num",singleGoodsOrderDao.getBuyingBuyerSum());
+        //
+        return result;
+    }
+
+    @Override
+    public Map getWaiting_shop_num() {
+        //权限检查（只有采购经理有权限）
+        Account login_info=(Account)request.getSession().getAttribute("info");
+        String role=login_info.getRole();
+        //
+        if(!"manager".equals(role))
+            return ResultUtil.getErrorRes("操作失败：没有权限进行此操作");
+
+        //存放返回的结果
+        Map result=new HashMap();
+
+        //
+        result.put("status","success");
+        result.put("waiting_shop_num",shopOrderDao.getWaitingShopSum());
+        //
         return result;
     }
 

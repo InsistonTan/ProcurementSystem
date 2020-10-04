@@ -100,4 +100,9 @@ public interface ShopOrderDao {
     @Select("select COUNT(order_id) from shop_order " +
             "where shop_id=#{shop_id} and end_time IS NULL")
     int getOnGoingSum(@Param("shop_id")int shop_id);
+
+    //统计等待送货的分店数
+    @Select("select COUNT(DISTINCT shop_id) from shop_order " +
+            "where approved=1")
+    int getWaitingShopSum();
 }

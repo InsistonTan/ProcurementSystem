@@ -136,6 +136,12 @@ public interface SingleGoodsOrderDao {
             "where single_order_id like '${date}%'")
     List<SingleGoodsOrder> selectOneDayHistory(@Param("date") String date);
 
+    //查询某个采购员的某个日期的采购总数
+    @Select("select single_order_id,buy_goods_num,total_money " +
+            "from single_goods_order " +
+            "where single_order_id like '${date}%' and buyer_username=#{username}")
+    List<SingleGoodsOrder> selectOneDay_Buyer(@Param("username")String name,@Param("date") String date);
+
     //统计所有未完成的采购单数
     @Select("select COUNT(single_order_id) from single_goods_order " +
             "where end_time IS NULL")
@@ -150,4 +156,9 @@ public interface SingleGoodsOrderDao {
     @Select("select COUNT(single_order_id) from single_goods_order " +
             "where buyer_username=#{username} and end_time IS NULL ")
     int getOneBuyerOnGoingSum(@Param("username") String username);
+
+    //统计正在采购的采购员数量
+    @Select("select COUNT(DISTINCT buyer_username) from single_goods_order " +
+            "where end_time IS NULL")
+    int getBuyingBuyerSum();
 }
