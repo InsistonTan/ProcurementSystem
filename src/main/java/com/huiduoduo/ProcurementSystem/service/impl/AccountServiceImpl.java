@@ -178,6 +178,10 @@ public class AccountServiceImpl implements AccountService {
 
         //管理员
         if(role.equalsIgnoreCase("admin")){
+            //帐号的新的角色不是分店，则应该把 shop_ip设为 null
+            if(!newAccount.getRole().equals("shop"))
+                newAccount.setShop_id(null);
+
             return newAccount;
         }
         //非管理员用户，不支持修改 role（职务）和 shop_id(所属分店 id)
