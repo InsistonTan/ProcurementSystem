@@ -19,4 +19,6 @@ public class Goods implements Serializable {
     private String order_unit;//订购单位
     private String rec_unit;//收货单位
     private String sale_unit;//销售单位
+    private boolean can_order;//可不可订购
+    private String desc;//备注
 }
