@@ -89,6 +89,9 @@ public class GoodsServiceImpl implements GoodsService {
         if(goodsDao.selectByName(goods.getGoods_name()) != null)
             return ResultUtil.getErrorRes("添加失败:名字不能重复");
 
+        if(goods.getDesc()==null||goods.getDesc().equals(""))
+            goods.setDesc("常规规格");
+
         if(goodsDao.add(goods) == true)
             return ResultUtil.getSuccessRes();
         else
