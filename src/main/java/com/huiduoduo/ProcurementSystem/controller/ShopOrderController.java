@@ -65,7 +65,7 @@ public class ShopOrderController {
 
     @RequestMapping("/update")
     @ResponseBody
-    public Map getHistory(@RequestBody ShopOrder shopOrder){
+    public Map update(@RequestBody ShopOrder shopOrder){
         System.out.println("Update:"+shopOrder);
         Object obj=request.getSession().getAttribute("username");
         if(obj==null)

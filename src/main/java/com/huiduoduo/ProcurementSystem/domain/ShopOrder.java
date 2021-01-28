@@ -24,4 +24,6 @@ public class ShopOrder implements Serializable {
     private String manager_note;//采购经理备注
     private String manager;//处理该订单的采购经理姓名
     private List<GoodsOrder> goods_order;//具体的订购货品信息
+    //2021-01-28 13:50新增
+    private String order_type;//订单类型
 }

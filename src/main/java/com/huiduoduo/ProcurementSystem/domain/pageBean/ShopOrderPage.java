@@ -16,4 +16,5 @@ public class ShopOrderPage extends Page{
     private Date timeEnd;//结束时间
     private String search;//模糊搜索关键字（搜索订单 id或分店名称// ）
     private String timeCondition;//根据 timeBegin和 timeEnd处理生成的sql时间条件
+    private String order_type;//订单类型
 }

@@ -1,5 +1,6 @@
 package com.huiduoduo.ProcurementSystem.dao;
 
+import com.huiduoduo.ProcurementSystem.domain.Goods;
 import com.huiduoduo.ProcurementSystem.domain.ShopOrder;
 import org.apache.ibatis.annotations.*;
 
@@ -13,8 +14,8 @@ import java.util.List;
 @Mapper
 public interface ShopOrderDao {
     //新建分店订单
-    @Insert("INSERT INTO shop_order(order_id,shop_id,principal,order_status,start_time,shop_note) " +
-            "VALUES(#{order_id},#{shop_id},#{principal},#{order_status},#{start_time},#{shop_note})")
+    @Insert("INSERT INTO shop_order(order_id,shop_id,principal,order_status,start_time,shop_note,order_type) " +
+            "VALUES(#{order_id},#{shop_id},#{principal},#{order_status},#{start_time},#{shop_note},#{order_type})")
     boolean addOrder(ShopOrder shopOrder);
 
     //以订单 id选择一个订单
@@ -27,7 +28,7 @@ public interface ShopOrderDao {
             "from shop_order,shop " +
             "where end_time IS NOT NULL and shop_order.`shop_id`=#{id} " +
             "and order_id like '%${key}%' " + //模糊搜索 order_id
-            "${condition} " + //condition为筛选的时间条件
+            "${condition} " + //condition为筛选的时间条件和订单类型条件
             "and shop.shop_id=shop_order.shop_id " +
             "order by order_id ${sort}")
     List<ShopOrder> selectHistoryByShopID(@Param("id") int shop_id,@Param("condition")String condition,@Param("key") String key,@Param("sort") String sort);
@@ -38,7 +39,7 @@ public interface ShopOrderDao {
             "where end_time IS NOT NULL " +
             "and (order_id like '%${key}%' " +//模糊搜索 order_id
             "or (shop.shop_name like '%${key}%' and shop_order.shop_id=shop.shop_id)) " + //模糊搜索 shop_name
-            "${condition} " + //condition为筛选的时间条件
+            "${condition} " + //condition为筛选的时间条件和订单类型条件
             "and shop.shop_id=shop_order.shop_id " +
             "order by order_id ${sort}") //sort为排序
     List<ShopOrder> selectAllHistory(@Param("condition")String condition,@Param("key") String key,@Param("sort") String sort);
@@ -48,9 +49,10 @@ public interface ShopOrderDao {
             "from shop_order,shop " +
             "where end_time IS NULL and shop_order.`shop_id`=#{id} " +
             "and order_id like '%${key}%' " + //模糊搜索 order_id
+            "${condition} " + //condition为筛选的订单类型条件
             "and shop.shop_id=shop_order.shop_id " +
             "order by order_id ${sort}")
-    List<ShopOrder> selectOnGoingByShopID(@Param("id") int shop_id,@Param("key") String key,@Param("sort") String sort);
+    List<ShopOrder> selectOnGoingByShopID(@Param("id") int shop_id,@Param("key") String key,@Param("sort") String sort,@Param("condition")String condition);
 
     //选择所有门店的正在进行的订单
     @Select("select shop_order.*,shop.shop_name " +
@@ -58,9 +60,10 @@ public interface ShopOrderDao {
             "where end_time IS NULL " +
             "and (order_id like '%${key}%' " +//模糊搜索 order_id
             "or (shop.shop_name like '%${key}%' and shop_order.shop_id=shop.shop_id)) " + //模糊搜索 shop_name
+            "${condition} " + //condition为筛选的订单类型条件
             "and shop.shop_id=shop_order.shop_id " +
             "order by order_id ${sort}")
-    List<ShopOrder> selectAllOnGoing(@Param("key") String key,@Param("sort") String sort);
+    List<ShopOrder> selectAllOnGoing(@Param("key") String key,@Param("sort") String sort,@Param("condition")String condition);
 
     //（分店）修改订单信息
     @Update("update shop_order set shop_note=#{shop_note} " +
@@ -105,4 +108,15 @@ public interface ShopOrderDao {
     @Select("select COUNT(DISTINCT shop_id) from shop_order " +
             "where approved=1")
     int getWaitingShopSum();
+
+    //-------------------------------------------------------------
+    //根据货品 id，获取货品所有信息
+    @Select("SELECT * FROM goods WHERE `goods_id`=#{goods_id}")
+    Goods getGoodsById(@Param("goods_id") int goods_id);
+
+    //根据货品类型 id，获取货品类型名称
+    @Select("SELECT type_name FROM goods_type WHERE `type_id`=#{type_id}")
+    String getGoodsTypeName(@Param("type_id") int type_id);
+
+    //-------------------------------------------------------------
 }

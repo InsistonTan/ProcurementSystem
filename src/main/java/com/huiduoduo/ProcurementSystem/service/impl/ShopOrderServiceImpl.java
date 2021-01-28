@@ -49,6 +49,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         //取出该账号所属分店 id，账号姓名
         Integer shop_id=info.getShop_id();
         String name=info.getName();
+        //设置订单的所属分店id，制单人
         shopOrder.setShop_id(shop_id);
         shopOrder.setPrincipal(name);
 
@@ -80,16 +81,57 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         String create_time=dateFormat1.format(new Date());
         shopOrder.setStart_time(create_time);
 
+        //遍历订购的货品，生成订单类型
+        List<GoodsOrder> goodsOrders=shopOrder.getGoods_order();
+        if(goodsOrders==null||goodsOrders.size()==0)
+            return ResultUtil.getErrorRes("订单创建失败:具体的供货信息为空");
+        //
+        int goods_type_count=0;//货品类型计数器
+        String goods_type = null;//货品类型
+        //遍历订购的货品
+        for(GoodsOrder goodsOrder:goodsOrders){
+            //检查货品是否存在
+            Goods temp_goods=shopOrderDao.getGoodsById(goodsOrder.getGoods_id());
+            if(temp_goods==null)
+                return ResultUtil.getErrorRes("订单创建失败：品号为"+goodsOrder.getGoods_id()+"的货品不存在");
+            //获取货品类型
+            String type_name=shopOrderDao.getGoodsTypeName(temp_goods.getGoods_type_id());
+            //如果该货品没有类型，则跳过
+            if(type_name==null||type_name.equals(""))
+                continue;
+            //第一次遍历
+            if(goods_type_count==0){
+                if(type_name!=null&&!type_name.equals("")) {
+                    goods_type = type_name;
+                    goods_type_count++;
+                }
+            }
+            else {
+                //本次遍历的货品类型与上一个不相同
+                if(!type_name.equals(goods_type)){
+                    goods_type_count++;
+                    break;
+                }
+            }
+        }
+        //判断订单类型
+        String order_type;
+        //货品类型计数大于 1或者类型为空，为混合类订单
+        if(goods_type_count>1||goods_type==null)
+            order_type="混合类订单";
+        //订购的货品中货品类型为同一个，则为对应类型的订单
+        else
+            order_type=goods_type+"类订单";
+
+        //设置订单类型
+        shopOrder.setOrder_type(order_type);
+
         //在数据库创建该订单
         //订单创建失败
         if(!shopOrderDao.addOrder(shopOrder))
             return ResultUtil.getErrorRes("订单创建失败:添加进数据库失败");
 
-        //循环处理该订单的具体订货信息
-        List<GoodsOrder> goodsOrders=shopOrder.getGoods_order();
-        if(goodsOrders==null||goodsOrders.size()==0)
-            return ResultUtil.getErrorRes("订单创建失败:具体的供货信息为空");
-        //
+        //循环处理该订单的具体订货信息，将其添加进数据库
         for(GoodsOrder goodsOrder:goodsOrders){
             //设置所属分店订单编号
             goodsOrder.setOrder_id(order_id);
@@ -327,6 +369,11 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         if(endDate!=null){
             condition+=" and end_time<='"+TimeUtil.getTime(endDate,"yyyy-MM-dd HH:mm:ss")+"'";
         }
+        //处理订单类型
+        String order_type=page.getOrder_type();
+        if(order_type!=null&&!order_type.equals("混合类订单"))
+            condition+=String.format(" and order_type='%s' ",order_type);
+
         page.setTimeCondition(condition);
 
         return page;
@@ -393,11 +440,11 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         List<ShopOrder> shopOrders;
         //采购经理
         if(role.equals("manager")){
-            shopOrders=shopOrderDao.selectAllOnGoing(page.getSearch(),page.getSort());
+            shopOrders=shopOrderDao.selectAllOnGoing(page.getSearch(),page.getSort(),page.getTimeCondition());
         }
         //分店
         else if(role.equals("shop")){
-            shopOrders=shopOrderDao.selectOnGoingByShopID(login_info.getShop_id(),page.getSearch(),page.getSort());
+            shopOrders=shopOrderDao.selectOnGoingByShopID(login_info.getShop_id(),page.getSearch(),page.getSort(),page.getTimeCondition());
         }
         //
         else return ResultUtil.getErrorRes("获取失败：权限不足");
@@ -452,6 +499,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             return ResultUtil.getErrorRes("操作失败：数据库更新失败");
     }
 
+    //打印单个订单到 excel
     @Override
     public HSSFWorkbook printOne(ShopOrder shopOrder) {
         //检查权限
@@ -498,6 +546,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         return hssfWorkbook;
     }
 
+    //打印所有订单到 excel
     @Override
     public HSSFWorkbook printHistory(ShopOrderPage page) {
         //检查权限
@@ -518,9 +567,9 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         //获取所有正在进行的订单
         else {
             if("shop".equals(login_info.getRole()))
-                shopOrderList=shopOrderDao.selectOnGoingByShopID(login_info.getShop_id(),"","desc");
+                shopOrderList=shopOrderDao.selectOnGoingByShopID(login_info.getShop_id(),"","desc","");
             else if("manager".equals(login_info.getRole()))
-                shopOrderList=shopOrderDao.selectAllOnGoing("","desc");
+                shopOrderList=shopOrderDao.selectAllOnGoing("","desc","");
         }
         //循环获取订单的订货信息
         if(shopOrderList.size()>0)
@@ -560,7 +609,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
 
         return workbook;
     }
-
+    //上面两个方法都会用到的具体的打印方法
     @Override
     public Map print(HSSFWorkbook workbook,String sheetName, int startRow, List<GoodsOrder> goodsOrderList) {
         HSSFSheet sheet=workbook.getSheet(sheetName);
