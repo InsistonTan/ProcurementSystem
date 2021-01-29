@@ -1,5 +1,6 @@
 package com.huiduoduo.ProcurementSystem.dao;
 
+import com.huiduoduo.ProcurementSystem.domain.ShopOrder;
 import com.huiduoduo.ProcurementSystem.domain.ShopOrderPlan;
 import org.apache.ibatis.annotations.*;
 
@@ -13,28 +14,33 @@ import java.util.List;
 @Mapper
 public interface ShopOrderPlanDao {
     //添加
-    @Insert("insert into shop_order_plan(shop_id,plan_name,description) " +
-            "values(#{shop_id},#{plan_name},#{description})")
+    @Insert("insert into shop_order_plan(id,shop_id,plan_name,description) " +
+            "values(#{id},#{shop_id},#{plan_name},#{description})")
     boolean add(ShopOrderPlan plan);
 
     //删除
     @Delete("delete from shop_order_plan where `id`=#{id}")
     boolean delete(@Param("id") int id);
 
-    //查询该分店目前最大id
-    @Select("select MAX(id) from shop_order_plan where `shop_id`=#{shop_id}")
-    int getMaxId(@Param("shop_id") int shop_id);
+    @Select("SELECT * FROM shop_order_plan where `id`=#{id}")
+    ShopOrderPlan checkID(@Param("id") int id);
 
-    //以分店编号查询
+    //以分店编号查询(分店的方案+经理的方案)
     @Select("select shop_order_plan.*,shop.shop_name " +
-            "from shop_order_plan,shop " +
-            "where shop_order_plan.`shop_id`=#{shop_id} and shop.`shop_id`=#{shop_id}")
+            "from shop_order_plan " +
+            "left join shop on shop_order_plan.`shop_id`=shop.`shop_id` " +
+            "where shop_order_plan.`shop_id`=#{shop_id} or shop_order_plan.`shop_id` IS NULL")
     List<ShopOrderPlan> selectByShopID(@Param("shop_id") int shop_id);
+
+    //查询采购经理创建的方案（shop_id=null的方案）
+    @Select("SELECT * FROM shop_order_plan WHERE `shop_id` IS NULL")
+    List<ShopOrderPlan> selectManagerPlans();
 
     //以方案id查询
     @Select("select shop_order_plan.*,shop.shop_name " +
-            "from shop_order_plan,shop " +
-            "where `id`=#{id} and shop.`shop_id`=shop_order_plan.`shop_id`")
+            "from shop_order_plan " +
+            "left join shop on shop_order_plan.`shop_id`=shop.`shop_id` " +
+            "where `id`=#{id} ")
     ShopOrderPlan selectByID(@Param("id") int id);
 
     //修改

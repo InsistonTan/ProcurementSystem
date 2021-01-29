@@ -39,8 +39,9 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
     public Map add(ShopOrderPlan orderPlan) {
         //检查权限
         Account login_info=getLoginInfo();
-        //不是分店用户
-        if(!"shop".equals(login_info.getRole()))
+        String role=login_info.getRole();
+        //不是分店用户,也不是采购经理
+        if(!"shop".equals(role)&&!"manager".equals(role))
             return ResultUtil.getErrorRes("操作失败：没有权限");
 
         //数据检查
@@ -50,12 +51,25 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
             return ResultUtil.getErrorRes("操作失败：具体的订货信息为空");
 
 
-        //设置shop_id
-        orderPlan.setShop_id(login_info.getShop_id());
+        //设置shop_id(只有分店用户有，采购经理没有)
+        if("shop".equals(role))
+            orderPlan.setShop_id(login_info.getShop_id());
+
+        //生成一个可用的方案 id
+        int plan_id=1;
+        for(;plan_id<1000000;plan_id++){
+            ShopOrderPlan temp=shopOrderPlanDao.checkID(plan_id);
+            if(temp==null)
+                break;
+        }
+        //再次检查该 id，防止上面循环到底
+        ShopOrderPlan temp=shopOrderPlanDao.checkID(plan_id);
+        if(temp!=null)
+            return ResultUtil.getErrorRes("操作失败：生成方案ID失败");
+
+        orderPlan.setId(plan_id);
         //添加
         shopOrderPlanDao.add(orderPlan);
-        //获取方案id
-        int plan_id=shopOrderPlanDao.getMaxId(login_info.getShop_id());
 
         //循环添加具体的订货信息
         List<ShopOrderPlanGoods> shopOrderPlanGoods=orderPlan.getOrder_goods();
@@ -76,17 +90,25 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
     public Map delete(ShopOrderPlan orderPlan) {
         //检查权限
         Account login_info=getLoginInfo();
-        //不是分店用户
-        if(!"shop".equals(login_info.getRole()))
+        String role=login_info.getRole();
+        //不是分店用户,也不是采购经理
+        if(!"shop".equals(role)&&!"manager".equals(role))
             return ResultUtil.getErrorRes("操作失败：没有权限");
 
         //数据检查
         ShopOrderPlan shopOrderPlan=shopOrderPlanDao.selectByID(orderPlan.getId());
         if(orderPlan.getId()==null||shopOrderPlan==null)
             return ResultUtil.getErrorRes("操作失败：方案编号"+orderPlan.getId()+"不存在");
-        //检查目标方案是否可以删除
-        if(shopOrderPlan.getShop_id()!=login_info.getShop_id())
-            return ResultUtil.getErrorRes("操作失败：目标方案所属分店与该账号所属分店不一致");
+
+        //分权限，检查目标方案是否可以删除
+        if("shop".equals(role)){
+            if(shopOrderPlan.getShop_id()!=login_info.getShop_id())
+                return ResultUtil.getErrorRes("操作失败：该方案所属分店与该账号所属分店不一致");
+        }
+        else {
+            if(shopOrderPlan.getShop_id()!=null)
+                return ResultUtil.getErrorRes("操作失败：该方案不属于采购经理方案");
+        }
 
         //删除
         if(shopOrderPlanDao.delete(orderPlan.getId()))
@@ -99,8 +121,9 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
     public Map getShopOrderPlans(Page page) {
         //检查权限
         Account login_info=getLoginInfo();
-        //不是分店用户
-        if(!"shop".equals(login_info.getRole()))
+        String role=login_info.getRole();
+        //不是分店用户,也不是采购经理
+        if(!"shop".equals(role)&&!"manager".equals(role))
             return ResultUtil.getErrorRes("操作失败：没有权限");
 
         //检查参数
@@ -113,7 +136,16 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
         PageHelper.startPage(page.getPage(),page.getLimit());
 
         //查询
-        List<ShopOrderPlan> shopOrderPlans=shopOrderPlanDao.selectByShopID(login_info.getShop_id());
+        List<ShopOrderPlan> shopOrderPlans = null;
+        if("shop".equals(role)){
+            //查询该分店的方案
+            shopOrderPlans=shopOrderPlanDao.selectByShopID(login_info.getShop_id());
+        }
+        else{
+            //采购经理查询
+            shopOrderPlans=shopOrderPlanDao.selectManagerPlans();
+        }
+
         //循环获取具体订货信息
         if(shopOrderPlans!=null)
         for(int i=0;i<shopOrderPlans.size();i++){
@@ -137,17 +169,25 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
     public Map update(ShopOrderPlan orderPlan) {
         //检查权限
         Account login_info=getLoginInfo();
-        //不是分店用户
-        if(!"shop".equals(login_info.getRole()))
+        String role=login_info.getRole();
+        //不是分店用户,也不是采购经理
+        if(!"shop".equals(role)&&!"manager".equals(role))
             return ResultUtil.getErrorRes("操作失败：没有权限");
 
         //数据检查
         ShopOrderPlan shopOrderPlan=shopOrderPlanDao.selectByID(orderPlan.getId());
         if(orderPlan.getId()==null||shopOrderPlan==null)
             return ResultUtil.getErrorRes("操作失败：方案编号"+orderPlan.getId()+"不存在");
-        //检查目标方案是否可以修改
-        if(shopOrderPlan.getShop_id()!=login_info.getShop_id())
-            return ResultUtil.getErrorRes("操作失败：目标方案所属分店与该账号所属分店不一致");
+
+        //分权限，检查目标方案是否可以修改
+        if("shop".equals(role)){
+            if(shopOrderPlan.getShop_id()!=login_info.getShop_id())
+                return ResultUtil.getErrorRes("操作失败：该方案所属分店与该账号所属分店不一致");
+        }
+        else {
+            if(shopOrderPlan.getShop_id()!=null)
+                return ResultUtil.getErrorRes("操作失败：该方案不属于采购经理方案");
+        }
 
         //更新
         if(orderPlan.getPlan_name()==null)
