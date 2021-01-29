@@ -102,8 +102,13 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
 
         //分权限，检查目标方案是否可以删除
         if("shop".equals(role)){
-            if(shopOrderPlan.getShop_id()!=login_info.getShop_id())
-                return ResultUtil.getErrorRes("操作失败：该方案所属分店与该账号所属分店不一致");
+            if(shopOrderPlan.getShop_id()!=null){
+                if(shopOrderPlan.getShop_id()!=login_info.getShop_id())
+                    return ResultUtil.getErrorRes("操作失败：该方案所属分店与该账号所属分店不一致");
+            }
+            else {
+                return ResultUtil.getErrorRes("操作失败：无法删除该方案，需要删除方案请联系采购经理");
+            }
         }
         else {
             if(shopOrderPlan.getShop_id()!=null)
@@ -181,8 +186,14 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
 
         //分权限，检查目标方案是否可以修改
         if("shop".equals(role)){
-            if(shopOrderPlan.getShop_id()!=login_info.getShop_id())
-                return ResultUtil.getErrorRes("操作失败：该方案所属分店与该账号所属分店不一致");
+            if(shopOrderPlan.getShop_id()!=null){
+                if(shopOrderPlan.getShop_id()!=login_info.getShop_id())
+                    return ResultUtil.getErrorRes("操作失败：该方案所属分店与该账号所属分店不一致");
+            }
+            else {
+                return ResultUtil.getErrorRes("操作失败：无法修改该方案，需要修改方案请联系采购经理");
+            }
+
         }
         else {
             if(shopOrderPlan.getShop_id()!=null)
