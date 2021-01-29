@@ -371,7 +371,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         }
         //处理订单类型
         String order_type=page.getOrder_type();
-        if(order_type!=null&&!order_type.equals("混合类订单"))
+        if(order_type!=null&&!order_type.equals("混合类订单")&&!"".equals(order_type))
             condition+=String.format(" and order_type='%s' ",order_type);
 
         page.setTimeCondition(condition);
