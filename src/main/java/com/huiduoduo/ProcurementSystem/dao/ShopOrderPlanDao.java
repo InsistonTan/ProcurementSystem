@@ -32,8 +32,8 @@ public interface ShopOrderPlanDao {
             "where shop_order_plan.`shop_id`=#{shop_id} or shop_order_plan.`shop_id` IS NULL")
     List<ShopOrderPlan> selectByShopID(@Param("shop_id") int shop_id);
 
-    //查询采购经理创建的方案（shop_id=null的方案）
-    @Select("SELECT * FROM shop_order_plan WHERE `shop_id` IS NULL")
+    //采购经理查询所有方案
+    @Select("SELECT * FROM shop_order_plan ")
     List<ShopOrderPlan> selectManagerPlans();
 
     //以方案id查询

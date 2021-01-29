@@ -9,6 +9,7 @@ import com.huiduoduo.ProcurementSystem.domain.ShopOrderPlanGoods;
 import com.huiduoduo.ProcurementSystem.domain.pageBean.Page;
 import com.huiduoduo.ProcurementSystem.service.ShopOrderPlanService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
+import com.huiduoduo.ProcurementSystem.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
@@ -112,7 +113,7 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
         }
         else {
             if(shopOrderPlan.getShop_id()!=null)
-                return ResultUtil.getErrorRes("操作失败：该方案不属于采购经理方案");
+                return ResultUtil.getErrorRes("操作失败：采购经理没有权限删除分店方案");
         }
 
         //删除
@@ -147,7 +148,7 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
             shopOrderPlans=shopOrderPlanDao.selectByShopID(login_info.getShop_id());
         }
         else{
-            //采购经理查询
+            //采购经理查询所有方案
             shopOrderPlans=shopOrderPlanDao.selectManagerPlans();
         }
 
@@ -196,8 +197,14 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
 
         }
         else {
-            if(shopOrderPlan.getShop_id()!=null)
-                return ResultUtil.getErrorRes("操作失败：该方案不属于采购经理方案");
+            //采购经理修改分店方案（shop_id!=null代表分店方案）
+            if(shopOrderPlan.getShop_id()!=null){
+                //保留原来的shop_id
+                orderPlan.setShop_id(shopOrderPlan.getShop_id());
+                //添加经理修改的备注
+                String desc=orderPlan.getDescription()+" \n[系统提醒]:采购经理于"+ TimeUtil.getTime("yyyy-MM-dd hh:mm")+"修改了此方案。";
+                orderPlan.setDescription(desc);
+            }
         }
 
         //更新
