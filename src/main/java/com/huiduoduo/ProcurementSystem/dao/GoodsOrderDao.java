@@ -43,7 +43,7 @@ public interface GoodsOrderDao {
 
     //添加具体的采购信息
     @Update("update goods_order set " +
-            "goods_price=#{goods_price},buy_num=#{buy_num},buy_unit=#{buy_unit} " +
+            "goods_price=#{goods_price},buy_num=#{buy_num},buy_unit=#{buy_unit},total_money=#{total_money} " +
             "where `id`=#{id}")
     boolean addBuyRes(GoodsOrder goodsOrder);
 

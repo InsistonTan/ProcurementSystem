@@ -27,4 +27,5 @@ public class GoodsOrder implements Serializable {
     private String goods_note;//备注
     private Integer goods_sort;//货品排序标志位
     private Integer goods_type_id;//货品类型id
+    private Float total_money;//采购单价x采购数量=采购金额
 }

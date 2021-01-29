@@ -286,6 +286,13 @@ public class SingleGoodsOrderServiceImpl implements SingleGoodsOrderService {
             for (GoodsOrder goodsOrder:goodsOrders){
                 goodsOrder.setBuy_unit(order.getBuy_goods_unit());
                 goodsOrder.setGoods_price(order.getBuy_goods_price());
+                //设置 单价x数量=该goodsOrder的金额
+                float buy_num=goodsOrder.getBuy_num();
+                float goods_price=goodsOrder.getGoods_price();
+                if(buy_num>0&&goods_price>0){
+                    float total_money=buy_num*goods_price;
+                    goodsOrder.setTotal_money(total_money);
+                }
                 goodsOrderDao.addBuyRes(goodsOrder);
             }
         }
