@@ -31,13 +31,13 @@ public interface ShopOrderPlanGoodsDao {
     boolean deleteByPlanId(@Param("id")int plan_id);
 
     //以id查询
-    @Select("select shop_order_plan_goods.*,goods.goods_name,goods.order_unit " +
+    @Select("select shop_order_plan_goods.*,goods.goods_name,goods.order_unit,goods.goods_sort,goods.goods_type_id " +
             "from shop_order_plan_goods,goods " +
             "where `id`=#{id} and goods.`goods_id`=shop_order_plan_goods.`goods_id`")
     ShopOrderPlanGoods selectOneById(@Param("id")int id);
 
     //以方案id查询
-    @Select("select shop_order_plan_goods.*,goods.goods_name,goods.order_unit " +
+    @Select("select shop_order_plan_goods.*,goods.goods_name,goods.order_unit,goods.goods_sort,goods.goods_type_id " +
             "from shop_order_plan_goods,goods " +
             "where `shop_plan_id`=#{id} and goods.`goods_id`=shop_order_plan_goods.`goods_id`")
     List<ShopOrderPlanGoods> selectByPlanId(@Param("id")int id);

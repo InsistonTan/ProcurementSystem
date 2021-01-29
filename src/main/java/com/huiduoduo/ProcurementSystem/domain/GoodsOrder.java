@@ -25,4 +25,6 @@ public class GoodsOrder implements Serializable {
     private float buy_num;//实际采购数量
     private String buy_unit;//采购员实际采购到的货品的单位
     private String goods_note;//备注
+    private Integer goods_sort;//货品排序标志位
+    private Integer goods_type_id;//货品类型id
 }

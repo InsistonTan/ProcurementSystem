@@ -17,4 +17,6 @@ public class ShopOrderPlanGoods implements Serializable {
     private String goods_name;//订购的货品名称
     private float order_num;//订购数量
     private String order_unit;//订购单位
+    private Integer goods_sort;//货品排序标志位
+    private Integer goods_type_id;//货品类型id
 }
