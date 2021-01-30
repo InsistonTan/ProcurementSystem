@@ -335,4 +335,91 @@ public class StatServiceImpl implements StatService {
         result.put("status","success");
         return result;
     }
+
+    //获取当天单品订购量预汇总
+    @Override
+    public Map getTodayGoodsNum() {
+        //存放结果
+        Map result=new HashMap();
+
+        //获取所有分店信息
+        List<Shop> shopList=shopDao.selectAll("");
+
+        //当前日期
+        String date=TimeUtil.getTime("yyyyMMdd");
+
+        //存放单品的信息，key为品名，value为 Map
+        Map<String,Map> goodsData=new HashMap();
+
+        //循环进行统计
+        for(Shop shop:shopList){
+            //获取分店当天的订单列表
+            List<ShopOrder> orderList=shopOrderDao.selectOneDayOrder(shop.getShop_id(),date);
+            //订单列表不为空
+            if(orderList!=null&&orderList.size()>0)
+                for(ShopOrder order:orderList){
+                    //获取订单的订货详情
+                    List<GoodsOrder> goodsOrderList=goodsOrderDao.selectByShopOrderID(order.getOrder_id());
+                    //详情列表不为空
+                    if(goodsOrderList!=null&&goodsOrderList.size()>0)
+                       for(GoodsOrder goodsOrder:goodsOrderList){
+                           //map中已经有该货品
+                           if(goodsData.containsKey(goodsOrder.getGoods_name())){
+                               //取出该货品信息，对订购量累加
+                               Map tempGoodsInfo=goodsData.get(goodsOrder.getGoods_name());
+                               float order_num=(float)tempGoodsInfo.get("order_num")+goodsOrder.getOrder_num();
+                               //刷新订购总量的值
+                               tempGoodsInfo.replace("order_num",order_num);
+
+                               //取出各分店的订购数据
+                               Map tempShopData=(Map)tempGoodsInfo.get("shop_data");
+                               //判断是否已经有当前分店的记录
+                               if(tempShopData.containsKey(shop.getShop_name())){
+                                   //更新订购总量
+                                   float temp_num= (float) tempShopData.get(shop.getShop_name())+goodsOrder.getOrder_num();
+                                   tempShopData.replace(shop.getShop_name(),temp_num);
+                               }
+                               //还没有当前分店的记录
+                               else {
+                                   tempShopData.put(shop.getShop_name(),goodsOrder.getOrder_num());
+                               }
+                               //刷新
+                               tempGoodsInfo.replace("shop_data",tempShopData);
+                               goodsData.replace(goodsOrder.getGoods_name(),tempGoodsInfo);
+
+                               //
+                           }
+                           //map中还没有该货品,需将该货品信息添加进 Map goodsData
+                           else{
+                               //货品详情
+                               Map goodsInfo=new HashMap();
+                               goodsInfo.put("goods_id",goodsOrder.getGoods_id());//货品id
+                               goodsInfo.put("goods_name",goodsOrder.getGoods_name());//货品名称
+                               goodsInfo.put("goods_sort",goodsOrder.getGoods_sort());//排序标志位
+                               goodsInfo.put("goods_type_id",goodsOrder.getGoods_type_id());//货品类型 id
+                               goodsInfo.put("type_name",goodsOrder.getType_name());//货品类型名
+                               goodsInfo.put("order_unit",goodsOrder.getOrder_unit());//订购单位
+                               goodsInfo.put("order_num",goodsOrder.getOrder_num());//订购量
+                               //各分店的订购量
+                               Map temp=new HashMap();
+                               temp.put(shop.getShop_name(),goodsOrder.getOrder_num());
+                               //把其余的分店都加进去，订购量设为 0
+                               for(Shop shop1:shopList){
+                                   if(!shop1.getShop_name().equals(shop.getShop_name())){
+                                       temp.put(shop1.getShop_name(),0.0f);
+                                   }
+                               }
+                               goodsInfo.put("shop_data",temp);
+                               //将该货品的详情添加进 goodsData
+                               goodsData.put(goodsOrder.getGoods_name(),goodsInfo);
+                           }
+                       }
+                }
+        }
+
+        result.put("data",goodsData);
+        //返回结果
+        result.put("status","success");
+        return result;
+    }
 }

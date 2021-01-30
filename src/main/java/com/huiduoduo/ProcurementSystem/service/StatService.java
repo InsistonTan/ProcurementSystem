@@ -29,4 +29,7 @@ public interface StatService {
 
     //获取当天各分店的订单提交数
     Map getTodayOrderNum();
+
+    //获取当天单品订购量预汇总
+    Map getTodayGoodsNum();
 }
