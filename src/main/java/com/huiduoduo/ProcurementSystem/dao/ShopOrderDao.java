@@ -119,4 +119,9 @@ public interface ShopOrderDao {
     String getGoodsTypeName(@Param("type_id") int type_id);
 
     //-------------------------------------------------------------
+
+    //统计某分店某天某个类型的订单数
+    @Select("SELECT COUNT(order_id) FROM shop_order " +
+            "WHERE order_id like '${date}%' AND `shop_id`=#{shop_id} AND order_type=#{order_type}")
+    int getOnedayTypeOrderNum(@Param("date")String date,@Param("shop_id") int shop_id,@Param("order_type")String order_type);
 }

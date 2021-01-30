@@ -29,6 +29,8 @@ public class StatServiceImpl implements StatService {
     private SingleGoodsOrderDao singleGoodsOrderDao;
     @Autowired(required = false)
     private GoodsOrderDao goodsOrderDao;
+    @Autowired(required = false)
+    private GoodsTypeDao goodsTypeDao;
 
 
     //获取最近7天的每天的金额（分店权限：分店订单的金额，采购经理：单品的金额）
@@ -87,6 +89,7 @@ public class StatServiceImpl implements StatService {
         result.put("status","success");
         return result;
     }
+
     //获取某个分店的最近7天的金额
     private float[] getOneShopMoney(int shop_id){
         //分店最近7天的金额
@@ -122,6 +125,7 @@ public class StatServiceImpl implements StatService {
         }
         return result;
     }
+
     //获取最近7天的总的采购金额
     private float[] getTotalMoney(){
         //最近7天的金额
@@ -258,6 +262,7 @@ public class StatServiceImpl implements StatService {
         return result;
     }
 
+    //获取正在采购的采购员数量
     @Override
     public Map getBuying_man_num() {
         //权限检查（只有采购经理有权限）
@@ -277,6 +282,7 @@ public class StatServiceImpl implements StatService {
         return result;
     }
 
+    //获取等待送货的分店数
     @Override
     public Map getWaiting_shop_num() {
         //权限检查（只有采购经理有权限）
@@ -296,15 +302,37 @@ public class StatServiceImpl implements StatService {
         return result;
     }
 
-    /*public static void main(String[] args){
-        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd");
-        Calendar cal=new GregorianCalendar();
-        cal.setTime(new Date());
-        for(int i=1;i<=7;i++){
-            if(i>1)
-                cal.add(Calendar.DATE,-1);
-            String date=dateFormat.format(cal.getTime());
-            System.out.println(date);
+    //获取当天各分店的订单提交数
+    @Override
+    public Map getTodayOrderNum() {
+        //存放结果
+        Map result=new HashMap();
+
+        //获取所有分店信息
+        List<Shop> shopList=shopDao.selectAll("");
+        //获取所有货品类型信息
+        List<GoodsType> typeList=goodsTypeDao.selectAll();
+        //将混合类型添加到列表
+        GoodsType temp=new GoodsType();
+        temp.setType_name("混合");
+        typeList.add(temp);
+        //获取当前日期
+        String date=TimeUtil.getTime("yyyyMMdd");
+
+        //循环查询各类订单数
+        Map shopData=new HashMap();//存放各分店的数据
+        for(Shop shop:shopList){
+            Map typeData=new HashMap();//存放当前分店的各个类型订单数
+            for(GoodsType goodsType:typeList){
+                int num=shopOrderDao.getOnedayTypeOrderNum(date,shop.getShop_id(),goodsType.getType_name()+"类订单");
+                typeData.put(goodsType.getType_name()+"类订单数",num);
+            }
+            shopData.put(shop.getShop_name(),typeData);
         }
-    }*/
+        result.put("data",shopData);
+
+        //返回结果
+        result.put("status","success");
+        return result;
+    }
 }

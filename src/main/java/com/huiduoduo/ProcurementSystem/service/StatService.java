@@ -26,4 +26,7 @@ public interface StatService {
 
     //获取等待送货的分店数
     Map getWaiting_shop_num();
+
+    //获取当天各分店的订单提交数
+    Map getTodayOrderNum();
 }

@@ -127,4 +127,20 @@ public class StatController {
             return ResultUtil.getErrorRes("服务器异常");
         }
     }
+
+    //获取当天各分店的订单提交数
+    @RequestMapping("/today_order_num")
+    @ResponseBody
+    public Map get_today_order_num(){
+        //检查登陆
+        if(checkLogin()==false)
+            return ResultUtil.getErrorRes("操作失败：你还没有登陆");
+        //
+        try{
+            return statService.getTodayOrderNum();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("服务器异常");
+        }
+    }
 }
