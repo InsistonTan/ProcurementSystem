@@ -33,7 +33,9 @@ public interface ShopOrderPlanDao {
     List<ShopOrderPlan> selectByShopID(@Param("shop_id") int shop_id);
 
     //采购经理查询所有方案
-    @Select("SELECT * FROM shop_order_plan ")
+    @Select("SELECT shop_order_plan.*,shop.shop_name " +
+            "FROM shop_order_plan " +
+            "left join shop on shop_order_plan.`shop_id`=shop.`shop_id` ")
     List<ShopOrderPlan> selectManagerPlans();
 
     //以方案id查询
@@ -45,7 +47,7 @@ public interface ShopOrderPlanDao {
 
     //修改
     @Update("update shop_order_plan " +
-            "set plan_name=#{plan_name},description=#{description} " +
+            "set plan_name=#{plan_name},description=#{description},notice=#{notice} " +
             "where `id`=#{id}")
     boolean update(ShopOrderPlan plan);
 }

@@ -202,8 +202,7 @@ public class ShopOrderPlanServiceImpl implements ShopOrderPlanService {
                 //保留原来的shop_id
                 orderPlan.setShop_id(shopOrderPlan.getShop_id());
                 //添加经理修改的备注
-                String desc=orderPlan.getDescription()+" \n[系统提醒]:采购经理于"+ TimeUtil.getTime("yyyy-MM-dd hh:mm")+"修改了此方案。";
-                orderPlan.setDescription(desc);
+                orderPlan.setNotice("[系统提醒]:采购经理于"+ TimeUtil.getTime("yyyy-MM-dd HH:mm")+"修改了此方案。");
             }
         }
 
