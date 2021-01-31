@@ -2,6 +2,7 @@ package com.huiduoduo.ProcurementSystem.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.huiduoduo.ProcurementSystem.dao.GoodsDao;
 import com.huiduoduo.ProcurementSystem.dao.GoodsOrderDao;
 import com.huiduoduo.ProcurementSystem.dao.ShopOrderDao;
 import com.huiduoduo.ProcurementSystem.domain.Account;
@@ -13,6 +14,7 @@ import com.huiduoduo.ProcurementSystem.service.ShopOrderService;
 import com.huiduoduo.ProcurementSystem.utils.ResultUtil;
 import com.huiduoduo.ProcurementSystem.utils.TimeUtil;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,8 @@ public class ShopOrderServiceImpl implements ShopOrderService {
     private ShopOrderDao shopOrderDao;
     @Autowired(required = false)
     private GoodsOrderDao goodsOrderDao;
+    @Autowired(required = false)
+    private GoodsDao goodsDao;
     @Autowired
     private HttpServletRequest request;
 
@@ -517,11 +521,13 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         if(role.equals("shop")&&temp_order.getShop_id()!=login_info.getShop_id())
             return null;
 
-        //获取订单的具体订货信息
-        temp_order.setGoods_order(goodsOrderDao.selectByShopOrderID(temp_order.getOrder_id()));
+        //获取排好序的订货信息
+        List<GoodsOrder> goodsOrders=getSortedGoodsOrder(temp_order);
+        //设置具体的订货信息到分店订单
+        temp_order.setGoods_order(goodsOrders);
 
         //表格的标题
-        String title=temp_order.getOrder_id()+" "+temp_order.getShop_name()+"订购清单  订货日期："+temp_order.getStart_time()
+        String title="惠多多超市 "+temp_order.getOrder_id()+" "+temp_order.getShop_name()+"订购清单  订货日期："+temp_order.getStart_time()
                 +"   制单人："+temp_order.getPrincipal();
 
         //创建excel文件
@@ -574,7 +580,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         //循环获取订单的订货信息
         if(shopOrderList.size()>0)
         for(ShopOrder order:shopOrderList)
-            order.setGoods_order(goodsOrderDao.selectByShopOrderID(order.getOrder_id()));
+            order.setGoods_order(getSortedGoodsOrder(order));
 
         //创建excel文件
         //声明一个工作簿
@@ -588,7 +594,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         for(int i=0;i<shopOrderList.size();i++){
             ShopOrder temp_order=shopOrderList.get(i);
             //表格的标题
-            String title=temp_order.getOrder_id()+" "+temp_order.getShop_name()
+            String title="惠多多超市 "+temp_order.getOrder_id()+" "+temp_order.getShop_name()
                     +"订购清单  订货日期："+temp_order.getStart_time()
                     +"   制单人："+temp_order.getPrincipal();
             //创建标题，合并单元格区域
@@ -614,7 +620,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
     public Map print(HSSFWorkbook workbook,String sheetName, int startRow, List<GoodsOrder> goodsOrderList) {
         HSSFSheet sheet=workbook.getSheet(sheetName);
         //设置表头
-        String[] heads={"货号","品名","订购单位","门店数量","采购数量","采购单位","备注"};
+        String[] heads={"标志位","货号","品名","订购单位","门店数量","采购数量","采购单位","进价","金额","备注"};
         HSSFRow headRow=sheet.createRow(startRow++);
         //循环添加表头
         for(int i=0;i<heads.length;i++){
@@ -628,26 +634,56 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             //创建行
             HSSFRow row=sheet.createRow(startRow++);
 
-            //货号
+            //标志位
             HSSFCell cell=row.createCell(0);
-            cell.setCellValue(new HSSFRichTextString(String.valueOf(order.getGoods_id())));
-            //品名
+            cell.setCellValue(new HSSFRichTextString(String.valueOf(order.getGoods_sort())));
+
+            //货号
             cell=row.createCell(1);
-            cell.setCellValue(new HSSFRichTextString(order.getGoods_name()));
-            //单位
+            cell.setCellValue(new HSSFRichTextString(String.valueOf(order.getGoods_id())));
+
+            //品名
             cell=row.createCell(2);
-            cell.setCellValue(new HSSFRichTextString(order.getOrder_unit()));
-            //门店数量
+            cell.setCellValue(new HSSFRichTextString(order.getGoods_name()));
+
+            //单位
             cell=row.createCell(3);
-            cell.setCellValue(new HSSFRichTextString(String.valueOf(order.getOrder_num())));
-            //采购数量
+            cell.setCellValue(new HSSFRichTextString(order.getOrder_unit()));
+
+            //门店数量
+            String str="";
+            if(order.getOrder_num()>0)
+                str=String.valueOf(order.getOrder_num());
             cell=row.createCell(4);
-            cell.setCellValue(new HSSFRichTextString(String.valueOf(order.getBuy_num())));
-            //采购单位
+            cell.setCellValue(new HSSFRichTextString(str));
+
+            //采购数量
+            str="";
+            if(order.getBuy_num()>0)
+                str=String.valueOf(order.getBuy_num());
             cell=row.createCell(5);
-            cell.setCellValue(new HSSFRichTextString(order.getBuy_unit()));
-            //备注
+            cell.setCellValue(new HSSFRichTextString(str));
+
+            //采购单位
             cell=row.createCell(6);
+            cell.setCellValue(new HSSFRichTextString(order.getBuy_unit()));
+
+            //进价
+            str="";
+            if(order.getGoods_price()>0)
+                str=String.valueOf(order.getGoods_price());
+            cell=row.createCell(7);
+            cell.setCellValue(new HSSFRichTextString(str));
+
+            //金额
+            str="";
+            if(order.getTotal_money()!=null&&order.getTotal_money()>0)
+                str=String.valueOf(order.getTotal_money());
+            cell=row.createCell(8);
+            cell.setCellValue(new HSSFRichTextString(str));
+
+            //备注
+            cell=row.createCell(9);
             cell.setCellValue(new HSSFRichTextString(order.getGoods_note()));
         }
 
@@ -657,4 +693,61 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         res.put("workbook",workbook);
         return res;
     }
+
+    //获取某个分店订单的具体订货信息（包括没有订的货品，并用标志位进行排序）(上面打印要用到的方法)
+    public List<GoodsOrder> getSortedGoodsOrder(ShopOrder temp_order){
+        //获取订单的具体订货信息
+        List<GoodsOrder> goodsOrders=goodsOrderDao.selectByShopOrderID(temp_order.getOrder_id());
+        //提取出订单中的货品名
+        List<String> goodsNames=new ArrayList<>();
+        for(GoodsOrder order:goodsOrders)
+            goodsNames.add(order.getGoods_name());
+        //获取所有货品信息
+        List<Goods> goodsList=goodsDao.selectAll("");
+        //循环添加没有订购的货品进 goodsOrders
+        for(Goods goods:goodsList){
+            //goodsNames里没有，则代表当前货品没有订
+            if(!goodsNames.contains(goods.getGoods_name())){
+                goodsNames.add(goods.getGoods_name());
+                //创建一个空的 goodsOrder
+                GoodsOrder temp=new GoodsOrder();
+                temp.setTotal_money(0.0f);
+                temp.setGoods_price(0);
+                temp.setBuy_num(0);
+                temp.setGoods_id(goods.getGoods_id());
+                temp.setGoods_name(goods.getGoods_name());
+                temp.setGoods_sort(goods.getGoods_sort());
+                temp.setGoods_type_id(goods.getGoods_type_id());
+                temp.setOrder_num(0);
+                temp.setType_name(goods.getType_name());
+                temp.setOrder_unit(goods.getOrder_unit());
+                temp.setRec_unit(goods.getRec_unit());
+                temp.setBuy_unit("");
+                //将其添加进 goodsOrders
+                goodsOrders.add(temp);
+            }
+        }
+
+        //对goodsOrders进行排序，按标志位由大到小排序
+        Collections.sort(goodsOrders, new Comparator<GoodsOrder>() {
+            @Override
+            public int compare(GoodsOrder o1, GoodsOrder o2) {
+                Integer s1=o1.getGoods_sort();
+                Integer s2=o2.getGoods_sort();
+                if(s1!=null&&s2!=null)
+                    return s2>s1?1:(s2==s1?0:-1);
+                if(s1==null&&s2==null)
+                    return 0;
+                if(s1!=null&&s2==null)
+                    return -1;
+                if(s1==null&&s2!=null)
+                    return 1;
+                return 0;
+            }
+        });
+
+        //返回排好序的
+        return goodsOrders;
+    }
+
 }
