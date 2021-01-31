@@ -635,8 +635,11 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             HSSFRow row=sheet.createRow(startRow++);
 
             //标志位
+            String str2="";
+            if(order.getGoods_sort()!=null)
+                str2=String.valueOf(order.getGoods_sort());
             HSSFCell cell=row.createCell(0);
-            cell.setCellValue(new HSSFRichTextString(String.valueOf(order.getGoods_sort())));
+            cell.setCellValue(new HSSFRichTextString(str2));
 
             //货号
             cell=row.createCell(1);
