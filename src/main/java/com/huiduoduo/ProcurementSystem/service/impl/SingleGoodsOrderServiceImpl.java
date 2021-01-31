@@ -459,4 +459,81 @@ public class SingleGoodsOrderServiceImpl implements SingleGoodsOrderService {
         }
         return orders;
     }
+
+    //（采购经理）作废某个单品采购单
+    @Override
+    public Map setInvalid(SingleGoodsOrder order) {
+        //权限检查（只有采购经理有权限）
+        Account login_info=(Account)request.getSession().getAttribute("info");
+        String role=login_info.getRole();
+        //非采购经理权限
+        if(!"manager".equals(role))
+            return ResultUtil.getErrorRes("操作失败：没有权限进行此操作");
+
+        //数据判断
+        if(order.getSingle_order_id()==null)
+            return ResultUtil.getErrorRes("操作失败：目标采购单编号为空");
+        //
+        SingleGoodsOrder tempOrder=singleGoodsOrderDao.selectOrderById(order.getSingle_order_id());
+        if(tempOrder==null)
+            return ResultUtil.getErrorRes("操作失败：采购单"+order.getSingle_order_id()+"不存在");
+        if(tempOrder.getEnd_time()!=null)
+            return ResultUtil.getErrorRes("操作失败：目标采购单已结束或已作废。");
+
+        //将订单状态置 "已作废"
+        tempOrder.setBuy_status("已作废");
+        tempOrder.setEnd_time(TimeUtil.getTime("yyyy-MM-dd HH:mm:ss"));
+        //更新备注为：采购经理xxx于什么时候作废该采购单
+        String manager_note="[系统提醒]：采购经理"+login_info.getName()+"于"+TimeUtil.getTime("yyyy-MM-dd HH:mm")+"作废了当前采购单。";
+        if(tempOrder.getManager_note()!=null)
+            manager_note+=tempOrder.getManager_note();
+        tempOrder.setManager_note(manager_note);
+        singleGoodsOrderDao.updateNote(tempOrder);
+        //移除实际采购信息
+        tempOrder.setBuy_goods_num(0);
+        tempOrder.setBuy_goods_price(0);
+        tempOrder.setTotal_money(0);
+        singleGoodsOrderDao.updateBuyRes(tempOrder);
+        //更新采购单信息(结束该采购单)
+        singleGoodsOrderDao.finish(tempOrder);
+
+        //查询出该采购单的所有分店订购信息
+        List<GoodsOrder> goodsOrders=goodsOrderDao.selectBySingleOrderID(tempOrder.getSingle_order_id());
+        //存放分店订单 id
+        List<String> shopOrderIDs=new ArrayList<>();
+        if(goodsOrders!=null&&goodsOrders.size()>0){
+            //循环将其实际采购量设置为0
+            for(GoodsOrder goodsOrder:goodsOrders){
+                goodsOrder.setBuy_num(0);
+                goodsOrder.setGoods_price(0);
+                goodsOrder.setTotal_money(0.0f);
+                //更新
+                goodsOrderDao.addBuyRes(goodsOrder);
+                //shopOrderIDs还没有该分店订单号
+                if(!shopOrderIDs.contains(goodsOrder.getOrder_id()))
+                    shopOrderIDs.add(goodsOrder.getOrder_id());
+            }
+        }
+
+        //循环处理分店订单（将该采购单涉及到的分店订购单中的“经理备注”中添加“xxx货品的采购已作废”）
+        if(shopOrderIDs.size()>0){
+            for(String order_id:shopOrderIDs){
+                //查询该订单信息
+                ShopOrder temp=shopOrderDao.selectOneByID(order_id);
+                //更新信息
+                //获取目前的货品名称
+                int goods_id=tempOrder.getGoods_id();
+                String goods_name=shopOrderDao.getGoodsById(goods_id).getGoods_name();
+                String note=" [系统提醒]：货品编号"+goods_id+goods_name+"的采购已作废，时间："+TimeUtil.getTime("yyyy-MM-dd HH:mm")+"。";
+                if(temp.getManager_note()!=null)
+                    note+=temp.getManager_note();
+                temp.setManager_note(note);
+                //更新
+                shopOrderDao.updateOrderByManager(temp);
+            }
+        }
+
+        //返回结果
+        return ResultUtil.getSuccessRes();
+    }
 }

@@ -47,7 +47,7 @@ public class SingleGoodsOrderController {
             return singleGoodsOrderService.addSingleOrder();
         }catch (Exception e){
             e.printStackTrace();
-            return ResultUtil.getErrorRes("数据库操作失败");
+            return ResultUtil.getErrorRes("服务器异常");
         }
 
     }
@@ -64,7 +64,7 @@ public class SingleGoodsOrderController {
             return singleGoodsOrderService.distribute(orders);
         }catch (Exception e){
             e.printStackTrace();
-            return ResultUtil.getErrorRes("数据库操作失败");
+            return ResultUtil.getErrorRes("服务器异常");
         }
 
     }
@@ -81,7 +81,7 @@ public class SingleGoodsOrderController {
             return singleGoodsOrderService.delete(order);
         }catch (Exception e){
             e.printStackTrace();
-            return ResultUtil.getErrorRes("数据库操作失败");
+            return ResultUtil.getErrorRes("服务器异常");
         }
 
     }
@@ -101,7 +101,7 @@ public class SingleGoodsOrderController {
                 return singleGoodsOrderService.selectOngoing(page);
         }catch (Exception e){
             e.printStackTrace();
-            return ResultUtil.getErrorRes("数据库操作失败");
+            return ResultUtil.getErrorRes("服务器异常");
         }
 
     }
@@ -118,7 +118,7 @@ public class SingleGoodsOrderController {
             return singleGoodsOrderService.updateBuyRes(order);
         }catch (Exception e){
             e.printStackTrace();
-            return ResultUtil.getErrorRes("数据库操作失败");
+            return ResultUtil.getErrorRes("服务器异常");
         }
 
     }
@@ -135,7 +135,24 @@ public class SingleGoodsOrderController {
             return singleGoodsOrderService.finish(order);
         }catch (Exception e){
             e.printStackTrace();
-            return ResultUtil.getErrorRes("数据库操作失败");
+            return ResultUtil.getErrorRes("服务器异常");
+        }
+
+    }
+
+    //采购经理作废采购单
+    @RequestMapping("/setInvalid")
+    @ResponseBody
+    public Map setInvalid(@RequestBody SingleGoodsOrder order){
+        //检查登陆
+        if(checkLogin()==false)
+            return ResultUtil.getErrorRes("操作失败：你还没有登陆");
+        //
+        try {
+            return singleGoodsOrderService.setInvalid(order);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.getErrorRes("服务器异常");
         }
 
     }

@@ -33,4 +33,7 @@ public interface SingleGoodsOrderService {
 
     //（采购经理）查询正在进行的单品采购单
     Map selectOngoing(SingleOrderPage page);
+
+    //（采购经理）作废某个单品采购单
+    Map setInvalid(SingleGoodsOrder order);
 }
