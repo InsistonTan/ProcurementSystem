@@ -144,7 +144,7 @@ public class StatController {
         }
     }
 
-    //获取当天各分店的订单提交数
+    //获取当天各类型货品订购量
     @RequestMapping("/today_goods_num")
     @ResponseBody
     public Map get_today_goods_num(){

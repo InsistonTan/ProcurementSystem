@@ -320,16 +320,38 @@ public class StatServiceImpl implements StatService {
         String date=TimeUtil.getTime("yyyyMMdd");
 
         //循环查询各类订单数
-        Map shopData=new HashMap();//存放各分店的数据
+        List<Map> shopDatas=new ArrayList<>();//存放各分店的数据
         for(Shop shop:shopList){
+            Map shopData=new HashMap();
+            shopData.put("shop_id",shop.getShop_id());
+            shopData.put("shop_name",shop.getShop_name());
             Map typeData=new HashMap();//存放当前分店的各个类型订单数
             for(GoodsType goodsType:typeList){
                 int num=shopOrderDao.getOnedayTypeOrderNum(date,shop.getShop_id(),goodsType.getType_name()+"类订单");
                 typeData.put(goodsType.getType_name()+"类订单数",num);
             }
-            shopData.put(shop.getShop_name(),typeData);
+            shopData.put("order_data",typeData);
+            //将目前分店数据添加到列表
+            shopDatas.add(shopData);
         }
-        result.put("data",shopData);
+
+        //对分店进行排序
+        Collections.sort(shopDatas, (o1, o2) -> {
+            Integer s1=(Integer) o1.get("shop_id");
+            Integer s2=(Integer) o2.get("shop_id");
+            if(s1!=null&&s2!=null)
+                return s1>s2?1:(s1==s2?0:-1);
+            if(s1==null&&s2==null)
+                return 0;
+            if(s1!=null&&s2==null)
+                return 1;
+            if(s1==null&&s2!=null)
+                return -1;
+            return 0;
+        });
+
+        //
+        result.put("data",shopDatas);
 
         //返回结果
         result.put("status","success");
@@ -349,7 +371,8 @@ public class StatServiceImpl implements StatService {
         String date=TimeUtil.getTime("yyyyMMdd");
 
         //存放单品的信息，key为品名，value为 Map
-        Map<String,Map> goodsData=new HashMap();
+        List<Map> goodsData=new ArrayList<>();
+        //Map<String,Map> goodsData=new HashMap();
 
         //循环进行统计
         for(Shop shop:shopList){
@@ -363,30 +386,35 @@ public class StatServiceImpl implements StatService {
                     //详情列表不为空
                     if(goodsOrderList!=null&&goodsOrderList.size()>0)
                        for(GoodsOrder goodsOrder:goodsOrderList){
-                           //map中已经有该货品
-                           if(goodsData.containsKey(goodsOrder.getGoods_name())){
+                           //结果列表中的某个Map中已经有该货品
+                           int index1=findKeyIndex(goodsData,goodsOrder.getGoods_name());
+                           //index1！=-1代表已经存在
+                           if(index1!=-1){
                                //取出该货品信息，对订购量累加
-                               Map tempGoodsInfo=goodsData.get(goodsOrder.getGoods_name());
+                               Map tempGoodsInfo=goodsData.get(index1);
                                float order_num=(float)tempGoodsInfo.get("order_num")+goodsOrder.getOrder_num();
                                //刷新订购总量的值
-                               tempGoodsInfo.replace("order_num",order_num);
+                               goodsData.get(index1).replace("order_num",order_num);
 
                                //取出各分店的订购数据
-                               Map tempShopData=(Map)tempGoodsInfo.get("shop_data");
-                               //判断是否已经有当前分店的记录
-                               if(tempShopData.containsKey(shop.getShop_name())){
+                               List<Map> tempShopData=(List<Map>) tempGoodsInfo.get("shop_data");
+                               int index=findKeyIndex(tempShopData,shop.getShop_name());
+                               //判断是否已经有当前分店的记录,index!=-1代表没有
+                               if(index!=-1){
                                    //更新订购总量
-                                   float temp_num= (float) tempShopData.get(shop.getShop_name())+goodsOrder.getOrder_num();
-                                   tempShopData.replace(shop.getShop_name(),temp_num);
+                                   float temp_num= (float) tempShopData.get(index).get("order_num")+goodsOrder.getOrder_num();
+                                   tempShopData.get(index).replace("order_num",temp_num);
                                }
                                //还没有当前分店的记录
                                else {
-                                   tempShopData.put(shop.getShop_name(),goodsOrder.getOrder_num());
+                                   Map temp=new HashMap();
+                                   temp.put("shop_id",shop.getShop_id());
+                                   temp.put("shop_name",shop.getShop_name());
+                                   temp.put("order_num",goodsOrder.getOrder_num());
+                                   tempShopData.add(temp);
                                }
                                //刷新
-                               tempGoodsInfo.replace("shop_data",tempShopData);
-                               goodsData.replace(goodsOrder.getGoods_name(),tempGoodsInfo);
-
+                               goodsData.get(index1).replace("shop_data",tempShopData);
                                //
                            }
                            //map中还没有该货品,需将该货品信息添加进 Map goodsData
@@ -400,26 +428,75 @@ public class StatServiceImpl implements StatService {
                                goodsInfo.put("type_name",goodsOrder.getType_name());//货品类型名
                                goodsInfo.put("order_unit",goodsOrder.getOrder_unit());//订购单位
                                goodsInfo.put("order_num",goodsOrder.getOrder_num());//订购量
+
                                //各分店的订购量
-                               Map temp=new HashMap();
-                               temp.put(shop.getShop_name(),goodsOrder.getOrder_num());
+                               List<Map> shop_data=new ArrayList<>();
                                //把其余的分店都加进去，订购量设为 0
                                for(Shop shop1:shopList){
+                                   Map temp=new HashMap();
+                                   temp.put("shop_id",shop1.getShop_id());
+                                   temp.put("shop_name",shop1.getShop_name());
+                                   //
                                    if(!shop1.getShop_name().equals(shop.getShop_name())){
-                                       temp.put(shop1.getShop_name(),0.0f);
+                                       temp.put("order_num",0.0f);
                                    }
+                                   else
+                                       temp.put("order_num",goodsOrder.getOrder_num());
+                                   //添加到列表
+                                   shop_data.add(temp);
                                }
-                               goodsInfo.put("shop_data",temp);
+                               //对shop_data进行排序，按照shop_id由小到大
+                               Collections.sort(shop_data, (o1, o2) -> {
+                                   Integer s1=(Integer) o1.get("shop_id");
+                                   Integer s2=(Integer) o2.get("shop_id");
+                                   if(s1!=null&&s2!=null)
+                                       return s1>s2?1:(s1==s2?0:-1);
+                                   if(s1==null&&s2==null)
+                                       return 0;
+                                   if(s1!=null&&s2==null)
+                                       return 1;
+                                   if(s1==null&&s2!=null)
+                                       return -1;
+                                   return 0;
+                               });
+
+                               goodsInfo.put("shop_data",shop_data);
                                //将该货品的详情添加进 goodsData
-                               goodsData.put(goodsOrder.getGoods_name(),goodsInfo);
+                               goodsData.add(goodsInfo);
                            }
                        }
                 }
         }
 
+        //对goodsData进行排序，按照货品标志位由大到小
+        Collections.sort(goodsData, (o1, o2) -> {
+            Integer s1=(Integer) o1.get("goods_sort");
+            Integer s2=(Integer) o2.get("goods_sort");
+            if(s1!=null&&s2!=null)
+                return s2>s1?1:(s2==s1?0:-1);
+            if(s1==null&&s2==null)
+                return 0;
+            if(s1!=null&&s2==null)
+                return -1;
+            if(s1==null&&s2!=null)
+                return 1;
+            return 0;
+        });
+
         result.put("data",goodsData);
         //返回结果
         result.put("status","success");
         return result;
+    }
+
+    //从某个 List<Map<key,value>>中查找是否某个 key
+    public int findKeyIndex(List<Map> list,String key){
+        for(int i=0;i<list.size();i++){
+            Map map=list.get(i);
+            if(map.containsKey(key))
+                return i;
+        }
+        //
+        return -1;
     }
 }
